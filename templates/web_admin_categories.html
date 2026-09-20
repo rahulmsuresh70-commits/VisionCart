@@ -1,0 +1,1411 @@
+{% extends "web_admin_base.html" %}
+{% load static %}
+
+{% block title %}
+    VisionCart - Category Management
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-4 py-lg-5">
+
+    <!-- ==================================================
+         PAGE HEADER
+    =================================================== -->
+
+    <div class="vc-category-header mb-4">
+
+        <div>
+
+            <span class="vc-category-eyebrow">
+                STORE MANAGEMENT
+            </span>
+
+            <h1 class="vc-category-title">
+                Category Management
+            </h1>
+
+            <p class="vc-category-subtitle">
+                Create and manage VisionCart eyewear categories.
+            </p>
+
+        </div>
+
+
+        {% if user.role == "SUPER_ADMIN" %}
+
+        <a
+            href="{% url 'super-admin-dashboard' %}"
+            class="vc-category-back"
+        >
+            ← Back to Dashboard
+        </a>
+
+        {% else %}
+
+        <a
+            href="{% url 'web-admin-dashboard' %}"
+            class="vc-category-back"
+        >
+            ← Back to Dashboard
+        </a>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ==================================================
+         ADD CATEGORY
+    =================================================== -->
+
+    <section class="vc-category-card vc-add-category-card mb-4">
+
+        <div class="vc-category-card-header">
+
+            <div class="vc-category-card-icon">
+                +
+            </div>
+
+            <div>
+
+                <h2>
+                    Add Category
+                </h2>
+
+                <p>
+                    Create a new category for your eyewear products.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="vc-category-card-body">
+
+            <form
+                method="POST"
+                action="{% url 'web-admin-category-add' %}"
+                enctype="multipart/form-data"
+                data-protect-submit
+            >
+
+                {% csrf_token %}
+
+
+                <div class="row g-4">
+
+
+                    <!-- CATEGORY NAME -->
+
+                    <div class="col-12 col-md-6">
+
+                        <label
+                            for="categoryName"
+                            class="vc-category-label"
+                        >
+                            Category Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="name"
+                            id="categoryName"
+                            class="form-control vc-category-input"
+                            maxlength="100"
+                            required
+                            placeholder="Enter category name"
+                        >
+
+                        <div class="vc-category-help">
+                            Example: Sunglasses, Eyeglasses, Computer Glasses
+                        </div>
+
+                    </div>
+
+
+                    <!-- CATEGORY IMAGE -->
+
+                    <div class="col-12 col-md-6">
+
+                        <label
+                            for="categoryImage"
+                            class="vc-category-label"
+                        >
+                            Category Image
+                        </label>
+
+                        <input
+                            type="file"
+                            name="image"
+                            id="categoryImage"
+                            class="form-control vc-category-input"
+                            accept="image/*"
+                        >
+
+                        <div class="vc-category-help">
+                            Upload an optional image representing this category.
+                        </div>
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="col-12">
+
+                        <label
+                            for="categoryDescription"
+                            class="vc-category-label"
+                        >
+                            Description
+                        </label>
+
+                        <textarea
+                            name="description"
+                            id="categoryDescription"
+                            class="form-control vc-category-input vc-category-textarea"
+                            rows="4"
+                            placeholder="Enter a short description for this category."
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- ACTIVE -->
+
+                    <div class="col-12">
+
+                        <label
+                            for="categoryActive"
+                            class="vc-category-active-control"
+                        >
+
+                            <input
+                                type="checkbox"
+                                name="is_active"
+                                class="vc-category-active-input"
+                                id="categoryActive"
+                                checked
+                            >
+
+                            <span class="vc-category-check">
+                                ✓
+                            </span>
+
+                            <span class="vc-category-active-content">
+
+                                <strong>
+                                    Active Category
+                                </strong>
+
+                                <small>
+                                    Keep this category available for store use.
+                                </small>
+
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ADD BUTTON -->
+
+                <div class="vc-category-form-actions">
+
+                    <button
+                        type="submit"
+                        class="vc-category-primary-button"
+                    >
+                        Add Category
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         SEARCH / FILTER
+    =================================================== -->
+
+    <section class="vc-category-card mb-4">
+
+        <div class="vc-category-card-header">
+
+            <div class="vc-category-card-icon">
+                ⌕
+            </div>
+
+            <div>
+
+                <h2>
+                    Search & Filter
+                </h2>
+
+                <p>
+                    Find categories quickly using name or status.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="vc-category-card-body">
+
+            <form
+                method="GET"
+                action="{% url 'web-admin-categories' %}"
+            >
+
+                <div class="row g-3 align-items-end">
+
+
+                    <!-- SEARCH -->
+
+                    <div class="col-12 col-md-6">
+
+                        <label
+                            for="categorySearch"
+                            class="vc-category-label"
+                        >
+                            Search
+                        </label>
+
+                        <input
+                            type="text"
+                            name="q"
+                            id="categorySearch"
+                            value="{{ search_query }}"
+                            class="form-control vc-category-input"
+                            placeholder="Search category"
+                        >
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="col-12 col-md-4">
+
+                        <label
+                            for="categoryStatus"
+                            class="vc-category-label"
+                        >
+                            Status
+                        </label>
+
+                        <select
+                            name="status"
+                            id="categoryStatus"
+                            class="form-select vc-category-input"
+                        >
+
+                            <option
+                                value=""
+                                {% if not selected_status %}selected{% endif %}
+                            >
+                                All
+                            </option>
+
+                            <option
+                                value="active"
+                                {% if selected_status == "active" %}selected{% endif %}
+                            >
+                                Active
+                            </option>
+
+                            <option
+                                value="inactive"
+                                {% if selected_status == "inactive" %}selected{% endif %}
+                            >
+                                Inactive
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- FILTER -->
+
+                    <div class="col-12 col-md-2">
+
+                        <button
+                            type="submit"
+                            class="vc-category-filter-button"
+                        >
+                            Filter
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         CATEGORY LIST
+    =================================================== -->
+
+    <section class="vc-category-card">
+
+        <div class="vc-category-list-header">
+
+            <div>
+
+                <span class="vc-category-list-eyebrow">
+                    VISIONCART CATALOG
+                </span>
+
+                <h2>
+                    Categories
+                </h2>
+
+                <p>
+                    View and manage all available eyewear categories.
+                </p>
+
+            </div>
+
+            {% if categories %}
+
+            <span class="vc-category-count">
+                {{ categories|length }} Categories
+            </span>
+
+            {% endif %}
+
+        </div>
+
+
+        {% if categories %}
+
+
+        <!-- ==================================================
+             DESKTOP TABLE
+        =================================================== -->
+
+        <div class="table-responsive">
+
+            <table class="table vc-category-table align-middle mb-0">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Image
+                        </th>
+
+                        <th>
+                            Name
+                        </th>
+
+                        <th>
+                            Description
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th class="text-end">
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for category in categories %}
+
+                    <tr>
+
+
+                        <!-- IMAGE -->
+
+                        <td>
+
+                            <div class="vc-category-image-wrapper">
+
+                                {% if category.image %}
+
+                                    <img
+                                        src="{{ category.image.url }}"
+                                        alt="{{ category.name }}"
+                                        class="vc-category-image"
+                                    >
+
+                                {% elif category.name == "Eyeglasses" %}
+
+                                    <img
+                                        src="{% static 'images/l25.jpg' %}"
+                                        alt="Eyeglasses"
+                                        class="vc-category-image"
+                                    >
+
+                                {% elif category.name == "Sunglasses" %}
+
+                                    <img
+                                        src="{% static 'images/l7.jpeg' %}"
+                                        alt="Sunglasses"
+                                        class="vc-category-image"
+                                    >
+
+                                {% elif category.name == "Computer Glasses" %}
+
+                                    <img
+                                        src="{% static 'images/l30.jpg' %}"
+                                        alt="Computer Glasses"
+                                        class="vc-category-image"
+                                    >
+
+                                {% elif category.name == "Contact Lenses" %}
+
+                                    <img
+                                        src="{% static 'images/l33.jpg' %}"
+                                        alt="Contact Lenses"
+                                        class="vc-category-image"
+                                    >
+
+                                {% else %}
+
+                                    <div class="vc-category-image-placeholder">
+                                        ◫
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- NAME -->
+
+                        <td>
+
+                            <div class="vc-category-name">
+
+                                <strong>
+                                    {{ category.name }}
+                                </strong>
+
+                                <small>
+                                    Category #{{ category.id }}
+                                </small>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- DESCRIPTION -->
+
+                        <td>
+
+                            <div class="vc-category-description">
+
+                                {% if category.description %}
+
+                                    {{ category.description|truncatechars:100 }}
+
+                                {% else %}
+
+                                    <span>
+                                        No description
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            {% if category.is_active %}
+
+                                <span class="vc-category-status active">
+                                    Active
+                                </span>
+
+                            {% else %}
+
+                                <span class="vc-category-status inactive">
+                                    Inactive
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- ACTIONS -->
+
+                        <td>
+
+                            <div class="vc-category-actions">
+
+
+                                <!-- EDIT -->
+
+                                <a
+                                    href="{% url 'web-admin-category-edit' category.id %}"
+                                    class="vc-category-action edit"
+                                >
+                                    Edit
+                                </a>
+
+
+                                <!-- TOGGLE -->
+
+                                <form
+                                    method="POST"
+                                    action="{% url 'web-admin-category-toggle' category.id %}"
+                                    data-protect-submit
+                                >
+
+                                    {% csrf_token %}
+
+                                    {% if category.is_active %}
+
+                                        <button
+                                            type="submit"
+                                            class="vc-category-action toggle"
+                                        >
+                                            Deactivate
+                                        </button>
+
+                                    {% else %}
+
+                                        <button
+                                            type="submit"
+                                            class="vc-category-action activate"
+                                        >
+                                            Activate
+                                        </button>
+
+                                    {% endif %}
+
+                                </form>
+
+
+                                <!-- DELETE -->
+
+                                <form
+                                    method="POST"
+                                    action="{% url 'web-admin-category-delete' category.id %}"
+                                    data-protect-submit
+                                    onsubmit="return confirm('Delete this category?');"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="vc-category-action delete"
+                                    >
+                                        Delete
+                                    </button>
+
+                                </form>
+
+
+                            </div>
+
+                        </td>
+
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- ==================================================
+             EMPTY STATE
+        =================================================== -->
+
+        <div class="vc-category-empty">
+
+            <div class="vc-category-empty-icon">
+                ◫
+            </div>
+
+            <h3>
+                No categories found
+            </h3>
+
+            <p>
+                There are currently no categories matching your search
+                or filter.
+            </p>
+
+            <a
+                href="{% url 'web-admin-categories' %}"
+                class="vc-category-reset-button"
+            >
+                Clear Filters
+            </a>
+
+        </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+</div>
+
+
+<!-- ==========================================================
+     STEP 39 — DESIGN ONLY
+     
+     Existing:
+     - Add Category form
+     - CSRF protection
+     - Image upload
+     - Active checkbox
+     - Search
+     - Status filter
+     - Category loop
+     - Edit route
+     - Toggle route
+     - Delete route
+     - Delete confirmation
+     - Role-based dashboard route
+     
+     are preserved.
+=========================================================== -->
+
+<style>
+
+    /* =====================================================
+       PAGE HEADER
+    ===================================================== */
+
+    .vc-category-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 25px;
+        padding: 28px 30px;
+        background: #ffffff;
+        border: 1px solid #e7eaf0;
+        border-radius: 18px;
+        box-shadow: 0 8px 28px rgba(25, 35, 55, 0.05);
+    }
+
+
+    .vc-category-eyebrow {
+        display: block;
+        margin-bottom: 8px;
+        color: #687284;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.4px;
+    }
+
+
+    .vc-category-title {
+        margin: 0 0 7px;
+        color: #172033;
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+
+    .vc-category-subtitle {
+        margin: 0;
+        color: #697384;
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+
+    .vc-category-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 10px 16px;
+        border: 1px solid #dfe3e9;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #596273;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: all .2s ease;
+    }
+
+
+    .vc-category-back:hover {
+        background: #f7f8fa;
+        border-color: #cfd5de;
+        color: #172033;
+        transform: translateY(-1px);
+    }
+
+
+    /* =====================================================
+       COMMON CARD
+    ===================================================== */
+
+    .vc-category-card {
+        overflow: hidden;
+        border: 1px solid #e7eaf0;
+        border-radius: 17px;
+        background: #ffffff;
+        box-shadow: 0 6px 22px rgba(25, 35, 55, 0.04);
+    }
+
+
+    .vc-category-card-header {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 21px 22px;
+        border-bottom: 1px solid #edf0f4;
+    }
+
+
+    .vc-category-card-icon {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 11px;
+        background: #f1f3f6;
+        color: #172033;
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+
+    .vc-category-card-header h2 {
+        margin: 0 0 3px;
+        color: #172033;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+
+    .vc-category-card-header p {
+        margin: 0;
+        color: #7e8796;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+
+    .vc-category-card-body {
+        padding: 23px 22px;
+    }
+
+
+    /* =====================================================
+       FORM
+    ===================================================== */
+
+    .vc-category-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #3d4655;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+
+    .vc-category-input {
+        min-height: 45px;
+        border: 1px solid #dfe3e9;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #172033;
+        font-size: 14px;
+        box-shadow: none;
+        transition:
+            border-color .2s ease,
+            box-shadow .2s ease;
+    }
+
+
+    .vc-category-input:focus {
+        border-color: #9da5b2;
+        box-shadow: 0 0 0 3px rgba(23, 32, 51, 0.07);
+    }
+
+
+    .vc-category-input::placeholder {
+        color: #a0a7b2;
+    }
+
+
+    .vc-category-textarea {
+        min-height: 120px;
+        resize: vertical;
+        line-height: 1.65;
+    }
+
+
+    .vc-category-help {
+        margin-top: 7px;
+        color: #9098a6;
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+
+    .vc-category-form-actions {
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 22px;
+        padding-top: 20px;
+        border-top: 1px solid #edf0f4;
+    }
+
+
+    .vc-category-primary-button {
+        min-height: 44px;
+        padding: 10px 18px;
+        border: 1px solid #172033;
+        border-radius: 10px;
+        background: #172033;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all .2s ease;
+    }
+
+
+    .vc-category-primary-button:hover {
+        background: #273249;
+        border-color: #273249;
+        transform: translateY(-1px);
+    }
+
+
+    /* =====================================================
+       ACTIVE CHECKBOX
+    ===================================================== */
+
+    .vc-category-active-control {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px;
+        border: 1px solid #e2e6ec;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all .2s ease;
+    }
+
+
+    .vc-category-active-control:hover {
+        background: #fafbfc;
+        border-color: #d5dae2;
+    }
+
+
+    .vc-category-active-input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+
+    .vc-category-check {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border: 1px solid #cfd5de;
+        border-radius: 7px;
+        background: #ffffff;
+        color: transparent;
+        font-size: 12px;
+        font-weight: 800;
+        transition: all .2s ease;
+    }
+
+
+    .vc-category-active-input:checked + .vc-category-check {
+        border-color: #172033;
+        background: #172033;
+        color: #ffffff;
+    }
+
+
+    .vc-category-active-content strong {
+        display: block;
+        margin-bottom: 3px;
+        color: #303a4b;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+
+    .vc-category-active-content small {
+        display: block;
+        color: #8b94a2;
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       LIST HEADER
+    ===================================================== */
+
+    .vc-category-list-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 21px 22px;
+        border-bottom: 1px solid #edf0f4;
+    }
+
+
+    .vc-category-list-eyebrow {
+        display: block;
+        margin-bottom: 5px;
+        color: #929aa7;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+
+
+    .vc-category-list-header h2 {
+        margin: 0 0 4px;
+        color: #172033;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+
+    .vc-category-list-header p {
+        margin: 0;
+        color: #7e8796;
+        font-size: 12px;
+    }
+
+
+    .vc-category-count {
+        display: inline-flex;
+        align-items: center;
+        min-height: 30px;
+        padding: 5px 10px;
+        border: 1px solid #e1e5eb;
+        border-radius: 20px;
+        background: #fafbfc;
+        color: #697383;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+
+    /* =====================================================
+       TABLE
+    ===================================================== */
+
+    .vc-category-table {
+        min-width: 900px;
+    }
+
+
+    .vc-category-table thead th {
+        padding: 13px 18px;
+        border-bottom: 1px solid #e5e8ed;
+        background: #fafbfc;
+        color: #727b8b;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: .3px;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+
+    .vc-category-table tbody td {
+        padding: 16px 18px;
+        border-bottom: 1px solid #edf0f4;
+        color: #4f5969;
+        font-size: 13px;
+        vertical-align: middle;
+    }
+
+
+    .vc-category-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+
+    .vc-category-table tbody tr {
+        transition: background .2s ease;
+    }
+
+
+    .vc-category-table tbody tr:hover {
+        background: #fcfcfd;
+    }
+
+
+    /* =====================================================
+       IMAGE
+    ===================================================== */
+
+    .vc-category-image-wrapper {
+        width: 70px;
+    }
+
+
+    .vc-category-image {
+        display: block;
+        width: 64px;
+        height: 64px;
+        object-fit: cover;
+        border: 1px solid #e2e6eb;
+        border-radius: 10px;
+        background: #f7f8fa;
+    }
+
+
+    .vc-category-image-placeholder {
+        width: 64px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e2e6eb;
+        border-radius: 10px;
+        background: #f6f7f9;
+        color: #7b8492;
+        font-size: 18px;
+    }
+
+
+    /* =====================================================
+       NAME
+    ===================================================== */
+
+    .vc-category-name {
+        min-width: 150px;
+    }
+
+
+    .vc-category-name strong {
+        display: block;
+        margin-bottom: 4px;
+        color: #293346;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+
+    .vc-category-name small {
+        display: block;
+        color: #929aa7;
+        font-size: 10px;
+    }
+
+
+    /* =====================================================
+       DESCRIPTION
+    ===================================================== */
+
+    .vc-category-description {
+        max-width: 340px;
+        color: #697383;
+        line-height: 1.55;
+    }
+
+
+    .vc-category-description span {
+        color: #9ca3ae;
+        font-style: italic;
+    }
+
+
+    /* =====================================================
+       STATUS
+    ===================================================== */
+
+    .vc-category-status {
+        display: inline-flex;
+        align-items: center;
+        min-height: 27px;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+
+    .vc-category-status.active {
+        border: 1px solid #dce7df;
+        background: #f4f8f5;
+        color: #526c5b;
+    }
+
+
+    .vc-category-status.inactive {
+        border: 1px solid #e4e5e7;
+        background: #f7f7f7;
+        color: #7b8088;
+    }
+
+
+    /* =====================================================
+       ACTIONS
+    ===================================================== */
+
+    .vc-category-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 7px;
+        min-width: 250px;
+    }
+
+
+    .vc-category-actions form {
+        margin: 0;
+    }
+
+
+    .vc-category-action {
+        min-height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 10px;
+        border: 1px solid #dfe3e9;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #596273;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all .2s ease;
+    }
+
+
+    .vc-category-action:hover {
+        background: #f6f7f9;
+        border-color: #cfd5de;
+        color: #172033;
+    }
+
+
+    .vc-category-action.activate {
+        border-color: #d7e3da;
+        color: #526c5b;
+    }
+
+
+    .vc-category-action.activate:hover {
+        background: #f4f8f5;
+    }
+
+
+    .vc-category-action.toggle {
+        border-color: #e2ddd1;
+        color: #756c58;
+    }
+
+
+    .vc-category-action.toggle:hover {
+        background: #faf8f2;
+    }
+
+
+    .vc-category-action.delete {
+        border-color: #e4d6d6;
+        color: #8a5d5d;
+    }
+
+
+    .vc-category-action.delete:hover {
+        background: #faf5f5;
+        border-color: #d8bebe;
+        color: #774b4b;
+    }
+
+
+    /* =====================================================
+       EMPTY STATE
+    ===================================================== */
+
+    .vc-category-empty {
+        min-height: 340px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+
+    .vc-category-empty-icon {
+        width: 58px;
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        border-radius: 15px;
+        background: #f1f3f6;
+        color: #697383;
+        font-size: 22px;
+    }
+
+
+    .vc-category-empty h3 {
+        margin: 0 0 7px;
+        color: #273143;
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+
+    .vc-category-empty p {
+        max-width: 450px;
+        margin: 0 0 18px;
+        color: #858e9c;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+
+    .vc-category-reset-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        padding: 8px 14px;
+        border: 1px solid #dfe3e9;
+        border-radius: 9px;
+        background: #ffffff;
+        color: #596273;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+
+    .vc-category-reset-button:hover {
+        background: #f6f7f9;
+        color: #172033;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 767.98px) {
+
+        .vc-category-header {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 23px;
+        }
+
+
+        .vc-category-title {
+            font-size: 30px;
+        }
+
+
+        .vc-category-back {
+            width: 100%;
+        }
+
+
+        .vc-category-card-header {
+            padding: 18px;
+        }
+
+
+        .vc-category-card-body {
+            padding: 18px;
+        }
+
+
+        .vc-category-form-actions {
+            align-items: stretch;
+        }
+
+
+        .vc-category-primary-button {
+            width: 100%;
+        }
+
+
+        .vc-category-list-header {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 18px;
+        }
+
+
+        .vc-category-actions {
+            justify-content: flex-start;
+            min-width: 0;
+        }
+
+    }
+
+</style>
+
+{% endblock %}

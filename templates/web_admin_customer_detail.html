@@ -1,0 +1,603 @@
+{% extends "base.html" %}
+
+{% block title %}Customers | VisionCart{% endblock %}
+
+{% block content %}
+
+<div class="container py-4 py-lg-5">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+    <section class="vc-customer-header mb-4">
+
+        <div>
+
+            <span class="vc-customer-eyebrow">
+                CUSTOMER MANAGEMENT
+            </span>
+
+            <h1 class="vc-customer-title">
+                Customers
+            </h1>
+
+            <p class="vc-customer-description">
+                View registered VisionCart customers and manage
+                their account status.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'web-admin' %}"
+            class="vc-customer-back text-decoration-none"
+        >
+            ← Dashboard
+        </a>
+
+    </section>
+
+
+    <!-- =====================================================
+         SEARCH
+         ===================================================== -->
+    <section class="vc-customer-filter-card mb-4">
+
+        <form method="get" class="row g-3 align-items-end">
+
+            <div class="col-12 col-md-9">
+
+                <label
+                    for="customer-search"
+                    class="vc-customer-label"
+                >
+                    Search Customers
+                </label>
+
+                <input
+                    type="search"
+                    id="customer-search"
+                    name="q"
+                    value="{{ search_query }}"
+                    class="form-control vc-customer-input"
+                    placeholder="Search by username, email or phone..."
+                >
+
+            </div>
+
+
+            <div class="col-12 col-md-3">
+
+                <button
+                    type="submit"
+                    class="vc-customer-filter-btn"
+                >
+                    Search
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- =====================================================
+         CUSTOMER TABLE
+         ===================================================== -->
+    <section class="vc-customer-table-card">
+
+        <div class="vc-customer-table-header">
+
+            <div>
+
+                <h2>
+                    Customer Accounts
+                </h2>
+
+                <p>
+                    Registered customer accounts available for management.
+                </p>
+
+            </div>
+
+            <span class="vc-customer-count">
+                {{ customers|length }} shown
+            </span>
+
+        </div>
+
+
+        {% if customers %}
+
+        <div class="table-responsive">
+
+            <table class="table vc-customer-table align-middle mb-0">
+
+                <thead>
+
+                    <tr>
+                        <th>Customer</th>
+                        <th>Contact</th>
+                        <th>Status</th>
+                        <th>Joined</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for customer in customers %}
+
+                    <tr>
+
+                        <!-- Customer -->
+                        <td>
+
+                            <div class="vc-customer-profile">
+
+                                <div class="vc-customer-avatar">
+                                    {{ customer.username|first|upper }}
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        {{ customer.username }}
+                                    </strong>
+
+                                    <small>
+                                        Customer #{{ customer.id }}
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- Contact -->
+                        <td>
+
+                            <div class="vc-customer-contact">
+
+                                <span>
+                                    {{ customer.email }}
+                                </span>
+
+                                {% if customer.phone %}
+
+                                <small>
+                                    {{ customer.phone }}
+                                </small>
+
+                                {% else %}
+
+                                <small>
+                                    No phone number
+                                </small>
+
+                                {% endif %}
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- Status -->
+                        <td>
+
+                            {% if customer.is_active %}
+
+                                <span class="vc-customer-status active">
+                                    Active
+                                </span>
+
+                            {% else %}
+
+                                <span class="vc-customer-status inactive">
+                                    Inactive
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- Joined -->
+                        <td>
+
+                            <span class="vc-customer-date">
+                                {{ customer.date_joined|date:"d M Y" }}
+                            </span>
+
+                        </td>
+
+
+                        <!-- Action -->
+                        <td>
+
+                            <div class="vc-customer-action-wrap">
+
+                                <form
+                                    method="post"
+                                    action="{% url 'web-admin-customer-toggle' customer.id %}"
+                                    data-protect-submit
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="vc-customer-action"
+                                    >
+                                        {% if customer.is_active %}
+                                            Deactivate
+                                        {% else %}
+                                            Activate
+                                        {% endif %}
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="vc-customer-empty">
+
+            <div class="vc-customer-empty-icon">
+                ◎
+            </div>
+
+            <h3>
+                No customers found
+            </h3>
+
+            <p>
+                No customer accounts match the current search.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+
+<style>
+
+    .vc-customer-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 28px 30px;
+        background: #ffffff;
+        border: 1px solid #e7eaf0;
+        border-radius: 18px;
+        box-shadow: 0 8px 28px rgba(25, 35, 55, 0.05);
+    }
+
+    .vc-customer-eyebrow {
+        display: inline-block;
+        margin-bottom: 8px;
+        color: #687284;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.4px;
+    }
+
+    .vc-customer-title {
+        margin: 0 0 7px;
+        color: #172033;
+        font-size: 34px;
+        font-weight: 700;
+    }
+
+    .vc-customer-description {
+        margin: 0;
+        color: #697384;
+        line-height: 1.7;
+    }
+
+    .vc-customer-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 10px 15px;
+        border: 1px solid #dfe3e9;
+        border-radius: 10px;
+        color: #596273;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .vc-customer-back:hover {
+        background: #f7f8fa;
+        color: #172033;
+    }
+
+    .vc-customer-filter-card,
+    .vc-customer-table-card {
+        overflow: hidden;
+        border: 1px solid #e7eaf0;
+        border-radius: 17px;
+        background: #ffffff;
+        box-shadow: 0 6px 22px rgba(25, 35, 55, 0.04);
+    }
+
+    .vc-customer-filter-card {
+        padding: 21px 22px;
+    }
+
+    .vc-customer-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #3d4655;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .vc-customer-input {
+        min-height: 44px;
+        border: 1px solid #dfe3e9;
+        border-radius: 10px;
+        font-size: 14px;
+        box-shadow: none;
+    }
+
+    .vc-customer-input:focus {
+        border-color: #9da5b2;
+        box-shadow: 0 0 0 3px rgba(23, 32, 51, 0.07);
+    }
+
+    .vc-customer-filter-btn {
+        width: 100%;
+        min-height: 44px;
+        border: 1px solid #172033;
+        border-radius: 10px;
+        background: #172033;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .vc-customer-table-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 20px 22px;
+        border-bottom: 1px solid #edf0f4;
+    }
+
+    .vc-customer-table-header h2 {
+        margin: 0 0 4px;
+        color: #172033;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .vc-customer-table-header p {
+        margin: 0;
+        color: #7e8796;
+        font-size: 12px;
+    }
+
+    .vc-customer-count {
+        padding: 6px 10px;
+        border: 1px solid #e1e5eb;
+        border-radius: 20px;
+        background: #fafbfc;
+        color: #697383;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .vc-customer-table thead th {
+        padding: 13px 18px;
+        border-bottom: 1px solid #e5e8ed;
+        background: #fafbfc;
+        color: #727b8b;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .vc-customer-table tbody td {
+        padding: 16px 18px;
+        border-bottom: 1px solid #edf0f4;
+        color: #4f5969;
+        font-size: 13px;
+    }
+
+    .vc-customer-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .vc-customer-table tbody tr:hover {
+        background: #fcfcfd;
+    }
+
+    .vc-customer-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 190px;
+    }
+
+    .vc-customer-avatar {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: #f0f2f5;
+        color: #3f495a;
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+    .vc-customer-profile strong {
+        display: block;
+        margin-bottom: 3px;
+        color: #263043;
+        font-size: 14px;
+    }
+
+    .vc-customer-profile small {
+        color: #929aa7;
+        font-size: 10px;
+    }
+
+    .vc-customer-contact span,
+    .vc-customer-contact small {
+        display: block;
+    }
+
+    .vc-customer-contact span {
+        margin-bottom: 4px;
+        color: #4c5666;
+    }
+
+    .vc-customer-contact small {
+        color: #949ca8;
+        font-size: 11px;
+    }
+
+    .vc-customer-status {
+        display: inline-flex;
+        padding: 5px 9px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .vc-customer-status.active {
+        background: #f4f8f5;
+        border: 1px solid #dce7df;
+        color: #526c5b;
+    }
+
+    .vc-customer-status.inactive {
+        background: #f7f7f7;
+        border: 1px solid #e5e5e5;
+        color: #7b8088;
+    }
+
+    .vc-customer-date {
+        white-space: nowrap;
+        color: #6f7888;
+    }
+
+    .vc-customer-action-wrap {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .vc-customer-action {
+        min-height: 32px;
+        padding: 6px 10px;
+        border: 1px solid #dfe3e9;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #596273;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .vc-customer-action:hover {
+        background: #f6f7f9;
+        border-color: #cfd5de;
+        color: #172033;
+    }
+
+    .vc-customer-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        min-height: 330px;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .vc-customer-empty-icon {
+        width: 58px;
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        border-radius: 15px;
+        background: #f1f3f6;
+        color: #697383;
+        font-size: 23px;
+    }
+
+    .vc-customer-empty h3 {
+        margin: 0 0 7px;
+        color: #273143;
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+    .vc-customer-empty p {
+        margin: 0;
+        color: #858e9c;
+    }
+
+    @media (max-width: 767.98px) {
+
+        .vc-customer-header {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 23px;
+        }
+
+        .vc-customer-title {
+            font-size: 30px;
+        }
+
+        .vc-customer-back {
+            width: 100%;
+        }
+
+        .vc-customer-filter-card {
+            padding: 18px;
+        }
+
+        .vc-customer-table-header {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 18px;
+        }
+
+    }
+
+</style>
+
+{% endblock %}

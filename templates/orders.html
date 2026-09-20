@@ -1,0 +1,363 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Orders | VisionCart{% endblock %}
+
+{% block content %}
+<section class="vc-orders-page">
+    <div class="vc-orders-container">
+
+        <header class="vc-orders-heading">
+            <div>
+                <span class="vc-orders-kicker">YOUR SHOPPING</span>
+                <h1>My Orders</h1>
+                <p>View and manage your VisionCart orders in one place.</p>
+            </div>
+            <a href="{% url 'products' %}" class="vc-orders-shop-link">
+                <i class="bi bi-arrow-left"></i>
+                Continue Shopping
+            </a>
+        </header>
+
+        {% if orders %}
+            <div class="vc-orders-list">
+                {% for order in orders %}
+                    <article class="vc-order-card">
+
+                        <div class="vc-order-top">
+                            <div class="vc-order-identity">
+                                <span class="vc-orders-label">ORDER</span>
+                                <h2>{{ order.order_number }}</h2>
+                                <span class="vc-order-date">
+                                    <i class="bi bi-calendar3"></i>
+                                    {{ order.created_at|date:"d M Y, h:i A" }}
+                                </span>
+                            </div>
+
+                            <span class="vc-order-status
+                                {% if order.status == 'CANCELLED' %}is-cancelled
+                                {% elif order.status == 'DELIVERED' %}is-delivered
+                                {% elif order.status == 'SHIPPED' %}is-shipped
+                                {% else %}is-active{% endif %}">
+                                <span></span>
+                                {{ order.get_status_display }}
+                            </span>
+                        </div>
+
+                        <div class="vc-order-divider"></div>
+
+                        <div class="vc-order-info-grid">
+                            <div class="vc-order-info">
+                                <span class="vc-orders-label">PAYMENT</span>
+                                <strong>{{ order.get_payment_method_display }}</strong>
+                            </div>
+
+                            <div class="vc-order-info">
+                                <span class="vc-orders-label">TOTAL</span>
+                                <strong>₹{{ order.total_amount|floatformat:2 }}</strong>
+                            </div>
+
+                            <div class="vc-order-info">
+                                <span class="vc-orders-label">DELIVERY</span>
+                                <strong>{{ order.address.city }}, {{ order.address.state }}</strong>
+                            </div>
+
+                            <div class="vc-order-action">
+                                <a href="{% url 'order-detail' order.id %}">
+                                    View Details
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <section class="vc-orders-empty">
+                <div class="vc-orders-empty-icon">
+                    <i class="bi bi-box-seam"></i>
+                </div>
+                <span class="vc-orders-kicker">NO ORDERS YET</span>
+                <h2>Your order history is empty</h2>
+                <p>
+                    When you place an order, it will appear here with its
+                    status, payment details and order information.
+                </p>
+                <a href="{% url 'products' %}" class="vc-orders-primary-button">
+                    Shop Eyewear
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            </section>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.vc-orders-page{
+    background:#fff;
+    color:#151515;
+    padding:48px 0 76px;
+    font-family:Inter,"Segoe UI",Arial,sans-serif;
+}
+.vc-orders-container{
+    width:min(1120px,calc(100% - 40px));
+    margin:0 auto;
+}
+.vc-orders-heading{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:24px;
+    padding:4px 0 30px;
+    border-bottom:1px solid #e5e8ee;
+}
+.vc-orders-kicker,
+.vc-orders-label{
+    display:block;
+    color:#667085;
+    font-size:10px;
+    font-weight:750;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+}
+.vc-orders-heading h1{
+    margin:7px 0 7px;
+    font-size:36px;
+    line-height:1.08;
+    font-weight:750;
+    letter-spacing:-.045em;
+}
+.vc-orders-heading p{
+    margin:0;
+    color:#667085;
+    font-size:13px;
+    line-height:1.6;
+}
+.vc-orders-shop-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    min-height:42px;
+    padding:0 15px;
+    border:1px solid #d9e1ec;
+    color:#173f70;
+    text-decoration:none;
+    font-size:10px;
+    font-weight:750;
+    transition:.2s ease;
+}
+.vc-orders-shop-link:hover{
+    border-color:#173f70;
+    background:#f4f8fd;
+    color:#173f70;
+}
+.vc-orders-list{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    padding-top:28px;
+}
+.vc-order-card{
+    border:1px solid #dfe5ed;
+    background:#fff;
+    transition:.2s ease;
+}
+.vc-order-card:hover{
+    border-color:#b8c9dc;
+    box-shadow:0 10px 28px rgba(21,57,94,.07);
+}
+.vc-order-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+    padding:20px 22px 17px;
+}
+.vc-order-identity h2{
+    margin:5px 0 7px;
+    font-size:17px;
+    font-weight:750;
+    letter-spacing:-.025em;
+}
+.vc-order-date{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    color:#7a8492;
+    font-size:10px;
+}
+.vc-order-date i{
+    color:#173f70;
+}
+.vc-order-status{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    min-height:30px;
+    padding:0 10px;
+    border:1px solid #cddceb;
+    background:#f5f9fd;
+    color:#173f70;
+    font-size:9px;
+    font-weight:750;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+}
+.vc-order-status>span{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#2d72b8;
+}
+.vc-order-status.is-delivered{
+    border-color:#cce4d6;
+    background:#f4faf6;
+    color:#287047;
+}
+.vc-order-status.is-delivered>span{background:#287047}
+.vc-order-status.is-shipped{
+    border-color:#cbdcf0;
+    background:#f3f8fd;
+    color:#235d91;
+}
+.vc-order-status.is-shipped>span{background:#235d91}
+.vc-order-status.is-cancelled{
+    border-color:#ead0d0;
+    background:#fff7f7;
+    color:#a04747;
+}
+.vc-order-status.is-cancelled>span{background:#a04747}
+.vc-order-divider{
+    height:1px;
+    background:#e8ebf0;
+}
+.vc-order-info-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1.2fr auto;
+    align-items:center;
+    gap:20px;
+    padding:18px 22px;
+    background:#fbfcfe;
+}
+.vc-order-info strong{
+    display:block;
+    margin-top:6px;
+    color:#1b2735;
+    font-size:11px;
+    font-weight:700;
+}
+.vc-order-action{
+    justify-self:end;
+}
+.vc-order-action a{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    min-height:38px;
+    padding:0 13px;
+    background:#174a80;
+    border:1px solid #174a80;
+    color:#fff;
+    text-decoration:none;
+    font-size:10px;
+    font-weight:750;
+    transition:.2s ease;
+}
+.vc-order-action a:hover{
+    background:#123b67;
+    border-color:#123b67;
+    color:#fff;
+}
+.vc-orders-empty{
+    max-width:620px;
+    margin:58px auto 0;
+    padding:52px 28px;
+    text-align:center;
+    border:1px solid #dfe5ed;
+    background:#fbfcfe;
+}
+.vc-orders-empty-icon{
+    width:58px;
+    height:58px;
+    margin:0 auto 18px;
+    display:grid;
+    place-items:center;
+    background:#edf4fb;
+    color:#174a80;
+    font-size:23px;
+}
+.vc-orders-empty h2{
+    margin:8px 0 8px;
+    font-size:23px;
+    font-weight:750;
+    letter-spacing:-.035em;
+}
+.vc-orders-empty p{
+    max-width:460px;
+    margin:0 auto;
+    color:#667085;
+    font-size:12px;
+    line-height:1.7;
+}
+.vc-orders-primary-button{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-top:24px;
+    min-height:44px;
+    padding:0 17px;
+    background:#174a80;
+    border:1px solid #174a80;
+    color:#fff;
+    text-decoration:none;
+    font-size:10px;
+    font-weight:750;
+}
+.vc-orders-primary-button:hover{
+    background:#123b67;
+    color:#fff;
+}
+@media(max-width:800px){
+    .vc-order-info-grid{
+        grid-template-columns:1fr 1fr;
+    }
+    .vc-order-action{
+        justify-self:start;
+    }
+}
+@media(max-width:600px){
+    .vc-orders-page{padding:32px 0 54px}
+    .vc-orders-container{width:min(100% - 28px,1120px)}
+    .vc-orders-heading{
+        align-items:flex-start;
+        flex-direction:column;
+        padding-bottom:24px;
+    }
+    .vc-orders-heading h1{font-size:30px}
+    .vc-orders-shop-link{width:max-content}
+    .vc-order-top{
+        align-items:flex-start;
+        flex-direction:column;
+        padding:18px;
+    }
+    .vc-order-info-grid{
+        grid-template-columns:1fr;
+        gap:15px;
+        padding:17px 18px;
+    }
+    .vc-order-action{width:100%}
+    .vc-order-action a{
+        width:100%;
+        justify-content:center;
+    }
+    .vc-orders-empty{
+        margin-top:34px;
+        padding:42px 20px;
+    }
+}
+</style>
+{% endblock %}

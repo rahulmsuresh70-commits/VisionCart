@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if edit_mode %}Edit Address | VisionCart{% else %}Add Address | VisionCart{% endif %}
+{% endblock %}
+
+{% block content %}
+<section class="vc-address-form-page">
+    <div class="vc-address-form-container">
+
+        <div class="vc-address-form-topline">
+            <a href="{% url 'addresses' %}" class="vc-address-form-back">
+                <i class="bi bi-arrow-left"></i>
+                Back to Addresses
+            </a>
+        </div>
+
+        <div class="vc-address-form-heading">
+            <div>
+                <span class="vc-address-form-kicker">DELIVERY INFORMATION</span>
+                <h1>{% if edit_mode %}Edit Address{% else %}Add New Address{% endif %}</h1>
+                <p>
+                    {% if edit_mode %}
+                        Update your saved delivery information.
+                    {% else %}
+                        Add a delivery address for your VisionCart orders.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        {% if error %}
+            <div class="vc-address-form-alert" role="alert">
+                <i class="bi bi-exclamation-circle-fill"></i>
+                <span>{{ error }}</span>
+            </div>
+        {% endif %}
+
+        {% if messages %}
+            <div class="vc-address-form-messages" aria-live="polite">
+                {% for message in messages %}
+                    <div class="vc-address-form-message">
+                        <i class="bi bi-info-circle-fill"></i>
+                        <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="vc-address-form-layout">
+            <aside class="vc-address-form-info">
+                <div class="vc-address-form-info-icon"><i class="bi bi-geo-alt"></i></div>
+                <span class="vc-address-form-kicker">DELIVERY DETAILS</span>
+                <h2>{% if edit_mode %}Keep your details up to date{% else %}Where should we deliver?{% endif %}</h2>
+                <p>
+                    Enter accurate contact and location details so your VisionCart order can reach you smoothly.
+                </p>
+
+                <div class="vc-address-form-help-list">
+                    <div><i class="bi bi-check2"></i><span>Use a valid 10-digit phone number.</span></div>
+                    <div><i class="bi bi-check2"></i><span>Enter your 6-digit pincode.</span></div>
+                    <div><i class="bi bi-check2"></i><span>Choose a default address when needed.</span></div>
+                </div>
+
+                <div class="vc-address-form-note">
+                    <i class="bi bi-shield-check"></i>
+                    <div>
+                        <strong>Secure delivery details</strong>
+                        <span>Your existing address and validation process remains unchanged.</span>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="vc-address-form-card">
+                <div class="vc-address-form-card-heading">
+                    <div>
+                        <span class="vc-address-form-kicker">ADDRESS INFORMATION</span>
+                        <h2>{% if edit_mode %}Update Address{% else %}Delivery Address{% endif %}</h2>
+                    </div>
+                    <span class="vc-address-required">* Required</span>
+                </div>
+
+                <form method="POST" class="vc-address-form">
+                    {% csrf_token %}
+
+                    <div class="vc-address-field">
+                        <label for="name">Full Name <span>*</span></label>
+                        <div class="vc-address-input-wrap">
+                            <i class="bi bi-person"></i>
+                            <input type="text" id="name" name="name" maxlength="100"
+                                value="{% if edit_mode %}{{ address.name }}{% else %}{{ form_data.name|default:'' }}{% endif %}"
+                                required autocomplete="name">
+                        </div>
+                    </div>
+
+                    <div class="vc-address-field">
+                        <label for="phone">Phone Number <span>*</span></label>
+                        <div class="vc-address-input-wrap">
+                            <i class="bi bi-telephone"></i>
+                            <input type="text" id="phone" name="phone" maxlength="10" minlength="10" inputmode="numeric"
+                                value="{% if edit_mode %}{{ address.phone }}{% else %}{{ form_data.phone|default:'' }}{% endif %}"
+                                required autocomplete="tel">
+                        </div>
+                        <small>Enter a 10-digit phone number.</small>
+                    </div>
+
+                    <div class="vc-address-field vc-address-field-full">
+                        <label for="address">Full Address <span>*</span></label>
+                        <div class="vc-address-textarea-wrap">
+                            <i class="bi bi-house"></i>
+                            <textarea id="address" name="address" rows="4" maxlength="500" required>{% if edit_mode %}{{ address.address }}{% else %}{{ form_data.address|default:'' }}{% endif %}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="vc-address-form-row">
+                        <div class="vc-address-field">
+                            <label for="city">City <span>*</span></label>
+                            <div class="vc-address-input-wrap">
+                                <i class="bi bi-buildings"></i>
+                                <input type="text" id="city" name="city" maxlength="100"
+                                    value="{% if edit_mode %}{{ address.city }}{% else %}{{ form_data.city|default:'' }}{% endif %}"
+                                    required autocomplete="address-level2">
+                            </div>
+                        </div>
+
+                        <div class="vc-address-field">
+                            <label for="state">State <span>*</span></label>
+                            <div class="vc-address-input-wrap">
+                                <i class="bi bi-map"></i>
+                                <input type="text" id="state" name="state" maxlength="100"
+                                    value="{% if edit_mode %}{{ address.state }}{% else %}{{ form_data.state|default:'' }}{% endif %}"
+                                    required autocomplete="address-level1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="vc-address-field">
+                        <label for="pincode">Pincode <span>*</span></label>
+                        <div class="vc-address-input-wrap">
+                            <i class="bi bi-mailbox"></i>
+                            <input type="text" id="pincode" name="pincode" maxlength="6" minlength="6" inputmode="numeric"
+                                value="{% if edit_mode %}{{ address.pincode }}{% else %}{{ form_data.pincode|default:'' }}{% endif %}"
+                                required autocomplete="postal-code">
+                        </div>
+                        <small>Enter a 6-digit pincode.</small>
+                    </div>
+
+                    <label class="vc-address-default-check">
+                        <input type="checkbox" name="is_default" {% if edit_mode and address.is_default %}checked{% endif %}>
+                        <span class="vc-address-check-box"><i class="bi bi-check2"></i></span>
+                        <span>
+                            <strong>Make this my default address</strong>
+                            <small>Use this address by default where the existing checkout flow supports it.</small>
+                        </span>
+                    </label>
+
+                    <div class="vc-address-form-actions">
+                        <a href="{% url 'addresses' %}" class="vc-address-cancel-btn">Cancel</a>
+                        <button type="submit" class="vc-address-save-btn">
+                            <i class="bi bi-check2-circle"></i>
+                            {% if edit_mode %}Update Address{% else %}Save Address{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================================
+   VISIONCART ADDRESS FORM — USER-SIDE DESIGN ONLY
+   Existing POST field names, CSRF, validation, edit/add context,
+   URLs and address functionality are preserved exactly.
+============================================================ */
+.vc-address-form-page{--af-blue:var(--dashboard-blue,#1769aa);--af-navy:var(--dashboard-navy,#102a43);--af-text:var(--dashboard-text,#172431);--af-muted:var(--dashboard-muted,#68747f);--af-border:var(--dashboard-border,#e4e8ec);--af-soft:var(--dashboard-soft-blue,#edf4f9);--af-light:var(--dashboard-light,#f6f8fa);background:#fff;color:var(--af-text);padding:38px 0 82px;font-family:Inter,"Segoe UI",Arial,sans-serif}
+.vc-address-form-page *{box-sizing:border-box}
+.vc-address-form-container{width:min(1120px,calc(100% - 36px));margin:0 auto}
+.vc-address-form-topline{margin-bottom:24px}
+.vc-address-form-back{display:inline-flex;align-items:center;gap:8px;color:var(--af-muted);font-size:13px;font-weight:700;text-decoration:none;transition:color .18s ease}
+.vc-address-form-back:hover{color:var(--af-blue)}
+.vc-address-form-heading{padding-bottom:27px;border-bottom:1px solid var(--af-border)}
+.vc-address-form-kicker{display:block;color:var(--af-blue);font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+.vc-address-form-heading h1{margin:8px 0 8px;color:var(--af-navy);font-size:clamp(31px,4vw,44px);font-weight:800;line-height:1.08;letter-spacing:-.035em}
+.vc-address-form-heading p{margin:0;color:var(--af-muted);font-size:14px;line-height:1.7}
+.vc-address-form-alert,.vc-address-form-message{display:flex;align-items:center;gap:10px;margin-top:22px;padding:13px 15px;border-radius:7px;font-size:13px}
+.vc-address-form-alert{border:1px solid #ead1d1;background:#fff6f6;color:#9a4545}.vc-address-form-alert i{color:#b44c4c}
+.vc-address-form-message{border:1px solid #d9e7ef;background:#f5f9fb;color:var(--af-text)}.vc-address-form-message i{color:var(--af-blue)}
+.vc-address-form-layout{display:grid;grid-template-columns:310px minmax(0,1fr);gap:24px;margin-top:34px;align-items:start}
+.vc-address-form-info{padding:25px;border:1px solid var(--af-border);border-radius:10px;background:linear-gradient(180deg,#f9fbfc 0%,#fff 100%);box-shadow:0 8px 26px rgba(16,42,67,.045)}
+.vc-address-form-info-icon{display:grid;place-items:center;width:48px;height:48px;margin-bottom:20px;border-radius:9px;background:var(--af-soft);color:var(--af-blue);font-size:21px}
+.vc-address-form-info h2{margin:9px 0 10px;color:var(--af-navy);font-size:23px;line-height:1.25;font-weight:800;letter-spacing:-.02em}
+.vc-address-form-info>p{margin:0;color:var(--af-muted);font-size:13px;line-height:1.75}
+.vc-address-form-help-list{display:grid;gap:13px;margin-top:24px;padding-top:20px;border-top:1px solid var(--af-border)}
+.vc-address-form-help-list div{display:flex;align-items:flex-start;gap:9px;color:var(--af-text);font-size:12px;line-height:1.55}.vc-address-form-help-list i{color:#2a8a61;font-size:15px}
+.vc-address-form-note{display:flex;align-items:flex-start;gap:10px;margin-top:22px;padding:13px;border-radius:7px;background:var(--af-soft)}
+.vc-address-form-note>i{color:var(--af-blue);font-size:17px}.vc-address-form-note strong{display:block;margin-bottom:3px;color:var(--af-navy);font-size:12px}.vc-address-form-note span{display:block;color:var(--af-muted);font-size:11px;line-height:1.5}
+.vc-address-form-card{padding:27px;border:1px solid var(--af-border);border-radius:10px;background:#fff;box-shadow:0 10px 30px rgba(16,42,67,.055)}
+.vc-address-form-card-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:25px;padding-bottom:20px;border-bottom:1px solid var(--af-border)}
+.vc-address-form-card-heading h2{margin:7px 0 0;color:var(--af-navy);font-size:23px;font-weight:800;letter-spacing:-.02em}.vc-address-required{color:#8b969e;font-size:11px;font-weight:700}
+.vc-address-form{display:grid;grid-template-columns:1fr 1fr;gap:19px 16px}
+.vc-address-field{min-width:0}.vc-address-field-full{grid-column:1/-1}
+.vc-address-field label{display:block;margin:0 0 7px;color:var(--af-navy);font-size:12px;font-weight:800}.vc-address-field label span{color:#c24c4c}
+.vc-address-input-wrap,.vc-address-textarea-wrap{display:flex;align-items:center;gap:10px;min-height:46px;padding:0 13px;border:1px solid #d7e0e6;border-radius:6px;background:#fff;transition:border-color .18s ease,box-shadow .18s ease}
+.vc-address-input-wrap:focus-within,.vc-address-textarea-wrap:focus-within{border-color:#8fb9d1;box-shadow:0 0 0 3px rgba(23,105,170,.08)}
+.vc-address-input-wrap>i,.vc-address-textarea-wrap>i{flex:0 0 16px;color:#82919b;font-size:14px;text-align:center}.vc-address-input-wrap input,.vc-address-textarea-wrap textarea{width:100%;border:0;outline:0;background:transparent;color:var(--af-text);font:inherit;font-size:13px}.vc-address-input-wrap input{height:44px}.vc-address-textarea-wrap{align-items:flex-start;padding-top:12px;padding-bottom:12px}.vc-address-textarea-wrap textarea{min-height:100px;resize:vertical;line-height:1.6}
+.vc-address-field small{display:block;margin-top:6px;color:#8b969e;font-size:10px;line-height:1.4}
+.vc-address-form-row{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.vc-address-default-check{grid-column:1/-1;display:flex;align-items:flex-start;gap:11px;margin-top:1px;padding:14px;border:1px solid var(--af-border);border-radius:7px;background:#fbfcfd;cursor:pointer}
+.vc-address-default-check input{position:absolute;opacity:0;pointer-events:none}.vc-address-check-box{display:grid;place-items:center;width:20px;height:20px;flex:0 0 20px;margin-top:1px;border:1px solid #cbd7de;border-radius:4px;background:#fff;color:#fff;font-size:13px;transition:all .18s ease}.vc-address-default-check input:checked~.vc-address-check-box{border-color:var(--af-blue);background:var(--af-blue)}
+.vc-address-default-check strong{display:block;color:var(--af-navy);font-size:12px}.vc-address-default-check small{display:block;margin-top:3px;color:var(--af-muted);font-size:10px;line-height:1.45}
+.vc-address-form-actions{grid-column:1/-1;display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-top:4px;padding-top:20px;border-top:1px solid var(--af-border)}
+.vc-address-cancel-btn,.vc-address-save-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:43px;padding:0 17px;border-radius:6px;font:inherit;font-size:13px;font-weight:750;text-decoration:none;cursor:pointer;transition:transform .18s ease,background .18s ease,border-color .18s ease,box-shadow .18s ease}
+.vc-address-cancel-btn{border:1px solid #d2dde3;background:#fff;color:var(--af-navy)}.vc-address-cancel-btn:hover{color:var(--af-blue);border-color:#a9c9dc;background:var(--af-soft)}
+.vc-address-save-btn{border:1px solid var(--af-blue);background:var(--af-blue);color:#fff}.vc-address-save-btn:hover{background:#125a92;border-color:#125a92;transform:translateY(-1px);box-shadow:0 8px 18px rgba(23,105,170,.18)}
+@media (max-width:900px){.vc-address-form-layout{grid-template-columns:1fr}.vc-address-form-info{display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:start}.vc-address-form-info-icon{grid-row:span 2;margin:0}.vc-address-form-info>p,.vc-address-form-help-list,.vc-address-form-note{grid-column:1/-1}.vc-address-form-info>p{margin-top:6px}}
+@media (max-width:680px){.vc-address-form-page{padding:30px 0 58px}.vc-address-form-container{width:min(100% - 28px,620px)}.vc-address-form-card{padding:20px}.vc-address-form{grid-template-columns:1fr}.vc-address-field,.vc-address-field-full,.vc-address-form-row,.vc-address-default-check,.vc-address-form-actions{grid-column:1/-1}.vc-address-form-row{grid-template-columns:1fr;gap:19px}.vc-address-form-actions{display:grid;grid-template-columns:1fr 1.35fr}.vc-address-cancel-btn,.vc-address-save-btn{width:100%}}
+@media (max-width:420px){.vc-address-form-card-heading{flex-direction:column}.vc-address-form-info{display:block}.vc-address-form-info-icon{margin-bottom:17px}.vc-address-form-actions{grid-template-columns:1fr}.vc-address-form-actions .vc-address-save-btn{order:-1}}
+@media (prefers-reduced-motion:reduce){.vc-address-form-page *{transition:none!important}}
+</style>
+{% endblock %}

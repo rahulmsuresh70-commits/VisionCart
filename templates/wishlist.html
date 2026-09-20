@@ -1,0 +1,748 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}VisionCart | My Wishlist{% endblock %}
+
+{% block content %}
+
+<main class="vc-wishlist-page">
+
+    <section class="vc-wishlist-hero">
+        <div class="vc-wishlist-container">
+            <div class="vc-wishlist-hero-row">
+                <div>
+                    <span class="vc-wishlist-eyebrow">
+                        <i class="bi bi-heart-fill"></i>
+                        Your Wishlist
+                    </span>
+                    <h1>My Wishlist</h1>
+                    <p>
+                        Save the eyewear you love and return here whenever you are
+                        ready to choose your next frame.
+                    </p>
+                </div>
+
+                <div class="vc-wishlist-count">
+                    <i class="bi bi-heart"></i>
+                    <span>{{ items|length }} saved item{{ items|length|pluralize }}</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="vc-wishlist-content">
+        <div class="vc-wishlist-container">
+
+            {% if items %}
+
+                <div class="vc-wishlist-section-head">
+                    <div>
+                        <span class="vc-wishlist-section-label">MY WISHLIST</span>
+                        <h2>My Wishlist</h2>
+                        <p>Your saved eyewear collection.</p>
+                    </div>
+
+                    <a href="{% url 'products' %}" class="vc-wishlist-browse">
+                        Browse Collection
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="vc-wishlist-grid">
+                    {% for item in items %}
+                        <article class="vc-wishlist-card">
+
+                            <a href="{% url 'product-detail' item.product.id %}"
+                               class="vc-wishlist-image"
+                               aria-label="View {{ item.product.name }}">
+                                {% if item.product.image %}
+                                    <img src="{{ item.product.image.url }}"
+                                         alt="{{ item.product.name }}"
+                                         loading="lazy"
+                                         decoding="async">
+                                {% else %}
+                                    <div class="vc-wishlist-placeholder">
+                                        <i class="bi bi-eyeglasses"></i>
+                                        <span>VisionCart</span>
+                                    </div>
+                                {% endif %}
+
+                                <span class="vc-wishlist-saved">
+                                    <i class="bi bi-heart-fill"></i> Saved
+                                </span>
+                            </a>
+
+                            <div class="vc-wishlist-card-body">
+                                <div class="vc-wishlist-brand">
+                                    {% if item.product.brand %}
+                                        {{ item.product.brand }}
+                                    {% else %}
+                                        VISIONCART
+                                    {% endif %}
+                                </div>
+
+                                <h3>
+                                    <a href="{% url 'product-detail' item.product.id %}">
+                                        {{ item.product.name }}
+                                    </a>
+                                </h3>
+
+                                <div class="vc-wishlist-category">
+                                    {{ item.product.category.name }}
+                                </div>
+
+                                <div class="vc-wishlist-price">
+                                    <strong>₹{{ item.product.price|floatformat:0 }}</strong>
+                                    {% if item.product.original_price and item.product.original_price > item.product.price %}
+                                        <del>₹{{ item.product.original_price|floatformat:0 }}</del>
+                                    {% endif %}
+                                </div>
+
+                                {% if item.product.stock > 0 %}
+                                    {% if item.product.stock <= 5 %}
+                                        <div class="vc-wishlist-stock low">
+                                            <i class="bi bi-circle-fill"></i>
+                                            Only {{ item.product.stock }} left
+                                        </div>
+                                    {% else %}
+                                        <div class="vc-wishlist-stock">
+                                            <i class="bi bi-check-circle-fill"></i>
+                                            In stock
+                                        </div>
+                                    {% endif %}
+                                {% else %}
+                                    <div class="vc-wishlist-stock out">
+                                        <i class="bi bi-x-circle-fill"></i>
+                                        Out of stock
+                                    </div>
+                                {% endif %}
+
+                                <div class="vc-wishlist-actions">
+                                    <a href="{% url 'product-detail' item.product.id %}"
+                                       class="vc-wishlist-view">
+                                        View Details
+                                        <i class="bi bi-arrow-right"></i>
+                                    </a>
+
+                                    {% if item.product.stock > 0 %}
+                                        <form method="post" action="{% url 'add-to-cart' item.product.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="vc-wishlist-cart">
+                                                <i class="bi bi-bag-plus"></i>
+                                                Add to Cart
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+
+                                <form method="post"
+                                      action="{% url 'remove-from-wishlist' item.id %}"
+                                      class="vc-wishlist-remove-form">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                            class="vc-wishlist-remove"
+                                            >
+                                        <i class="bi bi-trash3"></i>
+                                        Remove from Wishlist
+                                    </button>
+                                </form>
+                            </div>
+
+                        </article>
+                    {% endfor %}
+                </div>
+
+                <div class="vc-wishlist-cta">
+                    <div>
+                        <span>YOUR WISHLIST</span>
+                        <h2>Find your next favourite frame.</h2>
+                        <p>Explore more eyewear styles from the VisionCart collection.</p>
+                    </div>
+                    <a href="{% url 'products' %}">
+                        Browse Collection
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+
+            {% else %}
+
+                <div class="vc-wishlist-empty">
+                    <div class="vc-wishlist-empty-icon">
+                        <i class="bi bi-heart"></i>
+                    </div>
+
+                    <span class="vc-wishlist-eyebrow">YOUR WISHLIST</span>
+                    <h2>Nothing saved yet</h2>
+                    <p>
+                        Save the eyewear you love and return here whenever you are
+                        ready to choose your next frame.
+                    </p>
+
+                    <a href="{% url 'products' %}">
+                        Explore Eyewear
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+
+            {% endif %}
+
+        </div>
+    </section>
+
+</main>
+
+<style id="visioncart-wishlist-font-lock">
+/* FINAL FONT-ONLY LOCK — VisionCart approved product/UI font */
+.vc-wishlist-page,
+.vc-wishlist-page *,
+.vc-wishlist-page button,
+.vc-wishlist-page input,
+.vc-wishlist-page select,
+.vc-wishlist-page textarea,
+.vc-wishlist-page h1,
+.vc-wishlist-page h2,
+.vc-wishlist-page h3,
+.vc-wishlist-page h4,
+.vc-wishlist-page h5,
+.vc-wishlist-page h6,
+.vc-wishlist-page p,
+.vc-wishlist-page span,
+.vc-wishlist-page a,
+.vc-wishlist-page strong,
+.vc-wishlist-page small,
+.vc-wishlist-page label,
+.vc-wishlist-page del {
+    font-family: "Inter", "Segoe UI", Arial, sans-serif !important;
+}
+
+.vc-wishlist-page i,
+.vc-wishlist-page i::before,
+.vc-wishlist-page i::after {
+    font-family: "bootstrap-icons" !important;
+}
+</style>
+
+
+<style>
+/* ============================================================
+   VISIONCART — SINGLE FONT LOCK
+   Use the same font as the approved VisionCart product/shop UI
+   throughout the complete Wishlist page.
+   Icons are intentionally excluded so Bootstrap Icons keep working.
+============================================================ */
+.vc-wishlist-page,
+.vc-wishlist-page *:not(i) {
+    font-family: "Inter", "Segoe UI", Arial, sans-serif !important;
+}
+
+.vc-wishlist-page i {
+    font-family: "bootstrap-icons" !important;
+}
+</style>
+
+
+<style>
+/* ============================================================
+   VISIONCART WISHLIST
+   Body only. Header + navbar + footer come from base.html.
+   No legacy wishlist structure or legacy page shell.
+============================================================ */
+
+.vc-wishlist-page {
+    --wc-navy: #102a43;
+    --wc-blue: #1769aa;
+    --wc-dark: #101b26;
+    --wc-text: #172431;
+    --wc-muted: #68747f;
+    --wc-border: #e4e8ec;
+    --wc-soft: #f6f8fa;
+    --wc-soft-blue: #edf4f9;
+    background: #fff;
+    color: var(--wc-text);
+}
+
+.vc-wishlist-page *,
+.vc-wishlist-page *::before,
+.vc-wishlist-page *::after {
+    box-sizing: border-box;
+}
+
+.vc-wishlist-page a {
+    text-decoration: none;
+}
+
+.vc-wishlist-container {
+    width: min(1240px, calc(100% - 40px));
+    margin: 0 auto;
+}
+
+/* HERO */
+.vc-wishlist-hero {
+    background: linear-gradient(135deg, #edf3f7 0%, #f8fafb 60%, #fff 100%);
+    border-bottom: 1px solid var(--wc-border);
+    padding: 56px 0;
+}
+
+.vc-wishlist-hero-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 35px;
+}
+
+.vc-wishlist-eyebrow,
+.vc-wishlist-section-label,
+.vc-wishlist-cta > div > span {
+    display: inline-block;
+    color: var(--wc-blue);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+    line-height: 1.2;
+}
+
+.vc-wishlist-eyebrow i {
+    margin-right: 5px;
+}
+
+.vc-wishlist-hero h1 {
+    margin: 10px 0 12px;
+    color: var(--wc-navy);
+    font-family: "Inter", "Segoe UI", Arial, sans-serif !important;
+    font-size: clamp(42px, 5.2vw, 64px);
+    font-weight: 700;
+    line-height: .98;
+    letter-spacing: -2px;
+}
+
+.vc-wishlist-hero p {
+    max-width: 650px;
+    margin: 0;
+    color: var(--wc-muted);
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+.vc-wishlist-count {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 13px 17px;
+    border: 1px solid #d7dfe5;
+    border-radius: 5px;
+    background: #fff;
+    color: var(--wc-navy);
+    font-size: 11px;
+    font-weight: 750;
+    box-shadow: 0 8px 24px rgba(16, 42, 67, .06);
+}
+
+.vc-wishlist-count i {
+    color: var(--wc-blue);
+    font-size: 16px;
+}
+
+/* CONTENT */
+.vc-wishlist-content {
+    padding: 62px 0 80px;
+    background: #fff;
+}
+
+.vc-wishlist-section-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.vc-wishlist-section-head h2 {
+    margin: 7px 0 4px;
+    color: var(--wc-navy);
+    font-family: "Inter", "Segoe UI", Arial, sans-serif !important;
+    font-size: 31px;
+    line-height: 1.1;
+}
+
+.vc-wishlist-section-head p {
+    margin: 0;
+    color: var(--wc-muted);
+    font-size: 12px;
+}
+
+.vc-wishlist-browse {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--wc-blue);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.vc-wishlist-browse:hover {
+    color: var(--wc-navy);
+}
+
+/* PRODUCT GRID */
+.vc-wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.vc-wishlist-card {
+    overflow: hidden;
+    border: 1px solid var(--wc-border);
+    border-radius: 10px;
+    background: #fff;
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.vc-wishlist-card:hover {
+    transform: translateY(-3px);
+    border-color: #d5dfe7;
+    box-shadow: 0 16px 34px rgba(16, 42, 67, .09);
+}
+
+.vc-wishlist-image {
+    position: relative;
+    display: block;
+    height: 255px;
+    overflow: hidden;
+    background: var(--wc-soft);
+}
+
+.vc-wishlist-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform .35s ease;
+}
+
+.vc-wishlist-card:hover .vc-wishlist-image img {
+    transform: scale(1.035);
+}
+
+.vc-wishlist-saved {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 9px;
+    border-radius: 4px;
+    background: rgba(255,255,255,.94);
+    color: var(--wc-navy);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .3px;
+}
+
+.vc-wishlist-saved i {
+    color: #c33;
+}
+
+.vc-wishlist-placeholder {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--wc-muted);
+}
+
+.vc-wishlist-placeholder i {
+    color: var(--wc-blue);
+    font-size: 38px;
+}
+
+.vc-wishlist-placeholder span {
+    font-size: 11px;
+    font-weight: 800;
+}
+
+/* CARD BODY */
+.vc-wishlist-card-body {
+    padding: 18px;
+}
+
+.vc-wishlist-brand {
+    margin-bottom: 6px;
+    color: var(--wc-blue);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+.vc-wishlist-card h3 {
+    margin: 0 0 5px;
+    font-size: 16px;
+    line-height: 1.3;
+}
+
+.vc-wishlist-card h3 a {
+    color: var(--wc-navy);
+}
+
+.vc-wishlist-card h3 a:hover {
+    color: var(--wc-blue);
+}
+
+.vc-wishlist-category {
+    min-height: 17px;
+    color: var(--wc-muted);
+    font-size: 10px;
+}
+
+.vc-wishlist-price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.vc-wishlist-price strong {
+    color: var(--wc-navy);
+    font-size: 19px;
+}
+
+.vc-wishlist-price del {
+    color: #89939b;
+    font-size: 10px;
+}
+
+.vc-wishlist-stock {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 9px;
+    color: #397451;
+    font-size: 9px;
+    font-weight: 750;
+}
+
+.vc-wishlist-stock i {
+    font-size: 6px;
+}
+
+.vc-wishlist-stock.low {
+    color: #a56a16;
+}
+
+.vc-wishlist-stock.out {
+    color: #b44949;
+}
+
+.vc-wishlist-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin-top: 16px;
+}
+
+.vc-wishlist-actions form {
+    min-width: 0;
+    margin: 0;
+}
+
+.vc-wishlist-view,
+.vc-wishlist-cart,
+.vc-wishlist-remove {
+    min-height: 39px;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: 4px;
+    font-family: "Inter", "Segoe UI", Arial, sans-serif !important;
+    font-size: 10px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.vc-wishlist-view {
+    border: 1px solid #d7dfe5;
+    background: #fff;
+    color: var(--wc-navy);
+}
+
+.vc-wishlist-view:hover {
+    border-color: var(--wc-blue);
+    color: var(--wc-blue);
+}
+
+.vc-wishlist-cart {
+    border: 1px solid var(--wc-navy);
+    background: var(--wc-navy);
+    color: #fff;
+}
+
+.vc-wishlist-cart:hover {
+    background: var(--wc-blue);
+    border-color: var(--wc-blue);
+}
+
+.vc-wishlist-remove-form {
+    margin: 8px 0 0;
+}
+
+.vc-wishlist-remove {
+    min-height: 32px;
+    border: 0;
+    background: transparent;
+    color: #8a949c;
+}
+
+.vc-wishlist-remove:hover {
+    color: #b44949;
+}
+
+/* BOTTOM CTA */
+.vc-wishlist-cta {
+    margin-top: 30px;
+    padding: 27px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    background: var(--wc-navy);
+    color: #fff;
+}
+
+.vc-wishlist-cta h2 {
+    margin: 6px 0 5px;
+    font-family: "Inter", "Segoe UI", Arial, sans-serif !important;
+    font-size: 25px;
+    line-height: 1.15;
+}
+
+.vc-wishlist-cta p {
+    margin: 0;
+    color: #cbd8e3;
+    font-size: 11px;
+}
+
+.vc-wishlist-cta > div > span {
+    color: #9fc7e7;
+}
+
+.vc-wishlist-cta > a,
+.vc-wishlist-empty > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 40px;
+    padding: 0 15px;
+    border: 1px solid #fff;
+    background: #fff;
+    color: var(--wc-navy);
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.vc-wishlist-cta > a:hover,
+.vc-wishlist-empty > a:hover {
+    background: var(--wc-soft-blue);
+}
+
+/* EMPTY */
+.vc-wishlist-empty {
+    max-width: 650px;
+    margin: 15px auto 20px;
+    padding: 70px 35px;
+    text-align: center;
+    border: 1px solid var(--wc-border);
+    background: linear-gradient(180deg, #fff, #f8fafb);
+}
+
+.vc-wishlist-empty-icon {
+    width: 66px;
+    height: 66px;
+    margin: 0 auto 20px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--wc-soft-blue);
+    color: var(--wc-blue);
+    font-size: 25px;
+}
+
+.vc-wishlist-empty h2 {
+    margin: 9px 0 8px;
+    color: var(--wc-navy);
+    font-family: "Inter", "Segoe UI", Arial, sans-serif !important;
+    font-size: 32px;
+}
+
+.vc-wishlist-empty p {
+    max-width: 470px;
+    margin: 0 auto 25px;
+    color: var(--wc-muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1199px) {
+    .vc-wishlist-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 991px) {
+    .vc-wishlist-hero-row,
+    .vc-wishlist-section-head,
+    .vc-wishlist-cta {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .vc-wishlist-count {
+        align-self: flex-start;
+    }
+
+    .vc-wishlist-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 575px) {
+    .vc-wishlist-container {
+        width: min(100% - 28px, 1240px);
+    }
+
+    .vc-wishlist-hero {
+        padding: 40px 0;
+    }
+
+    .vc-wishlist-content {
+        padding: 42px 0 55px;
+    }
+
+    .vc-wishlist-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .vc-wishlist-image {
+        height: 280px;
+    }
+
+    .vc-wishlist-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .vc-wishlist-cta {
+        padding: 24px;
+    }
+}
+</style>
+
+{% endblock %}

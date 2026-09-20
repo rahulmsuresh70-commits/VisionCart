@@ -1,0 +1,1347 @@
+{% extends "web_admin_base.html" %}
+
+{% block title %}
+    Review Management | VisionCart
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-4 py-lg-5">
+
+    <!-- ==================================================
+         PAGE HEADER
+    =================================================== -->
+
+    <div class="vc-review-header mb-4">
+
+        <div>
+
+            <span class="vc-review-eyebrow">
+                STORE MANAGEMENT
+            </span>
+
+            <h1 class="vc-review-title">
+                Review Management
+            </h1>
+
+            <p class="vc-review-subtitle">
+                Review customer feedback, ratings and product experiences.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'web-admin-dashboard' %}"
+            class="vc-review-back"
+        >
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- ==================================================
+         REVIEW STATISTICS
+    =================================================== -->
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="vc-review-stat">
+
+                <div class="vc-review-stat-icon">
+                    ◉
+                </div>
+
+                <div>
+                    <span>TOTAL REVIEWS</span>
+                    <strong>{{ total_reviews }}</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="vc-review-stat">
+
+                <div class="vc-review-stat-icon">
+                    ★
+                </div>
+
+                <div>
+                    <span>5 STAR REVIEWS</span>
+                    <strong>{{ five_star_reviews }}</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="vc-review-stat">
+
+                <div class="vc-review-stat-icon">
+                    4
+                </div>
+
+                <div>
+                    <span>4 STAR REVIEWS</span>
+                    <strong>{{ four_star_reviews }}</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="vc-review-stat">
+
+                <div class="vc-review-stat-icon">
+                    !
+                </div>
+
+                <div>
+                    <span>LOW RATINGS</span>
+                    <strong>{{ low_rating_reviews }}</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         SEARCH & FILTER
+    =================================================== -->
+
+    <section class="vc-review-card mb-4">
+
+        <div class="vc-review-card-header">
+
+            <div class="vc-review-card-icon">
+                ⌕
+            </div>
+
+            <div>
+                <h2>Search & Filter</h2>
+
+                <p>
+                    Find reviews by product, customer, email or comment.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="vc-review-card-body">
+
+            <form
+                method="GET"
+                action="{% url 'web-admin-reviews' %}"
+            >
+
+                <div class="row g-3 align-items-end">
+
+                    <div class="col-12 col-lg-7">
+
+                        <label
+                            for="reviewSearch"
+                            class="vc-review-label"
+                        >
+                            Search Reviews
+                        </label>
+
+                        <input
+                            type="text"
+                            id="reviewSearch"
+                            name="q"
+                            value="{{ search_query }}"
+                            class="form-control vc-review-input"
+                            placeholder="Product, customer, email or comment"
+                        >
+
+                    </div>
+
+
+                    <div class="col-12 col-md-6 col-lg-3">
+
+                        <label
+                            for="reviewRating"
+                            class="vc-review-label"
+                        >
+                            Rating
+                        </label>
+
+                        <select
+                            id="reviewRating"
+                            name="rating"
+                            class="form-select vc-review-input"
+                        >
+
+                            <option
+                                value=""
+                                {% if not selected_rating %}selected{% endif %}
+                            >
+                                All Ratings
+                            </option>
+
+                            <option
+                                value="5"
+                                {% if selected_rating == "5" %}selected{% endif %}
+                            >
+                                ★★★★★ — 5 Stars
+                            </option>
+
+                            <option
+                                value="4"
+                                {% if selected_rating == "4" %}selected{% endif %}
+                            >
+                                ★★★★☆ — 4 Stars
+                            </option>
+
+                            <option
+                                value="3"
+                                {% if selected_rating == "3" %}selected{% endif %}
+                            >
+                                ★★★☆☆ — 3 Stars
+                            </option>
+
+                            <option
+                                value="2"
+                                {% if selected_rating == "2" %}selected{% endif %}
+                            >
+                                ★★☆☆☆ — 2 Stars
+                            </option>
+
+                            <option
+                                value="1"
+                                {% if selected_rating == "1" %}selected{% endif %}
+                            >
+                                ★☆☆☆☆ — 1 Star
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="col-12 col-md-6 col-lg-2">
+
+                        <button
+                            type="submit"
+                            class="vc-review-filter-button"
+                        >
+                            Apply Filter
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         REVIEW LIST
+    =================================================== -->
+
+    <section class="vc-review-card">
+
+        <div class="vc-review-list-header">
+
+            <div>
+
+                <span class="vc-review-list-eyebrow">
+                    CUSTOMER FEEDBACK
+                </span>
+
+                <h2>
+                    Product Reviews
+                </h2>
+
+                <p>
+                    Review activity from VisionCart customers.
+                </p>
+
+            </div>
+
+            <span class="vc-review-count">
+                {{ total_reviews }} Total
+            </span>
+
+        </div>
+
+
+        {% if reviews %}
+
+        <div class="table-responsive">
+
+            <table class="table vc-review-table align-middle mb-0">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Product
+                        </th>
+
+                        <th>
+                            Customer
+                        </th>
+
+                        <th>
+                            Rating
+                        </th>
+
+                        <th>
+                            Review
+                        </th>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th class="text-end">
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for review in reviews %}
+
+                    <tr>
+
+                        <!-- PRODUCT -->
+
+                        <td>
+
+                            <div class="vc-review-product">
+
+                                {% if review.product.image %}
+
+                                    <img
+                                        src="{{ review.product.image.url }}"
+                                        alt="{{ review.product.name }}"
+                                        class="vc-review-product-image"
+                                    >
+
+                                {% else %}
+
+                                    <div class="vc-review-product-placeholder">
+                                        ◇
+                                    </div>
+
+                                {% endif %}
+
+                                <div>
+
+                                    <strong>
+                                        {{ review.product.name }}
+                                    </strong>
+
+                                    {% if review.product.brand %}
+
+                                        <small>
+                                            {{ review.product.brand }}
+                                        </small>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- CUSTOMER -->
+
+                        <td>
+
+                            <div class="vc-review-customer">
+
+                                <div class="vc-review-avatar">
+                                    {{ review.user.username|first|upper }}
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        {{ review.user.username }}
+                                    </strong>
+
+                                    <small>
+                                        {{ review.user.email }}
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- RATING -->
+
+                        <td>
+
+                            <div class="vc-review-rating">
+
+                                <span class="vc-review-stars">
+
+                                    {% if review.rating >= 1 %}★{% else %}☆{% endif %}
+                                    {% if review.rating >= 2 %}★{% else %}☆{% endif %}
+                                    {% if review.rating >= 3 %}★{% else %}☆{% endif %}
+                                    {% if review.rating >= 4 %}★{% else %}☆{% endif %}
+                                    {% if review.rating >= 5 %}★{% else %}☆{% endif %}
+
+                                </span>
+
+                                <span class="vc-review-rating-number">
+                                    {{ review.rating }}/5
+                                </span>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- COMMENT -->
+
+                        <td>
+
+                            <div class="vc-review-comment">
+
+                                {% if review.comment %}
+
+                                    {% if review.comment|length > 90 %}
+
+                                        {{ review.comment|slice:":90" }}…
+
+                                    {% else %}
+
+                                        {{ review.comment }}
+
+                                    {% endif %}
+
+                                {% else %}
+
+                                    <span class="vc-review-empty-value">
+                                        No written comment
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- DATE -->
+
+                        <td>
+
+                            <span class="vc-review-date">
+                                {{ review.created_at|date:"d M Y" }}
+                            </span>
+
+                            <small class="vc-review-time">
+                                {{ review.created_at|date:"h:i A" }}
+                            </small>
+
+                        </td>
+
+
+                        <!-- ACTION -->
+
+                        <td>
+
+                            <div class="vc-review-actions">
+
+                                <a
+                                    href="{% url 'web-admin-review-detail' review.id %}"
+                                    class="vc-review-view"
+                                >
+                                    View
+                                </a>
+
+                                <form
+                                    method="POST"
+                                    action="{% url 'web-admin-review-delete' review.id %}"
+                                    data-protect-submit
+                                    onsubmit="return confirm('Delete this review permanently?');"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="vc-review-delete"
+                                    >
+                                        Delete
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+        <!-- ==================================================
+             EMPTY STATE
+        =================================================== -->
+
+        <div class="vc-review-empty">
+
+            <div class="vc-review-empty-icon">
+                ★
+            </div>
+
+            <h3>
+                No reviews found
+            </h3>
+
+            <p>
+                There are no customer reviews matching the current
+                search or rating filter.
+            </p>
+
+            <a
+                href="{% url 'web-admin-reviews' %}"
+                class="vc-review-reset"
+            >
+                Clear Filters
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- ==================================================
+         MANAGEMENT NOTE
+    =================================================== -->
+
+    <div class="vc-review-note mt-4">
+
+        <div class="vc-review-note-icon">
+            ✓
+        </div>
+
+        <div>
+
+            <h3>
+                Review Management
+            </h3>
+
+            <p>
+                Reviews are linked to the customer and product that
+                generated them. Use the View action to inspect a complete
+                review before removing it.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================================
+     STEP 42 — DESIGN ONLY
+
+     Existing backend context preserved:
+     - reviews
+     - search_query
+     - selected_rating
+     - total_reviews
+     - five_star_reviews
+     - four_star_reviews
+     - low_rating_reviews
+     - review.product
+     - review.user
+     - review.rating
+     - review.comment
+     - review.created_at
+
+     Existing routes preserved:
+     - web-admin-reviews
+     - web-admin-review-detail
+     - web-admin-review-delete
+=========================================================== -->
+
+<style>
+
+    /* =====================================================
+       PAGE HEADER
+    ===================================================== */
+
+    .vc-review-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 25px;
+        padding: 28px 30px;
+        background: #ffffff;
+        border: 1px solid #e7eaf0;
+        border-radius: 18px;
+        box-shadow: 0 8px 28px rgba(25, 35, 55, 0.05);
+    }
+
+
+    .vc-review-eyebrow {
+        display: block;
+        margin-bottom: 8px;
+        color: #687284;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.4px;
+    }
+
+
+    .vc-review-title {
+        margin: 0 0 7px;
+        color: #172033;
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+
+    .vc-review-subtitle {
+        margin: 0;
+        color: #697384;
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+
+    .vc-review-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 10px 16px;
+        border: 1px solid #dfe3e9;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #596273;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: all .2s ease;
+    }
+
+
+    .vc-review-back:hover {
+        background: #f7f8fa;
+        border-color: #cfd5de;
+        color: #172033;
+        transform: translateY(-1px);
+    }
+
+
+    /* =====================================================
+       STATISTICS
+    ===================================================== */
+
+    .vc-review-stat {
+        min-height: 108px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 21px;
+        border: 1px solid #e7eaf0;
+        border-radius: 15px;
+        background: #ffffff;
+        box-shadow: 0 6px 20px rgba(25, 35, 55, 0.04);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+
+    .vc-review-stat:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(25, 35, 55, 0.07);
+    }
+
+
+    .vc-review-stat-icon {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 12px;
+        background: #f1f3f6;
+        color: #172033;
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+
+    .vc-review-stat span {
+        display: block;
+        margin-bottom: 4px;
+        color: #8b94a2;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: .8px;
+    }
+
+
+    .vc-review-stat strong {
+        display: block;
+        color: #172033;
+        font-size: 26px;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+
+    /* =====================================================
+       COMMON CARD
+    ===================================================== */
+
+    .vc-review-card {
+        overflow: hidden;
+        border: 1px solid #e7eaf0;
+        border-radius: 17px;
+        background: #ffffff;
+        box-shadow: 0 6px 22px rgba(25, 35, 55, 0.04);
+    }
+
+
+    .vc-review-card-header {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 21px 22px;
+        border-bottom: 1px solid #edf0f4;
+    }
+
+
+    .vc-review-card-icon {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 11px;
+        background: #f1f3f6;
+        color: #172033;
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+
+    .vc-review-card-header h2 {
+        margin: 0 0 3px;
+        color: #172033;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+
+    .vc-review-card-header p {
+        margin: 0;
+        color: #7e8796;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+
+    .vc-review-card-body {
+        padding: 23px 22px;
+    }
+
+
+    /* =====================================================
+       SEARCH FORM
+    ===================================================== */
+
+    .vc-review-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #3d4655;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+
+    .vc-review-input {
+        min-height: 45px;
+        border: 1px solid #dfe3e9;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #172033;
+        font-size: 14px;
+        box-shadow: none;
+    }
+
+
+    .vc-review-input:focus {
+        border-color: #9da5b2;
+        box-shadow: 0 0 0 3px rgba(23, 32, 51, 0.07);
+    }
+
+
+    .vc-review-input::placeholder {
+        color: #a0a7b2;
+    }
+
+
+    .vc-review-filter-button {
+        width: 100%;
+        min-height: 45px;
+        padding: 10px 14px;
+        border: 1px solid #172033;
+        border-radius: 10px;
+        background: #172033;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all .2s ease;
+    }
+
+
+    .vc-review-filter-button:hover {
+        background: #273249;
+        border-color: #273249;
+        transform: translateY(-1px);
+    }
+
+
+    /* =====================================================
+       LIST HEADER
+    ===================================================== */
+
+    .vc-review-list-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 21px 22px;
+        border-bottom: 1px solid #edf0f4;
+    }
+
+
+    .vc-review-list-eyebrow {
+        display: block;
+        margin-bottom: 5px;
+        color: #929aa7;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+
+
+    .vc-review-list-header h2 {
+        margin: 0 0 4px;
+        color: #172033;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+
+    .vc-review-list-header p {
+        margin: 0;
+        color: #7e8796;
+        font-size: 12px;
+    }
+
+
+    .vc-review-count {
+        display: inline-flex;
+        align-items: center;
+        min-height: 30px;
+        padding: 5px 10px;
+        border: 1px solid #e1e5eb;
+        border-radius: 20px;
+        background: #fafbfc;
+        color: #697383;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+
+    /* =====================================================
+       TABLE
+    ===================================================== */
+
+    .vc-review-table {
+        min-width: 1180px;
+    }
+
+
+    .vc-review-table thead th {
+        padding: 13px 18px;
+        border-bottom: 1px solid #e5e8ed;
+        background: #fafbfc;
+        color: #727b8b;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: .3px;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+
+    .vc-review-table tbody td {
+        padding: 16px 18px;
+        border-bottom: 1px solid #edf0f4;
+        color: #4f5969;
+        font-size: 13px;
+        vertical-align: middle;
+    }
+
+
+    .vc-review-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+
+    .vc-review-table tbody tr {
+        transition: background .2s ease;
+    }
+
+
+    .vc-review-table tbody tr:hover {
+        background: #fcfcfd;
+    }
+
+
+    /* =====================================================
+       PRODUCT
+    ===================================================== */
+
+    .vc-review-product {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        min-width: 210px;
+    }
+
+
+    .vc-review-product-image,
+    .vc-review-product-placeholder {
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+        border-radius: 10px;
+    }
+
+
+    .vc-review-product-image {
+        object-fit: cover;
+        border: 1px solid #e7eaf0;
+        background: #f8f9fa;
+    }
+
+
+    .vc-review-product-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f1f3f6;
+        color: #7c8593;
+        font-size: 17px;
+    }
+
+
+    .vc-review-product strong {
+        display: block;
+        max-width: 190px;
+        margin-bottom: 3px;
+        overflow: hidden;
+        color: #293346;
+        font-size: 13px;
+        font-weight: 700;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+
+    .vc-review-product small {
+        display: block;
+        color: #949ca8;
+        font-size: 10px;
+    }
+
+
+    /* =====================================================
+       CUSTOMER
+    ===================================================== */
+
+    .vc-review-customer {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 175px;
+    }
+
+
+    .vc-review-avatar {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: #f0f2f5;
+        color: #4f5969;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+
+    .vc-review-customer strong {
+        display: block;
+        margin-bottom: 3px;
+        color: #30394a;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+
+    .vc-review-customer small {
+        display: block;
+        max-width: 150px;
+        overflow: hidden;
+        color: #959da9;
+        font-size: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+
+    /* =====================================================
+       RATING
+    ===================================================== */
+
+    .vc-review-rating {
+        min-width: 90px;
+    }
+
+
+    .vc-review-stars {
+        display: block;
+        margin-bottom: 3px;
+        color: #5e6674;
+        font-size: 14px;
+        letter-spacing: 1px;
+        line-height: 1;
+    }
+
+
+    .vc-review-rating-number {
+        color: #929aa6;
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+
+    /* =====================================================
+       COMMENT
+    ===================================================== */
+
+    .vc-review-comment {
+        max-width: 290px;
+        color: #596273;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+
+    .vc-review-empty-value {
+        color: #9ba2ad;
+        font-style: italic;
+    }
+
+
+    /* =====================================================
+       DATE
+    ===================================================== */
+
+    .vc-review-date {
+        display: block;
+        color: #596273;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+
+    .vc-review-time {
+        display: block;
+        margin-top: 3px;
+        color: #9aa2ae;
+        font-size: 10px;
+    }
+
+
+    /* =====================================================
+       ACTIONS
+    ===================================================== */
+
+    .vc-review-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 7px;
+        min-width: 125px;
+    }
+
+
+    .vc-review-actions form {
+        margin: 0;
+    }
+
+
+    .vc-review-view,
+    .vc-review-delete {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 34px;
+        padding: 7px 11px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all .2s ease;
+    }
+
+
+    .vc-review-view {
+        border: 1px solid #dfe3e9;
+        background: #ffffff;
+        color: #596273;
+    }
+
+
+    .vc-review-view:hover {
+        background: #f6f7f9;
+        border-color: #cfd5de;
+        color: #172033;
+    }
+
+
+    .vc-review-delete {
+        border: 1px solid #e5dede;
+        background: #ffffff;
+        color: #796565;
+    }
+
+
+    .vc-review-delete:hover {
+        background: #faf6f6;
+        border-color: #d8caca;
+        color: #654d4d;
+    }
+
+
+    /* =====================================================
+       EMPTY STATE
+    ===================================================== */
+
+    .vc-review-empty {
+        min-height: 340px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+
+    .vc-review-empty-icon {
+        width: 58px;
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        border-radius: 15px;
+        background: #f1f3f6;
+        color: #697383;
+        font-size: 22px;
+    }
+
+
+    .vc-review-empty h3 {
+        margin: 0 0 7px;
+        color: #273143;
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+
+    .vc-review-empty p {
+        max-width: 450px;
+        margin: 0 0 18px;
+        color: #858e9c;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+
+    .vc-review-reset {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        padding: 8px 14px;
+        border: 1px solid #dfe3e9;
+        border-radius: 9px;
+        background: #ffffff;
+        color: #596273;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+
+    .vc-review-reset:hover {
+        background: #f6f7f9;
+        color: #172033;
+    }
+
+
+    /* =====================================================
+       MANAGEMENT NOTE
+    ===================================================== */
+
+    .vc-review-note {
+        display: flex;
+        align-items: flex-start;
+        gap: 13px;
+        padding: 19px 21px;
+        border: 1px solid #e5e8ed;
+        border-radius: 14px;
+        background: #ffffff;
+        box-shadow: 0 5px 18px rgba(25, 35, 55, 0.03);
+    }
+
+
+    .vc-review-note-icon {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 10px;
+        background: #f1f3f6;
+        color: #596273;
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+
+    .vc-review-note h3 {
+        margin: 0 0 4px;
+        color: #303a4b;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+
+    .vc-review-note p {
+        margin: 0;
+        color: #858e9c;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 767.98px) {
+
+        .vc-review-header {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 23px;
+        }
+
+
+        .vc-review-title {
+            font-size: 30px;
+        }
+
+
+        .vc-review-back {
+            width: 100%;
+        }
+
+
+        .vc-review-card-header {
+            padding: 18px;
+        }
+
+
+        .vc-review-card-body {
+            padding: 18px;
+        }
+
+
+        .vc-review-list-header {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 18px;
+        }
+
+
+        .vc-review-note {
+            padding: 17px;
+        }
+
+    }
+
+</style>
+
+{% endblock %}

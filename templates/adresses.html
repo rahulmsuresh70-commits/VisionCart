@@ -1,0 +1,6238 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+My Addresses | VisionCart
+{% endblock %}
+
+{% block content %}
+
+<div class="vc-dashboard-home vc-address-page-shell">
+
+<header class="vc-dashboard-header">
+
+        <!-- Top information strip -->
+
+        <div class="vc-dashboard-topbar">
+
+            <div class="vc-dashboard-container">
+
+                <div class="vc-dashboard-topbar-left">
+
+
+                    <span>
+                        <i class="bi bi-shield-check"></i>
+                        100% Genuine Products
+                    </span>
+
+                    <span class="vc-dashboard-top-divider">
+                        |
+                    </span>
+
+                    <span>
+                        <i class="bi bi-arrow-repeat"></i>
+                        Easy Returns
+                    </span>
+
+                </div>
+
+
+                <div class="vc-dashboard-topbar-right">
+
+                    <a href="{% url 'orders' %}">
+                        Track Order
+                    </a>
+
+                    <span>|</span>
+
+                    <a href="{% url 'addresses' %}">
+                        Delivery Addresses
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Main dashboard header -->
+
+        <div class="vc-dashboard-header-main">
+
+            <div class="vc-dashboard-container">
+
+                <div class="vc-dashboard-header-row">
+
+                    <!-- BRAND — exact VisionCart master logo -->
+
+                    <a
+                        href="{% url 'profile' %}"
+                        class="vc-dashboard-logo"
+                        aria-label="VisionCart Dashboard Home"
+                    >
+                        <img
+                            src="data:image/png;base64,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"
+                            alt="VisionCart — See Better. Live Brighter."
+                            class="vc-dashboard-master-logo-image"
+                        >
+                    </a>
+
+
+                    <!-- SEARCH -->
+
+                    <form
+                        method="get"
+                        action="{% url 'products' %}"
+                        class="vc-dashboard-search"
+                    >
+
+                        <input
+                            type="search"
+                            name="q"
+                            placeholder="Search for frames, sunglasses, lenses, brands..."
+                            aria-label="Search products"
+                        >
+
+                        <button
+                            type="submit"
+                            aria-label="Search"
+                        >
+
+                            <i class="bi bi-search"></i>
+
+                        </button>
+
+                    </form>
+
+
+                    <!-- CUSTOMER AREA -->
+
+                    <div class="vc-dashboard-user-area">
+
+
+                        <!-- PROFILE -->
+
+                        <a
+                            href="{% url 'profile' %}"
+                            class="vc-dashboard-user-action"
+                        >
+
+                            <i class="bi bi-person"></i>
+
+                            <span>
+                                Profile
+                            </span>
+
+                        </a>
+
+
+                        <!-- WISHLIST -->
+
+                        <a
+                            href="{% url 'wishlist' %}"
+                            class="vc-dashboard-user-action"
+                        >
+
+                            <i class="bi bi-heart"></i>
+
+                            <span>
+                                Wishlist
+                            </span>
+
+                        </a>
+
+
+                        <!-- CART -->
+
+                        <a
+                            href="{% url 'cart' %}"
+                            class="vc-dashboard-user-action vc-dashboard-cart-action"
+                        >
+
+                            <i class="bi bi-bag"></i>
+
+                            <span>
+                                Cart
+                            </span>
+
+                        </a>
+
+
+                        <!-- LOGOUT -->
+
+                        <form
+                            method="post"
+                            action="{% url 'logout' %}"
+                            class="vc-dashboard-logout-form"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="vc-dashboard-logout"
+                            >
+
+                                <i class="bi bi-box-arrow-right"></i>
+
+                                <span>
+                                    Logout
+                                </span>
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Dashboard navigation -->
+
+        <nav class="vc-dashboard-navbar">
+
+            <div class="vc-dashboard-container">
+
+                <div class="vc-dashboard-nav-row">
+
+
+                    <a
+                        href="{% url 'profile' %}"
+                        class="vc-dashboard-nav-link vc-dashboard-nav-active"
+                    >
+
+                        <i class="bi bi-grid"></i>
+
+                        Dashboard Home
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'products' %}"
+                        class="vc-dashboard-nav-link"
+                    >
+
+                        <i class="bi bi-shop"></i>
+
+                        Shop
+
+                    </a>
+
+
+                    <a
+                        href="#categories"
+                        class="vc-dashboard-nav-link"
+                    >
+
+                        <i class="bi bi-grid-3x3-gap"></i>
+
+                        Categories
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'wishlist' %}"
+                        class="vc-dashboard-nav-link"
+                    >
+
+                        <i class="bi bi-heart"></i>
+
+                        My Wishlist
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'cart' %}"
+                        class="vc-dashboard-nav-link"
+                    >
+
+                        <i class="bi bi-bag"></i>
+
+                        My Cart
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'orders' %}"
+                        class="vc-dashboard-nav-link"
+                    >
+
+                        <i class="bi bi-box-seam"></i>
+
+                        My Orders
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'addresses' %}"
+                        class="vc-dashboard-nav-link"
+                    >
+
+                        <i class="bi bi-geo-alt"></i>
+
+                        Addresses
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+
+<!-- ============================================================
+     ADDRESSES PAGE HEADER
+============================================================= -->
+
+<section class="vc-page-header vc-addresses-page-header">
+
+    <div class="container">
+
+        <span class="vc-eyebrow">
+            Delivery Information
+        </span>
+
+        <h1>
+            My Addresses
+        </h1>
+
+        <p>
+            Manage the addresses you use for your VisionCart orders.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- ============================================================
+     ADDRESSES CONTENT
+============================================================= -->
+
+<section class="vc-addresses-section py-5">
+
+    <div class="container">
+
+        <div class="vc-addresses-heading vc-reveal">
+
+            <div>
+
+                <span class="vc-eyebrow">
+                    Saved Locations
+                </span>
+
+                <h2>
+                    Delivery Addresses
+                </h2>
+
+            </div>
+
+
+            <a
+                href="{% url 'address-add' %}"
+                class="vc-btn-primary vc-address-add-button"
+            >
+
+                <i class="bi bi-plus-lg me-2"></i>
+
+                Add New Address
+
+            </a>
+
+        </div>
+
+
+
+        {% if addresses %}
+
+            <div class="row g-4">
+
+                {% for address in addresses %}
+
+                    <div class="col-12 col-md-6 col-xl-4 vc-reveal">
+
+                        <article
+                            class="
+                                vc-address-card
+                                {% if address.is_default %}
+                                    vc-address-card-default
+                                {% endif %}
+                            "
+                        >
+
+
+                            <!-- =================================
+                                 CARD HEADER
+                            ================================== -->
+
+                            <div class="vc-address-card-header">
+
+                                <div class="vc-address-type">
+
+                                    <span class="vc-address-type-icon">
+
+                                        <i class="bi bi-geo-alt"></i>
+
+                                    </span>
+
+                                    <div>
+
+                                        <span>
+                                            Delivery Address
+                                        </span>
+
+                                        <strong>
+                                            {{ address.name }}
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+
+                                {% if address.is_default %}
+
+                                    <span class="vc-default-badge">
+
+                                        <i class="bi bi-check-circle-fill"></i>
+
+                                        Default
+
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+
+                            <!-- =================================
+                                 ADDRESS DETAILS
+                            ================================== -->
+
+                            <div class="vc-address-card-body">
+
+                                <div class="vc-address-detail">
+
+                                    <i class="bi bi-person"></i>
+
+                                    <span>
+                                        {{ address.name }}
+                                    </span>
+
+                                </div>
+
+
+                                <div class="vc-address-detail">
+
+                                    <i class="bi bi-telephone"></i>
+
+                                    <span>
+                                        {{ address.phone }}
+                                    </span>
+
+                                </div>
+
+
+                                <div class="vc-address-detail vc-address-location">
+
+                                    <i class="bi bi-house"></i>
+
+                                    <span>
+
+                                        {{ address.address }}
+
+                                        <br>
+
+                                        {{ address.city }},
+                                        {{ address.state }}
+
+                                        <br>
+
+                                        {{ address.pincode }}
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- =================================
+                                 CARD ACTIONS
+                            ================================== -->
+
+                            <div class="vc-address-card-actions">
+
+
+                                <a
+                                    href="{% url 'address-edit' address.id %}"
+                                    class="vc-address-edit"
+                                >
+
+                                    <i class="bi bi-pencil"></i>
+
+                                    Edit
+
+                                </a>
+
+
+
+                                {% if not address.is_default %}
+
+                                    <form
+                                        method="post"
+                                        action="{% url 'address-default' address.id %}"
+                                    >
+
+                                        {% csrf_token %}
+
+                                        <button
+                                            type="submit"
+                                            class="vc-address-default-button"
+                                        >
+
+                                            <i class="bi bi-check2-circle"></i>
+
+                                            Make Default
+
+                                        </button>
+
+                                    </form>
+
+                                {% endif %}
+
+
+
+                                <form
+                                    method="post"
+                                    action="{% url 'address-delete' address.id %}"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="vc-address-delete"
+                                        data-delete-confirm="Are you sure you want to delete this address?"
+                                    >
+
+                                        <i class="bi bi-trash3"></i>
+
+                                        Delete
+
+                                    </button>
+
+                                </form>
+
+
+                            </div>
+
+
+                        </article>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+        {% else %}
+
+
+            <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
+
+            <div class="vc-empty-addresses vc-reveal">
+
+                <div class="vc-empty-address-icon">
+
+                    <i class="bi bi-geo-alt"></i>
+
+                </div>
+
+
+                <span class="vc-eyebrow">
+                    No Saved Addresses
+                </span>
+
+
+                <h2>
+                    Add your first delivery address
+                </h2>
+
+
+                <p>
+                    Save your delivery details once and make
+                    checkout faster and easier.
+                </p>
+
+
+                <a
+                    href="{% url 'address-add' %}"
+                    class="vc-btn-primary"
+                >
+
+                    <i class="bi bi-plus-lg me-2"></i>
+
+                    Add Address
+
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+
+
+<!-- ============================================================
+     ADDRESS INFORMATION
+============================================================= -->
+
+<section class="vc-address-info-section">
+
+    <div class="container">
+
+        <div class="vc-address-info-grid vc-reveal">
+
+
+            <div class="vc-address-info-item">
+
+                <span class="vc-address-info-icon">
+
+                    <i class="bi bi-shield-check"></i>
+
+                </span>
+
+                <div>
+
+                    <strong>
+                        Secure Information
+                    </strong>
+
+                    <p>
+                        Your saved delivery details are linked
+                        to your account.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="vc-address-info-item">
+
+                <span class="vc-address-info-icon">
+
+                    <i class="bi bi-lightning"></i>
+
+                </span>
+
+                <div>
+
+                    <strong>
+                        Faster Checkout
+                    </strong>
+
+                    <p>
+                        Select a saved address when placing
+                        your next order.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="vc-address-info-item">
+
+                <span class="vc-address-info-icon">
+
+                    <i class="bi bi-house-check"></i>
+
+                </span>
+
+                <div>
+
+                    <strong>
+                        Choose a Default
+                    </strong>
+
+                    <p>
+                        Keep your most-used delivery address
+                        ready for checkout.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<footer class="vc-dashboard-footer">
+
+        <div class="vc-dashboard-container">
+
+
+            <div class="vc-dashboard-footer-main">
+
+                <!-- BRAND -->
+
+                <div class="vc-dashboard-footer-brand">
+
+                    <a
+                        href="{% url 'profile' %}"
+                        class="vc-dashboard-footer-logo"
+                        aria-label="VisionCart Dashboard Home"
+                    >
+                        <img
+                            src="data:image/png;base64,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"
+                            alt="VisionCart — See Better. Live Brighter."
+                            class="vc-dashboard-footer-master-logo-image"
+                        >
+                    </a>
+
+
+                    <div class="vc-dashboard-footer-tagline">
+                        See Better. Live Brighter.
+                    </div>
+
+
+                    <p>
+
+                        VisionCart is an eyewear shopping platform
+                        designed to make discovering stylish,
+                        comfortable and everyday eyewear simple.
+
+                    </p>
+
+
+                    <div class="vc-dashboard-socials">
+
+                        <span
+                            aria-label="Facebook"
+                            title="Facebook"
+                        >
+                            <i class="bi bi-facebook"></i>
+                        </span>
+
+                        <span
+                            aria-label="Instagram"
+                            title="Instagram"
+                        >
+                            <i class="bi bi-instagram"></i>
+                        </span>
+
+                        <span
+                            aria-label="YouTube"
+                            title="YouTube"
+                        >
+                            <i class="bi bi-youtube"></i>
+                        </span>
+
+                        <span
+                            aria-label="LinkedIn"
+                            title="LinkedIn"
+                        >
+                            <i class="bi bi-linkedin"></i>
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUICK LINKS -->
+
+                <div class="vc-dashboard-footer-column">
+
+                    <h3>
+                        Quick Links
+                    </h3>
+
+
+                    <a href="{% url 'profile' %}">
+                        Dashboard Home
+                    </a>
+
+                    <a href="{% url 'products' %}">
+                        Products
+                    </a>
+
+                    <a href="{% url 'wishlist' %}">
+                        Wishlist
+                    </a>
+
+                    <a href="{% url 'cart' %}">
+                        Cart
+                    </a>
+
+                    <a href="{% url 'orders' %}">
+                        My Orders
+                    </a>
+
+                </div>
+
+
+                <!-- CUSTOMER CARE -->
+
+                <div class="vc-dashboard-footer-column">
+
+                    <h3>
+                        Customer Care
+                    </h3>
+
+
+                    <a href="{% url 'orders' %}">
+                        Track Order
+                    </a>
+
+                    <a href="{% url 'addresses' %}">
+                        Delivery Addresses
+                    </a>
+
+                    <a href="{% url 'orders' %}">
+                        Order History
+                    </a>
+
+                    <a href="{% url 'products' %}">
+                        Shopping
+                    </a>
+
+                    <a href="{% url 'profile' %}">
+                        Account Support
+                    </a>
+
+                </div>
+
+
+                <!-- ACCOUNT -->
+
+                <div class="vc-dashboard-footer-column">
+
+                    <h3>
+                        My Account
+                    </h3>
+
+
+                    <a href="{% url 'profile' %}">
+                        Profile
+                    </a>
+
+                    <a href="{% url 'wishlist' %}">
+                        My Wishlist
+                    </a>
+
+                    <a href="{% url 'cart' %}">
+                        My Cart
+                    </a>
+
+                    <a href="{% url 'addresses' %}">
+                        My Addresses
+                    </a>
+
+                    <a href="{% url 'orders' %}">
+                        My Orders
+                    </a>
+
+                </div>
+
+
+                <!-- SHOPPING MESSAGE -->
+
+                <div class="vc-dashboard-footer-column vc-dashboard-footer-message">
+
+                    <h3>
+                        Shop With Vision
+                    </h3>
+
+
+                    <p>
+                        Discover eyewear designed around
+                        everyday style, comfort and clear vision.
+                    </p>
+
+
+                    <a
+                        href="{% url 'products' %}"
+                        class="vc-dashboard-footer-shop"
+                    >
+
+                        Explore Eyewear
+
+                        <i class="bi bi-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- FOOTER BOTTOM -->
+
+            <div class="vc-dashboard-footer-bottom">
+
+                <span>
+                    © {% now "Y" %} VisionCart. All rights reserved.
+                </span>
+
+
+                <span>
+                    See Better. Live Brighter.
+                </span>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+/* ============================================================
+   VISIONCART CUSTOMER DASHBOARD HOME
+   Screenshot-inspired premium ecommerce design
+============================================================= */
+
+@import url(
+    "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+);
+
+
+:root {
+
+    --dashboard-navy: #102a43;
+    --dashboard-blue: #1769aa;
+    --dashboard-dark: #101b26;
+    --dashboard-text: #172431;
+    --dashboard-muted: #68747f;
+    --dashboard-border: #e4e8ec;
+    --dashboard-light: #f6f8fa;
+    --dashboard-soft-blue: #edf4f9;
+    --dashboard-white: #ffffff;
+
+}
+
+
+/* ============================================================
+   HIDE BASE HEADER / FOOTER ONLY ON DASHBOARD
+============================================================= */
+
+body:has(.vc-dashboard-home) {
+
+    background:
+        #ffffff !important;
+
+}
+
+
+body:has(.vc-dashboard-home) > .navbar,
+body:has(.vc-dashboard-home) > footer {
+
+    display:
+        none !important;
+
+}
+
+
+/* ============================================================
+   BASE
+============================================================= */
+
+.vc-dashboard-home {
+
+    min-height:
+        100vh;
+
+    background:
+        #ffffff;
+
+    color:
+        var(--dashboard-text);
+
+}
+
+
+.vc-dashboard-home *,
+.vc-dashboard-home *::before,
+.vc-dashboard-home *::after {
+
+    box-sizing:
+        border-box;
+
+}
+
+
+.vc-dashboard-home a {
+
+    text-decoration:
+        none;
+
+}
+
+
+.vc-dashboard-home img {
+
+    max-width:
+        100%;
+
+    display:
+        block;
+
+}
+
+
+.vc-dashboard-container {
+
+    width:
+        min(1240px, calc(100% - 40px));
+
+    margin:
+        0 auto;
+
+}
+
+
+/* ============================================================
+   TOP BAR
+============================================================= */
+
+.vc-dashboard-topbar {
+
+    min-height:
+        30px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    background:
+        var(--dashboard-dark);
+
+    color:
+        rgba(255,255,255,0.84);
+
+    font-size:
+        10px;
+
+}
+
+
+.vc-dashboard-topbar .vc-dashboard-container {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        20px;
+
+}
+
+
+.vc-dashboard-topbar-left,
+.vc-dashboard-topbar-right {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
+}
+
+
+.vc-dashboard-topbar-left i {
+
+    margin-right:
+        4px;
+
+    color:
+        #8fc5ee;
+
+}
+
+
+.vc-dashboard-topbar-right a {
+
+    color:
+        rgba(255,255,255,0.82);
+
+    transition:
+        color 0.2s ease;
+
+}
+
+
+.vc-dashboard-topbar-right a:hover {
+
+    color:
+        #ffffff;
+
+}
+
+
+.vc-dashboard-top-divider {
+
+    color:
+        rgba(255,255,255,0.3);
+
+}
+
+
+/* ============================================================
+   HEADER
+============================================================= */
+
+.vc-dashboard-header {
+
+    position:
+        relative;
+
+    z-index:
+        1000;
+
+    background:
+        #ffffff;
+
+    border-bottom:
+        1px solid var(--dashboard-border);
+
+}
+
+
+.vc-dashboard-header-main {
+
+    background:
+        #ffffff;
+
+}
+
+
+.vc-dashboard-header-row {
+
+    min-height:
+        82px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        30px;
+
+}
+
+
+/* ============================================================
+   LOGO
+============================================================= */
+
+.vc-dashboard-logo {
+
+    min-width:
+        205px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        9px;
+
+    color:
+        var(--dashboard-text);
+
+}
+
+
+.vc-dashboard-logo:hover {
+
+    color:
+        var(--dashboard-text);
+
+}
+
+
+.vc-dashboard-logo-icon {
+
+    color:
+        var(--dashboard-blue);
+
+    font-size:
+        34px;
+
+    line-height:
+        1;
+
+}
+
+
+.vc-dashboard-logo strong {
+
+    display:
+        block;
+
+    color:
+        var(--dashboard-text);
+
+    font-size:
+        24px;
+
+    font-weight:
+        800;
+
+    line-height:
+        1;
+
+    letter-spacing:
+        -0.7px;
+
+}
+
+
+.vc-dashboard-logo small {
+
+    display:
+        block;
+
+    margin-top:
+        4px;
+
+    color:
+        #6c7882;
+
+    font-size:
+        9px;
+
+    font-weight:
+        600;
+
+    line-height:
+        1;
+
+}
+
+
+/* ============================================================
+   SEARCH
+============================================================= */
+
+.vc-dashboard-search {
+
+    position:
+        relative;
+
+    flex:
+        1;
+
+    max-width:
+        590px;
+
+}
+
+
+.vc-dashboard-search input {
+
+    width:
+        100%;
+
+    height:
+        43px;
+
+    padding:
+        0 52px 0 15px;
+
+    border:
+        1px solid #d7dfe5;
+
+    border-radius:
+        5px;
+
+    outline:
+        none;
+
+    background:
+        #ffffff;
+
+    color:
+        var(--dashboard-text);
+
+    font-size:
+        12px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.vc-dashboard-search input:focus {
+
+    border-color:
+        var(--dashboard-blue);
+
+    box-shadow:
+        0 0 0 3px rgba(23,105,170,0.08);
+
+}
+
+
+.vc-dashboard-search button {
+
+    position:
+        absolute;
+
+    top:
+        0;
+
+    right:
+        0;
+
+    width:
+        48px;
+
+    height:
+        43px;
+
+    border:
+        0;
+
+    border-radius:
+        0 5px 5px 0;
+
+    background:
+        var(--dashboard-dark);
+
+    color:
+        #ffffff;
+
+    font-size:
+        16px;
+
+}
+
+
+/* ============================================================
+   USER ACTIONS
+============================================================= */
+
+.vc-dashboard-user-area {
+
+    margin-left:
+        auto;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        16px;
+
+}
+
+
+.vc-dashboard-user-action,
+.vc-dashboard-logout {
+
+    min-width:
+        45px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        4px;
+
+    padding:
+        0;
+
+    border:
+        0;
+
+    background:
+        transparent;
+
+    color:
+        #26323c;
+
+    font-size:
+        10px;
+
+    font-weight:
+        700;
+
+    transition:
+        color 0.2s ease;
+
+}
+
+
+.vc-dashboard-user-action i,
+.vc-dashboard-logout i {
+
+    font-size:
+        21px;
+
+    line-height:
+        1;
+
+}
+
+
+.vc-dashboard-user-action:hover,
+.vc-dashboard-logout:hover {
+
+    color:
+        var(--dashboard-blue);
+
+}
+
+
+.vc-dashboard-logout-form {
+
+    margin:
+        0;
+
+}
+
+
+/* ============================================================
+   DASHBOARD NAV
+============================================================= */
+
+.vc-dashboard-navbar {
+
+    border-top:
+        1px solid #f0f2f4;
+
+    background:
+        #ffffff;
+
+}
+
+
+.vc-dashboard-nav-row {
+
+    min-height:
+        48px;
+
+    display:
+        flex;
+
+    align-items:
+        stretch;
+
+    justify-content:
+        center;
+
+    gap:
+        2px;
+
+}
+
+
+.vc-dashboard-nav-link {
+
+    position:
+        relative;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        7px;
+
+    padding:
+        0 20px;
+
+    color:
+        #26313b;
+
+    font-size:
+        12px;
+
+    font-weight:
+        650;
+
+    white-space:
+        nowrap;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+
+}
+
+
+.vc-dashboard-nav-link:hover {
+
+    color:
+        var(--dashboard-blue);
+
+}
+
+
+.vc-dashboard-nav-link i {
+
+    font-size:
+        13px;
+
+}
+
+
+.vc-dashboard-nav-active {
+
+    color:
+        var(--dashboard-blue) !important;
+
+}
+
+
+.vc-dashboard-nav-active::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    right:
+        14px;
+
+    bottom:
+        0;
+
+    left:
+        14px;
+
+    height:
+        3px;
+
+    background:
+        var(--dashboard-blue);
+
+}
+
+
+/* ============================================================
+   HERO
+============================================================= */
+
+.vc-dashboard-hero {
+
+    position:
+        relative;
+
+    min-height:
+        475px;
+
+    overflow:
+        hidden;
+
+    background:
+        #edf3f7;
+
+}
+
+
+.vc-dashboard-hero-image {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    overflow:
+        hidden;
+
+}
+
+
+.vc-dashboard-hero-image img {
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    object-fit:
+        cover;
+
+    object-position:
+        center 36%;
+
+    animation:
+        dashboardHeroZoom 9s ease-out both;
+
+}
+
+
+@keyframes dashboardHeroZoom {
+
+    from {
+
+        transform:
+            scale(1.04);
+
+    }
+
+    to {
+
+        transform:
+            scale(1);
+
+    }
+
+}
+
+
+.vc-dashboard-hero-overlay {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #edf3f7 0%,
+            rgba(237,243,247,0.98) 18%,
+            rgba(237,243,247,0.91) 34%,
+            rgba(237,243,247,0.48) 58%,
+            rgba(237,243,247,0.04) 100%
+        );
+
+}
+
+
+.vc-dashboard-hero-content {
+
+    position:
+        relative;
+
+    z-index:
+        4;
+
+    max-width:
+        620px;
+
+    padding:
+        72px 0 135px;
+
+    animation:
+        dashboardHeroContent 0.75s ease both;
+
+}
+
+
+@keyframes dashboardHeroContent {
+
+    from {
+
+        opacity:
+            0;
+
+        transform:
+            translateY(18px);
+
+    }
+
+    to {
+
+        opacity:
+            1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+.vc-dashboard-eyebrow,
+.vc-dashboard-section-eyebrow {
+
+    display:
+        inline-block;
+
+    margin-bottom:
+        10px;
+
+    color:
+        var(--dashboard-blue);
+
+    font-size:
+        10px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        1.6px;
+
+    line-height:
+        1.2;
+
+}
+
+
+.vc-dashboard-hero-content h1 {
+
+    margin:
+        0;
+
+    color:
+        var(--dashboard-navy);
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(44px, 5.2vw, 65px);
+
+    font-weight:
+        700;
+
+    line-height:
+        0.98;
+
+    letter-spacing:
+        -2px;
+
+}
+
+
+.vc-dashboard-hero-content h1 span {
+
+    color:
+        var(--dashboard-blue);
+
+}
+
+
+.vc-dashboard-hero-content p {
+
+    max-width:
+        535px;
+
+    margin:
+        20px 0 26px;
+
+    color:
+        #405466;
+
+    font-size:
+        15px;
+
+    line-height:
+        1.65;
+
+}
+
+
+.vc-dashboard-hero-actions {
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        10px;
+
+}
+
+
+.vc-dashboard-primary-button,
+.vc-dashboard-outline-button {
+
+    min-height:
+        44px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        7px;
+
+    padding:
+        0 22px;
+
+    border-radius:
+        23px;
+
+    font-size:
+        12px;
+
+    font-weight:
+        750;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+
+}
+
+
+.vc-dashboard-primary-button {
+
+    border:
+        1px solid var(--dashboard-navy);
+
+    background:
+        var(--dashboard-navy);
+
+    color:
+        #ffffff !important;
+
+}
+
+
+.vc-dashboard-primary-button:hover {
+
+    background:
+        #173d5e;
+
+    color:
+        #ffffff !important;
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+.vc-dashboard-outline-button {
+
+    border:
+        1px solid #9eabb5;
+
+    background:
+        rgba(255,255,255,0.9);
+
+    color:
+        var(--dashboard-navy) !important;
+
+}
+
+
+.vc-dashboard-outline-button:hover {
+
+    border-color:
+        var(--dashboard-blue);
+
+    color:
+        var(--dashboard-blue) !important;
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* ============================================================
+   HERO BENEFITS
+============================================================= */
+
+.vc-dashboard-hero-benefits {
+
+    position:
+        absolute;
+
+    right:
+        0;
+
+    bottom:
+        0;
+
+    left:
+        0;
+
+    z-index:
+        5;
+
+    padding:
+        15px 0;
+
+    background:
+        rgba(255,255,255,0.84);
+
+    border-top:
+        1px solid rgba(255,255,255,0.55);
+
+    backdrop-filter:
+        blur(8px);
+
+}
+
+
+.vc-dashboard-benefit-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap:
+        0;
+
+}
+
+
+.vc-dashboard-benefit {
+
+    min-height:
+        50px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
+    padding:
+        0 20px;
+
+    border-right:
+        1px solid rgba(16,42,67,0.10);
+
+}
+
+
+.vc-dashboard-benefit:last-child {
+
+    border-right:
+        0;
+
+}
+
+
+.vc-dashboard-benefit > i {
+
+    color:
+        var(--dashboard-blue);
+
+    font-size:
+        21px;
+
+}
+
+
+.vc-dashboard-benefit strong,
+.vc-dashboard-benefit span {
+
+    display:
+        block;
+
+}
+
+
+.vc-dashboard-benefit strong {
+
+    color:
+        var(--dashboard-navy);
+
+    font-size:
+        11px;
+
+    font-weight:
+        800;
+
+}
+
+
+.vc-dashboard-benefit span {
+
+    margin-top:
+        2px;
+
+    color:
+        #68747f;
+
+    font-size:
+        9px;
+
+}
+
+
+/* ============================================================
+   SECTIONS
+============================================================= */
+
+.vc-dashboard-section {
+
+    padding:
+        62px 0;
+
+}
+
+
+.vc-dashboard-section-header {
+
+    min-height:
+        45px;
+
+    display:
+        flex;
+
+    align-items:
+        flex-end;
+
+    justify-content:
+        space-between;
+
+    gap:
+        25px;
+
+    margin-bottom:
+        25px;
+
+}
+
+
+.vc-dashboard-section-header h2 {
+
+    margin:
+        0;
+
+    color:
+        var(--dashboard-text);
+
+    font-size:
+        29px;
+
+    font-weight:
+        800;
+
+    line-height:
+        1.15;
+
+    letter-spacing:
+        -0.7px;
+
+}
+
+
+.vc-dashboard-section-header p {
+
+    margin:
+        6px 0 0;
+
+    color:
+        var(--dashboard-muted);
+
+    font-size:
+        12px;
+
+}
+
+
+.vc-dashboard-view-all {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        7px;
+
+    color:
+        var(--dashboard-blue);
+
+    font-size:
+        12px;
+
+    font-weight:
+        800;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.vc-dashboard-view-all:hover {
+
+    color:
+        #0b477d;
+
+}
+
+
+.vc-dashboard-view-all i {
+
+    transition:
+        transform 0.2s ease;
+
+}
+
+
+.vc-dashboard-view-all:hover i {
+
+    transform:
+        translateX(3px);
+
+}
+
+
+/* ============================================================
+   SHORTCUTS
+============================================================= */
+
+.vc-dashboard-shortcuts-section {
+
+    background:
+        #ffffff;
+
+}
+
+
+.vc-dashboard-shortcuts-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap:
+        13px;
+
+}
+
+
+.vc-dashboard-shortcut-card {
+
+    min-height:
+        105px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        13px;
+
+    padding:
+        18px;
+
+    border:
+        1px solid var(--dashboard-border);
+
+    background:
+        #ffffff;
+
+    color:
+        var(--dashboard-text);
+
+    box-shadow:
+        0 4px 16px rgba(15,23,32,0.035);
+
+    transition:
+        transform 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease;
+
+}
+
+
+.vc-dashboard-shortcut-card:hover {
+
+    border-color:
+        rgba(23,105,170,0.35);
+
+    box-shadow:
+        0 12px 28px rgba(15,23,32,0.08);
+
+    transform:
+        translateY(-4px);
+
+}
+
+
+.vc-dashboard-shortcut-icon {
+
+    width:
+        44px;
+
+    height:
+        44px;
+
+    flex:
+        0 0 44px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    background:
+        var(--dashboard-soft-blue);
+
+    border:
+        1px solid #d9e4eb;
+
+    color:
+        var(--dashboard-blue);
+
+    font-size:
+        18px;
+
+}
+
+
+.vc-dashboard-shortcut-card > div:nth-child(2) {
+
+    flex:
+        1;
+
+    min-width:
+        0;
+
+}
+
+
+.vc-dashboard-shortcut-card strong,
+.vc-dashboard-shortcut-card span {
+
+    display:
+        block;
+
+}
+
+
+.vc-dashboard-shortcut-card strong {
+
+    color:
+        var(--dashboard-navy);
+
+    font-size:
+        13px;
+
+    font-weight:
+        800;
+
+}
+
+
+.vc-dashboard-shortcut-card span {
+
+    margin-top:
+        4px;
+
+    color:
+        var(--dashboard-muted);
+
+    font-size:
+        10px;
+
+    line-height:
+        1.4;
+
+}
+
+
+.vc-dashboard-shortcut-card > i {
+
+    color:
+        #7c8993;
+
+    font-size:
+        13px;
+
+}
+
+
+.vc-dashboard-shortcut-highlight {
+
+    background:
+        var(--dashboard-navy);
+
+    border-color:
+        var(--dashboard-navy);
+
+}
+
+
+.vc-dashboard-shortcut-highlight .vc-dashboard-shortcut-icon {
+
+    background:
+        rgba(255,255,255,0.08);
+
+    border-color:
+        rgba(255,255,255,0.15);
+
+    color:
+        #ffffff;
+
+}
+
+
+.vc-dashboard-shortcut-highlight strong {
+
+    color:
+        #ffffff;
+
+}
+
+
+.vc-dashboard-shortcut-highlight span {
+
+    color:
+        rgba(255,255,255,0.66);
+
+}
+
+
+.vc-dashboard-shortcut-highlight > i {
+
+    color:
+        #ffffff;
+
+}
+
+
+/* ============================================================
+   CATEGORIES
+============================================================= */
+
+.vc-dashboard-category-section {
+
+    background:
+        var(--dashboard-light);
+
+    border-top:
+        1px solid var(--dashboard-border);
+
+    border-bottom:
+        1px solid var(--dashboard-border);
+
+}
+
+
+.vc-dashboard-category-card {
+
+    position:
+        relative;
+
+    height:
+        100%;
+
+    display:
+        block;
+
+    overflow:
+        hidden;
+
+    border:
+        1px solid var(--dashboard-border);
+
+    border-radius:
+        7px;
+
+    background:
+        #ffffff;
+
+    color:
+        var(--dashboard-text);
+
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease;
+
+}
+
+
+.vc-dashboard-category-card:hover {
+
+    transform:
+        translateY(-5px);
+
+    box-shadow:
+        0 14px 30px rgba(15,23,32,0.10);
+
+}
+
+
+.vc-dashboard-category-image {
+
+    height:
+        185px;
+
+    overflow:
+        hidden;
+
+    background:
+        #f5f7f9;
+
+}
+
+
+.vc-dashboard-category-image img {
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    object-fit:
+        contain;
+
+    padding:
+        14px;
+
+    transition:
+        transform 0.35s ease;
+
+}
+
+
+.vc-dashboard-category-card:hover
+.vc-dashboard-category-image img {
+
+    transform:
+        scale(1.05);
+
+}
+
+
+.vc-dashboard-category-content {
+
+    padding:
+        15px 15px 17px;
+
+}
+
+
+.vc-dashboard-category-content h3 {
+
+    margin:
+        0 0 4px;
+
+    color:
+        var(--dashboard-navy);
+
+    font-size:
+        15px;
+
+    font-weight:
+        800;
+
+}
+
+
+.vc-dashboard-category-content p {
+
+    margin:
+        0 0 11px;
+
+    color:
+        var(--dashboard-muted);
+
+    font-size:
+        10px;
+
+}
+
+
+.vc-dashboard-category-content span {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        5px;
+
+    color:
+        var(--dashboard-blue);
+
+    font-size:
+        10px;
+
+    font-weight:
+        800;
+
+}
+
+
+.vc-dashboard-category-content span i {
+
+    transition:
+        transform 0.2s ease;
+
+}
+
+
+.vc-dashboard-category-card:hover
+.vc-dashboard-category-content span i {
+
+    transform:
+        translateX(3px);
+
+}
+
+
+/* ============================================================
+   PRODUCT SECTION
+============================================================= */
+
+.vc-dashboard-products-section {
+
+    background:
+        #ffffff;
+
+}
+
+
+.vc-dashboard-product-slider-wrapper {
+
+    position:
+        relative;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+}
+
+
+.vc-dashboard-product-slider {
+
+    width:
+        100%;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap:
+        13px;
+
+    overflow:
+        hidden;
+
+}
+
+
+.vc-dashboard-product-card {
+
+    min-width:
+        0;
+
+    overflow:
+        hidden;
+
+    border:
+        1px solid #e3e7eb;
+
+    background:
+        #ffffff;
+
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease;
+
+}
+
+
+.vc-dashboard-product-card:hover {
+
+    transform:
+        translateY(-5px);
+
+    box-shadow:
+        0 12px 28px rgba(15,23,32,0.10);
+
+}
+
+
+.vc-dashboard-product-image {
+
+    position:
+        relative;
+
+    height:
+        225px;
+
+    overflow:
+        hidden;
+
+    background:
+        #f7f8f9;
+
+}
+
+
+.vc-dashboard-product-image img {
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    object-fit:
+        contain;
+
+    padding:
+        13px;
+
+    transition:
+        transform 0.3s ease;
+
+}
+
+
+.vc-dashboard-product-card:hover
+.vc-dashboard-product-image img {
+
+    transform:
+        scale(1.04);
+
+}
+
+
+.vc-dashboard-product-heart {
+
+    position:
+        absolute;
+
+    top:
+        10px;
+
+    right:
+        10px;
+
+    width:
+        33px;
+
+    height:
+        33px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border:
+        1px solid #dce2e7;
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(255,255,255,0.96);
+
+    color:
+        #344452;
+
+    font-size:
+        14px;
+
+}
+
+
+.vc-dashboard-product-heart:hover {
+
+    color:
+        var(--dashboard-blue);
+
+}
+
+
+.vc-dashboard-product-body {
+
+    padding:
+        14px;
+
+}
+
+
+.vc-dashboard-product-brand {
+
+    display:
+        block;
+
+    margin-bottom:
+        3px;
+
+    color:
+        #5d6974;
+
+    font-size:
+        9px;
+
+    font-weight:
+        700;
+
+}
+
+
+.vc-dashboard-product-name {
+
+    display:
+        block;
+
+    min-height:
+        36px;
+
+    color:
+        var(--dashboard-text);
+
+    font-size:
+        13px;
+
+    font-weight:
+        800;
+
+    line-height:
+        1.35;
+
+}
+
+
+.vc-dashboard-product-name:hover {
+
+    color:
+        var(--dashboard-blue);
+
+}
+
+
+.vc-dashboard-rating {
+
+    margin:
+        7px 0;
+
+    color:
+        #345570;
+
+    font-size:
+        9px;
+
+}
+
+
+.vc-dashboard-price-row {
+
+    min-height:
+        23px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        7px;
+
+    margin-bottom:
+        9px;
+
+}
+
+
+.vc-dashboard-price-row strong {
+
+    color:
+        var(--dashboard-text);
+
+    font-size:
+        15px;
+
+    font-weight:
+        800;
+
+}
+
+
+.vc-dashboard-price-row del {
+
+    color:
+        #969da5;
+
+    font-size:
+        9px;
+
+}
+
+
+.vc-dashboard-add-cart {
+
+    width:
+        100%;
+
+    min-height:
+        36px;
+
+    border:
+        0;
+
+    border-radius:
+        4px;
+
+    background:
+        var(--dashboard-dark);
+
+    color:
+        #ffffff;
+
+    font-size:
+        10px;
+
+    font-weight:
+        750;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.vc-dashboard-add-cart:hover {
+
+    background:
+        #1d405e;
+
+    color:
+        #ffffff;
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+.vc-dashboard-out-of-stock {
+
+    opacity:
+        0.55;
+
+    cursor:
+        not-allowed;
+
+}
+
+
+.vc-dashboard-slider-button {
+
+    position:
+        absolute;
+
+    top:
+        50%;
+
+    z-index:
+        5;
+
+    width:
+        38px;
+
+    height:
+        38px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border:
+        1px solid #d9e1e7;
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(255,255,255,0.96);
+
+    color:
+        var(--dashboard-navy);
+
+    box-shadow:
+        0 5px 16px rgba(0,0,0,0.10);
+
+    transform:
+        translateY(-50%);
+
+}
+
+
+.vc-dashboard-slider-prev {
+
+    left:
+        -19px;
+
+}
+
+
+.vc-dashboard-slider-next {
+
+    right:
+        -19px;
+
+}
+
+
+/* ============================================================
+   DISCOVERY FALLBACK
+============================================================= */
+
+.vc-dashboard-discovery-slider {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap:
+        16px;
+
+}
+
+
+.vc-dashboard-discovery-card {
+
+    position:
+        relative;
+
+    min-height:
+        300px;
+
+    overflow:
+        hidden;
+
+    border-radius:
+        7px;
+
+    background:
+        #edf3f7;
+
+}
+
+
+.vc-dashboard-discovery-card img {
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    object-fit:
+        cover;
+
+}
+
+
+.vc-dashboard-discovery-card > div {
+
+    position:
+        absolute;
+
+    right:
+        0;
+
+    bottom:
+        0;
+
+    left:
+        0;
+
+    padding:
+        24px;
+
+    background:
+        linear-gradient(
+            transparent,
+            rgba(16,27,38,0.88)
+        );
+
+    color:
+        #ffffff;
+
+}
+
+
+.vc-dashboard-discovery-card span {
+
+    font-size:
+        9px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        1.3px;
+
+}
+
+
+.vc-dashboard-discovery-card h3 {
+
+    margin:
+        6px 0 10px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        25px;
+
+}
+
+
+.vc-dashboard-discovery-card a {
+
+    color:
+        #ffffff;
+
+    font-size:
+        11px;
+
+    font-weight:
+        800;
+
+}
+
+
+/* ============================================================
+   FEATURE STRIP
+============================================================= */
+
+.vc-dashboard-feature-strip {
+
+    border-top:
+        1px solid var(--dashboard-border);
+
+    border-bottom:
+        1px solid var(--dashboard-border);
+
+    background:
+        #fbfcfd;
+
+}
+
+
+.vc-dashboard-feature {
+
+    min-height:
+        115px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        12px;
+
+    padding:
+        18px;
+
+    border-right:
+        1px solid var(--dashboard-border);
+
+}
+
+
+.vc-dashboard-feature-strip
+.col-lg-3:last-child .vc-dashboard-feature {
+
+    border-right:
+        0;
+
+}
+
+
+.vc-dashboard-feature-icon {
+
+    width:
+        46px;
+
+    height:
+        46px;
+
+    flex:
+        0 0 46px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border:
+        1px solid #d2dce4;
+
+    border-radius:
+        50%;
+
+    color:
+        var(--dashboard-blue);
+
+    font-size:
+        19px;
+
+}
+
+
+.vc-dashboard-feature h3 {
+
+    margin:
+        0 0 3px;
+
+    color:
+        var(--dashboard-text);
+
+    font-size:
+        12px;
+
+    font-weight:
+        800;
+
+}
+
+
+.vc-dashboard-feature p {
+
+    margin:
+        0;
+
+    color:
+        var(--dashboard-muted);
+
+    font-size:
+        9px;
+
+    line-height:
+        1.45;
+
+}
+
+
+/* ============================================================
+   COLLECTION
+============================================================= */
+
+.vc-dashboard-collection {
+
+    padding:
+        64px 0;
+
+    background:
+        var(--dashboard-light);
+
+}
+
+
+.vc-dashboard-collection-image {
+
+    height:
+        355px;
+
+    overflow:
+        hidden;
+
+    border-radius:
+        7px;
+
+}
+
+
+.vc-dashboard-collection-image img {
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    object-fit:
+        cover;
+
+}
+
+
+.vc-dashboard-collection-content {
+
+    padding:
+        20px 25px;
+
+}
+
+
+.vc-dashboard-collection-content h2 {
+
+    margin:
+        0 0 15px;
+
+    color:
+        var(--dashboard-navy);
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        38px;
+
+    font-weight:
+        700;
+
+    line-height:
+        1.02;
+
+    letter-spacing:
+        -1px;
+
+}
+
+
+.vc-dashboard-collection-content p {
+
+    max-width:
+        500px;
+
+    margin:
+        0 0 22px;
+
+    color:
+        var(--dashboard-muted);
+
+    font-size:
+        13px;
+
+    line-height:
+        1.7;
+
+}
+
+
+/* ============================================================
+   PROMOS
+============================================================= */
+
+.vc-dashboard-promos {
+
+    background:
+        #ffffff;
+
+}
+
+
+.vc-dashboard-promo {
+
+    position:
+        relative;
+
+    min-height:
+        225px;
+
+    overflow:
+        hidden;
+
+    border-radius:
+        7px;
+
+    background:
+        #edf4f9;
+
+}
+
+
+.vc-dashboard-promo img {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    object-fit:
+        cover;
+
+    transition:
+        transform 0.5s ease;
+
+}
+
+
+.vc-dashboard-promo:hover img {
+
+    transform:
+        scale(1.03);
+
+}
+
+
+.vc-dashboard-promo-overlay {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(237,244,249,0.97) 0%,
+            rgba(237,244,249,0.75) 46%,
+            rgba(237,244,249,0.05) 100%
+        );
+
+}
+
+
+.vc-dashboard-promo-content {
+
+    position:
+        relative;
+
+    z-index:
+        2;
+
+    max-width:
+        65%;
+
+    padding:
+        35px 30px;
+
+}
+
+
+.vc-dashboard-promo-content > span {
+
+    color:
+        var(--dashboard-blue);
+
+    font-size:
+        9px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        1.3px;
+
+}
+
+
+.vc-dashboard-promo-content h2 {
+
+    margin:
+        7px 0 4px;
+
+    color:
+        var(--dashboard-navy);
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        29px;
+
+    font-weight:
+        700;
+
+}
+
+
+.vc-dashboard-promo-content p {
+
+    margin:
+        0 0 15px;
+
+    color:
+        #4b5a65;
+
+    font-size:
+        11px;
+
+}
+
+
+.vc-dashboard-promo-content a {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        6px;
+
+    min-height:
+        35px;
+
+    padding:
+        0 16px;
+
+    border-radius:
+        18px;
+
+    background:
+        var(--dashboard-dark);
+
+    color:
+        #ffffff;
+
+    font-size:
+        10px;
+
+    font-weight:
+        750;
+
+}
+
+
+/* ============================================================
+   WHY VISIONCART
+============================================================= */
+
+.vc-dashboard-why {
+
+    padding:
+        64px 0;
+
+    background:
+        #ffffff;
+
+}
+
+
+.vc-dashboard-why-heading {
+
+    max-width:
+        650px;
+
+    margin:
+        0 auto 30px;
+
+    text-align:
+        center;
+
+}
+
+
+.vc-dashboard-why-heading h2 {
+
+    margin:
+        0 0 7px;
+
+    color:
+        var(--dashboard-text);
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        34px;
+
+    font-weight:
+        700;
+
+}
+
+
+.vc-dashboard-why-heading p {
+
+    margin:
+        0;
+
+    color:
+        var(--dashboard-muted);
+
+    font-size:
+        12px;
+
+}
+
+
+.vc-dashboard-why-card {
+
+    height:
+        100%;
+
+    padding:
+        25px 20px;
+
+    border:
+        1px solid #e5e9ed;
+
+    border-radius:
+        6px;
+
+    background:
+        #ffffff;
+
+    text-align:
+        center;
+
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease;
+
+}
+
+
+.vc-dashboard-why-card:hover {
+
+    transform:
+        translateY(-4px);
+
+    box-shadow:
+        0 12px 28px rgba(15,23,32,0.08);
+
+}
+
+
+.vc-dashboard-why-icon {
+
+    width:
+        51px;
+
+    height:
+        51px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    margin:
+        0 auto 13px;
+
+    border-radius:
+        50%;
+
+    background:
+        #eef5fa;
+
+    color:
+        var(--dashboard-blue);
+
+    font-size:
+        20px;
+
+}
+
+
+.vc-dashboard-why-card h3 {
+
+    margin:
+        0 0 7px;
+
+    color:
+        var(--dashboard-text);
+
+    font-size:
+        13px;
+
+    font-weight:
+        800;
+
+}
+
+
+.vc-dashboard-why-card p {
+
+    margin:
+        0;
+
+    color:
+        var(--dashboard-muted);
+
+    font-size:
+        10px;
+
+    line-height:
+        1.55;
+
+}
+
+
+/* ============================================================
+   ACCOUNT SUMMARY
+============================================================= */
+
+.vc-dashboard-account-summary {
+
+    padding:
+        35px 0;
+
+    background:
+        var(--dashboard-light);
+
+    border-top:
+        1px solid var(--dashboard-border);
+
+}
+
+
+.vc-dashboard-account-box {
+
+    min-height:
+        110px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        17px;
+
+    padding:
+        22px 25px;
+
+    border:
+        1px solid var(--dashboard-border);
+
+    background:
+        #ffffff;
+
+}
+
+
+.vc-dashboard-account-avatar {
+
+    width:
+        58px;
+
+    height:
+        58px;
+
+    flex:
+        0 0 58px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--dashboard-navy);
+
+    color:
+        #ffffff;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        22px;
+
+}
+
+
+.vc-dashboard-account-copy {
+
+    flex:
+        1;
+
+    min-width:
+        0;
+
+}
+
+
+.vc-dashboard-account-copy > span {
+
+    color:
+        var(--dashboard-blue);
+
+    font-size:
+        9px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        1.2px;
+
+}
+
+
+.vc-dashboard-account-copy h2 {
+
+    margin:
+        4px 0 2px;
+
+    color:
+        var(--dashboard-navy);
+
+    font-size:
+        20px;
+
+    font-weight:
+        800;
+
+}
+
+
+.vc-dashboard-account-copy p {
+
+    margin:
+        0;
+
+    color:
+        var(--dashboard-muted);
+
+    font-size:
+        10px;
+
+    overflow-wrap:
+        anywhere;
+
+}
+
+
+.vc-dashboard-account-actions {
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        10px;
+
+}
+
+
+.vc-dashboard-account-link {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        7px;
+
+    padding:
+        9px 13px;
+
+    border:
+        1px solid var(--dashboard-border);
+
+    color:
+        var(--dashboard-navy);
+
+    font-size:
+        10px;
+
+    font-weight:
+        800;
+
+}
+
+
+.vc-dashboard-account-link:hover {
+
+    border-color:
+        var(--dashboard-blue);
+
+    color:
+        var(--dashboard-blue);
+
+}
+
+
+/* ============================================================
+   FOOTER
+============================================================= */
+
+.vc-dashboard-footer {
+
+    background:
+        #f7f9fa;
+
+    border-top:
+        1px solid #e1e6ea;
+
+}
+
+
+.vc-dashboard-footer-main {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1.55fr
+        0.8fr
+        0.9fr
+        0.9fr
+        1.1fr;
+
+    gap:
+        35px;
+
+    padding:
+        55px 0 45px;
+
+}
+
+
+.vc-dashboard-footer-logo {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
+    color:
+        var(--dashboard-text);
+
+    font-size:
+        23px;
+
+    font-weight:
+        800;
+
+}
+
+
+.vc-dashboard-footer-logo:hover {
+
+    color:
+        var(--dashboard-text);
+
+}
+
+
+.vc-dashboard-footer-logo i {
+
+    color:
+        var(--dashboard-blue);
+
+    font-size:
+        31px;
+
+}
+
+
+.vc-dashboard-footer-tagline {
+
+    margin-top:
+        3px;
+
+    color:
+        #697681;
+
+    font-size:
+        9px;
+
+    font-weight:
+        650;
+
+}
+
+
+.vc-dashboard-footer-brand p {
+
+    max-width:
+        330px;
+
+    margin:
+        15px 0 18px;
+
+    color:
+        #68747f;
+
+    font-size:
+        11px;
+
+    line-height:
+        1.65;
+
+}
+
+
+.vc-dashboard-socials {
+
+    display:
+        flex;
+
+    gap:
+        7px;
+
+}
+
+
+.vc-dashboard-socials span {
+
+    width:
+        30px;
+
+    height:
+        30px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border:
+        1px solid #d7dfe5;
+
+    border-radius:
+        50%;
+
+    background:
+        #ffffff;
+
+    color:
+        #34485a;
+
+    font-size:
+        12px;
+
+}
+
+
+.vc-dashboard-footer-column h3 {
+
+    margin:
+        0 0 15px;
+
+    color:
+        var(--dashboard-text);
+
+    font-size:
+        12px;
+
+    font-weight:
+        800;
+
+}
+
+
+.vc-dashboard-footer-column > a {
+
+    display:
+        block;
+
+    width:
+        fit-content;
+
+    margin-bottom:
+        8px;
+
+    color:
+        #697681;
+
+    font-size:
+        10px;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.vc-dashboard-footer-column > a:hover {
+
+    color:
+        var(--dashboard-blue);
+
+    transform:
+        translateX(2px);
+
+}
+
+
+.vc-dashboard-footer-message p {
+
+    margin:
+        0 0 16px;
+
+    color:
+        #697681;
+
+    font-size:
+        10px;
+
+    line-height:
+        1.65;
+
+}
+
+
+.vc-dashboard-footer-shop {
+
+    display:
+        inline-flex !important;
+
+    align-items:
+        center;
+
+    gap:
+        6px;
+
+    padding:
+        9px 13px;
+
+    border:
+        1px solid var(--dashboard-navy);
+
+    background:
+        var(--dashboard-navy);
+
+    color:
+        #ffffff !important;
+
+    font-size:
+        10px !important;
+
+    font-weight:
+        750;
+
+}
+
+
+.vc-dashboard-footer-shop:hover {
+
+    background:
+        #173d5e;
+
+    transform:
+        none !important;
+
+}
+
+
+.vc-dashboard-footer-bottom {
+
+    min-height:
+        52px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        15px;
+
+    border-top:
+        1px solid #dfe5e9;
+
+    color:
+        #7a858e;
+
+    font-size:
+        9px;
+
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================= */
+
+@media (max-width: 1199.98px) {
+
+    .vc-dashboard-nav-link {
+
+        padding:
+            0 14px;
+
+    }
+
+
+    .vc-dashboard-header-row {
+
+        gap:
+            18px;
+
+    }
+
+
+    .vc-dashboard-logo {
+
+        min-width:
+            185px;
+
+    }
+
+
+    .vc-dashboard-product-slider {
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+    }
+
+
+    .vc-dashboard-footer-main {
+
+        grid-template-columns:
+            1.4fr
+            0.8fr
+            0.9fr
+            0.9fr;
+
+    }
+
+}
+
+
+@media (max-width: 991.98px) {
+
+    .vc-dashboard-topbar-left span:nth-of-type(n+4),
+    .vc-dashboard-top-divider {
+
+        display:
+            none;
+
+    }
+
+
+    .vc-dashboard-header-row {
+
+        flex-wrap:
+            wrap;
+
+        padding:
+            14px 0;
+
+    }
+
+
+    .vc-dashboard-logo {
+
+        min-width:
+            auto;
+
+    }
+
+
+    .vc-dashboard-search {
+
+        order:
+            3;
+
+        flex:
+            0 0 100%;
+
+        max-width:
+            none;
+
+    }
+
+
+    .vc-dashboard-user-area {
+
+        margin-left:
+            auto;
+
+    }
+
+
+    .vc-dashboard-nav-row {
+
+        justify-content:
+            flex-start;
+
+        overflow-x:
+            auto;
+
+        scrollbar-width:
+            none;
+
+    }
+
+
+    .vc-dashboard-nav-row::-webkit-scrollbar {
+
+        display:
+            none;
+
+    }
+
+
+    .vc-dashboard-nav-link {
+
+        flex:
+            0 0 auto;
+
+        padding:
+            0 15px;
+
+    }
+
+
+    .vc-dashboard-hero {
+
+        min-height:
+            500px;
+
+    }
+
+
+    .vc-dashboard-hero-overlay {
+
+        background:
+            linear-gradient(
+                90deg,
+                #edf3f7 0%,
+                rgba(237,243,247,0.95) 48%,
+                rgba(237,243,247,0.35) 100%
+            );
+
+    }
+
+
+    .vc-dashboard-benefit-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .vc-dashboard-benefit:nth-child(2) {
+
+        border-right:
+            0;
+
+    }
+
+
+    .vc-dashboard-benefit:nth-child(-n+2) {
+
+        border-bottom:
+            1px solid rgba(16,42,67,0.10);
+
+    }
+
+
+    .vc-dashboard-shortcuts-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .vc-dashboard-product-slider {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+    }
+
+
+    .vc-dashboard-discovery-slider {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .vc-dashboard-discovery-card:last-child {
+
+        display:
+            none;
+
+    }
+
+
+    .vc-dashboard-footer-main {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .vc-dashboard-footer-brand {
+
+        grid-column:
+            span 2;
+
+    }
+
+}
+
+
+@media (max-width: 767.98px) {
+
+    .vc-dashboard-container {
+
+        width:
+            min(100% - 28px, 1240px);
+
+    }
+
+
+    .vc-dashboard-topbar {
+
+        display:
+            none;
+
+    }
+
+
+    .vc-dashboard-header-row {
+
+        min-height:
+            75px;
+
+    }
+
+
+    .vc-dashboard-logo strong {
+
+        font-size:
+            21px;
+
+    }
+
+
+    .vc-dashboard-logo-icon {
+
+        font-size:
+            29px;
+
+    }
+
+
+    .vc-dashboard-user-area {
+
+        gap:
+            7px;
+
+    }
+
+
+    .vc-dashboard-user-action,
+    .vc-dashboard-logout {
+
+        min-width:
+            37px;
+
+    }
+
+
+    .vc-dashboard-user-action span,
+    .vc-dashboard-logout span {
+
+        display:
+            none;
+
+    }
+
+
+    .vc-dashboard-user-action i,
+    .vc-dashboard-logout i {
+
+        font-size:
+            19px;
+
+    }
+
+
+    .vc-dashboard-nav-link {
+
+        font-size:
+            11px;
+
+        padding:
+            0 12px;
+
+    }
+
+
+    .vc-dashboard-nav-link i {
+
+        font-size:
+            12px;
+
+    }
+
+
+    .vc-dashboard-hero {
+
+        min-height:
+            560px;
+
+    }
+
+
+    .vc-dashboard-hero-content {
+
+        padding:
+            55px 0 145px;
+
+    }
+
+
+    .vc-dashboard-hero-content h1 {
+
+        font-size:
+            45px;
+
+        letter-spacing:
+            -1.3px;
+
+    }
+
+
+    .vc-dashboard-hero-content p {
+
+        font-size:
+            13px;
+
+    }
+
+
+    .vc-dashboard-hero-benefits {
+
+        padding:
+            9px 0;
+
+    }
+
+
+    .vc-dashboard-benefit {
+
+        min-height:
+            45px;
+
+        padding:
+            0 9px;
+
+    }
+
+
+    .vc-dashboard-benefit > i {
+
+        font-size:
+            17px;
+
+    }
+
+
+    .vc-dashboard-benefit strong {
+
+        font-size:
+            9px;
+
+    }
+
+
+    .vc-dashboard-benefit span {
+
+        font-size:
+            8px;
+
+    }
+
+
+    .vc-dashboard-section {
+
+        padding:
+            50px 0;
+
+    }
+
+
+    .vc-dashboard-section-header {
+
+        align-items:
+            flex-start;
+
+    }
+
+
+    .vc-dashboard-section-header h2 {
+
+        font-size:
+            25px;
+
+    }
+
+
+    .vc-dashboard-shortcuts-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .vc-dashboard-category-image {
+
+        height:
+            170px;
+
+    }
+
+
+    .vc-dashboard-product-slider {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap:
+            10px;
+
+    }
+
+
+    .vc-dashboard-product-image {
+
+        height:
+            185px;
+
+    }
+
+
+    .vc-dashboard-product-body {
+
+        padding:
+            11px;
+
+    }
+
+
+    .vc-dashboard-product-name {
+
+        font-size:
+            11px;
+
+    }
+
+
+    .vc-dashboard-price-row strong {
+
+        font-size:
+            13px;
+
+    }
+
+
+    .vc-dashboard-slider-button {
+
+        display:
+            none;
+
+    }
+
+
+    .vc-dashboard-discovery-slider {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .vc-dashboard-discovery-card:last-child {
+
+        display:
+            block;
+
+    }
+
+
+    .vc-dashboard-feature {
+
+        border-right:
+            0;
+
+        border-bottom:
+            1px solid var(--dashboard-border);
+
+    }
+
+
+    .vc-dashboard-feature-strip
+    .col-lg-3:last-child .vc-dashboard-feature {
+
+        border-bottom:
+            0;
+
+    }
+
+
+    .vc-dashboard-collection {
+
+        padding:
+            50px 0;
+
+    }
+
+
+    .vc-dashboard-collection-image {
+
+        height:
+            300px;
+
+    }
+
+
+    .vc-dashboard-collection-content {
+
+        padding:
+            10px 0;
+
+    }
+
+
+    .vc-dashboard-collection-content h2 {
+
+        font-size:
+            32px;
+
+    }
+
+
+    .vc-dashboard-promo {
+
+        min-height:
+            210px;
+
+    }
+
+
+    .vc-dashboard-account-box {
+
+        flex-wrap:
+            wrap;
+
+    }
+
+
+    .vc-dashboard-account-actions {
+
+        width:
+            100%;
+
+    }
+
+
+    .vc-dashboard-footer-main {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap:
+            28px;
+
+    }
+
+
+    .vc-dashboard-footer-brand {
+
+        grid-column:
+            span 2;
+
+    }
+
+
+    .vc-dashboard-footer-message {
+
+        grid-column:
+            span 2;
+
+    }
+
+
+    .vc-dashboard-footer-bottom {
+
+        flex-direction:
+            column;
+
+        align-items:
+            flex-start;
+
+        justify-content:
+            center;
+
+        padding:
+            13px 0;
+
+    }
+
+}
+
+
+@media (max-width: 575.98px) {
+
+    .vc-dashboard-container {
+
+        width:
+            calc(100% - 24px);
+
+    }
+
+
+    .vc-dashboard-header-row {
+
+        gap:
+            12px;
+
+    }
+
+
+    .vc-dashboard-logo {
+
+        flex:
+            1;
+
+    }
+
+
+    .vc-dashboard-logo small {
+
+        display:
+            none;
+
+    }
+
+
+    .vc-dashboard-search input {
+
+        height:
+            40px;
+
+    }
+
+
+    .vc-dashboard-search button {
+
+        height:
+            40px;
+
+    }
+
+
+    .vc-dashboard-nav-link {
+
+        padding:
+            0 10px;
+
+    }
+
+
+    .vc-dashboard-nav-link i {
+
+        display:
+            none;
+
+    }
+
+
+    .vc-dashboard-hero {
+
+        min-height:
+            575px;
+
+    }
+
+
+    .vc-dashboard-hero-overlay {
+
+        background:
+            linear-gradient(
+                90deg,
+                rgba(237,243,247,0.98) 0%,
+                rgba(237,243,247,0.88) 65%,
+                rgba(237,243,247,0.48) 100%
+            );
+
+    }
+
+
+    .vc-dashboard-hero-content {
+
+        padding:
+            50px 0 160px;
+
+    }
+
+
+    .vc-dashboard-hero-content h1 {
+
+        font-size:
+            38px;
+
+    }
+
+
+    .vc-dashboard-hero-actions {
+
+        flex-direction:
+            column;
+
+    }
+
+
+    .vc-dashboard-primary-button,
+    .vc-dashboard-outline-button {
+
+        width:
+            100%;
+
+    }
+
+
+    .vc-dashboard-benefit-grid {
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+
+    .vc-dashboard-benefit {
+
+        padding:
+            0 6px;
+
+    }
+
+
+    .vc-dashboard-benefit > i {
+
+        font-size:
+            15px;
+
+    }
+
+
+    .vc-dashboard-benefit strong {
+
+        font-size:
+            8px;
+
+    }
+
+
+    .vc-dashboard-benefit span {
+
+        display:
+            none;
+
+    }
+
+
+    .vc-dashboard-section-header {
+
+        display:
+            block;
+
+    }
+
+
+    .vc-dashboard-section-header .vc-dashboard-view-all {
+
+        margin-top:
+            10px;
+
+    }
+
+
+    .vc-dashboard-product-slider {
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+
+    .vc-dashboard-product-image {
+
+        height:
+            155px;
+
+    }
+
+
+    .vc-dashboard-product-heart {
+
+        width:
+            28px;
+
+        height:
+            28px;
+
+        font-size:
+            12px;
+
+    }
+
+
+    .vc-dashboard-product-brand {
+
+        font-size:
+            8px;
+
+    }
+
+
+    .vc-dashboard-product-name {
+
+        min-height:
+            31px;
+
+        font-size:
+            10px;
+
+    }
+
+
+    .vc-dashboard-rating {
+
+        font-size:
+            8px;
+
+    }
+
+
+    .vc-dashboard-price-row {
+
+        gap:
+            4px;
+
+    }
+
+
+    .vc-dashboard-price-row strong {
+
+        font-size:
+            12px;
+
+    }
+
+
+    .vc-dashboard-price-row del {
+
+        font-size:
+            8px;
+
+    }
+
+
+    .vc-dashboard-add-cart {
+
+        min-height:
+            32px;
+
+        font-size:
+            9px;
+
+    }
+
+
+    .vc-dashboard-promo-content {
+
+        max-width:
+            80%;
+
+        padding:
+            28px 22px;
+
+    }
+
+
+    .vc-dashboard-promo-content h2 {
+
+        font-size:
+            24px;
+
+    }
+
+
+    .vc-dashboard-footer-main {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .vc-dashboard-footer-brand,
+    .vc-dashboard-footer-message {
+
+        grid-column:
+            span 1;
+
+    }
+
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+============================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .vc-dashboard-home *,
+    .vc-dashboard-home *::before,
+    .vc-dashboard-home *::after {
+
+        animation-duration:
+            0.01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            0.01ms !important;
+
+        scroll-behavior:
+            auto !important;
+
+    }
+
+}
+
+
+
+/* VisionCart User-Side master logo — identical to Dashboard */
+.vc-address-page-shell .vc-dashboard-logo,
+.vc-address-page-shell .vc-dashboard-logo:hover,
+.vc-address-page-shell .vc-dashboard-logo:focus {
+    color: var(--dashboard-text);
+    text-decoration: none;
+}
+
+.vc-address-page-shell .vc-dashboard-logo-icon {
+    color: var(--dashboard-blue);
+    font-size: 34px;
+    line-height: 1;
+}
+
+
+/* ============================================================
+   USER-SIDE FIXES — ONLY THE TWO REQUESTED ITEMS
+   1. Use the exact VisionCart master logo image.
+   2. Keep logged-in Home/Logo navigation inside User Dashboard.
+   ============================================================ */
+body > .navbar,
+body > footer {
+    display: none !important;
+}
+
+.vc-address-page-shell .vc-dashboard-logo {
+    display: flex;
+    align-items: center;
+    min-width: 205px;
+    height: auto;
+}
+
+.vc-address-page-shell .vc-dashboard-master-logo-image {
+    display: block;
+    width: 220px;
+    height: auto;
+    max-width: 100%;
+}
+
+.vc-address-page-shell .vc-dashboard-footer-logo {
+    display: inline-flex;
+    align-items: center;
+}
+
+.vc-address-page-shell .vc-dashboard-footer-master-logo-image {
+    display: block;
+    width: 220px;
+    height: auto;
+    max-width: 100%;
+}
+
+</style>
+
+
+<script>
+
+/* ============================================================
+   PRODUCT SLIDESHOW
+   Frontend only.
+============================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const slider =
+            document.getElementById(
+                "dashboardProductSlider"
+            );
+
+        const previousButton =
+            document.querySelector(
+                ".vc-dashboard-slider-prev"
+            );
+
+        const nextButton =
+            document.querySelector(
+                ".vc-dashboard-slider-next"
+            );
+
+
+        if (!slider) {
+
+            return;
+
+        }
+
+
+        function getScrollAmount() {
+
+            const firstCard =
+                slider.querySelector(
+                    ".vc-dashboard-product-card"
+                );
+
+            if (!firstCard) {
+
+                return 300;
+
+            }
+
+
+            const gap =
+                parseInt(
+                    window.getComputedStyle(
+                        slider
+                    ).columnGap
+                ) || 13;
+
+
+            return (
+                firstCard.offsetWidth +
+                gap
+            );
+
+        }
+
+
+        if (previousButton) {
+
+            previousButton.addEventListener(
+                "click",
+                function () {
+
+                    slider.scrollBy({
+
+                        left:
+                            -getScrollAmount(),
+
+                        behavior:
+                            "smooth"
+
+                    });
+
+                }
+            );
+
+        }
+
+
+        if (nextButton) {
+
+            nextButton.addEventListener(
+                "click",
+                function () {
+
+                    slider.scrollBy({
+
+                        left:
+                            getScrollAmount(),
+
+                        behavior:
+                            "smooth"
+
+                    });
+
+                }
+            );
+
+        }
+
+
+        let autoSlideTimer;
+
+
+        function startAutoSlide() {
+
+            autoSlideTimer =
+                setInterval(
+                    function () {
+
+                        if (
+                            slider.scrollWidth <=
+                            slider.clientWidth
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        const maxScroll =
+                            slider.scrollWidth -
+                            slider.clientWidth;
+
+
+                        if (
+                            slider.scrollLeft >=
+                            maxScroll - 10
+                        ) {
+
+                            slider.scrollTo({
+
+                                left:
+                                    0,
+
+                                behavior:
+                                    "smooth"
+
+                            });
+
+                        } else {
+
+                            slider.scrollBy({
+
+                                left:
+                                    getScrollAmount(),
+
+                                behavior:
+                                    "smooth"
+
+                            });
+
+                        }
+
+                    },
+                    4500
+                );
+
+        }
+
+
+        function stopAutoSlide() {
+
+            if (autoSlideTimer) {
+
+                clearInterval(
+                    autoSlideTimer
+                );
+
+            }
+
+        }
+
+
+        slider.addEventListener(
+            "mouseenter",
+            stopAutoSlide
+        );
+
+
+        slider.addEventListener(
+            "mouseleave",
+            startAutoSlide
+        );
+
+
+        startAutoSlide();
+
+    }
+);
+
+</script>
+
+
+
+/* ADDRESS PAGE — existing address design preserved */
+
+
+<style>
+
+/* ============================================================
+   ADDRESS PAGE HEADER
+============================================================= */
+
+.vc-addresses-page-header {
+
+    padding:
+        58px 0;
+}
+
+
+/* ============================================================
+   ADDRESS SECTION
+============================================================= */
+
+.vc-addresses-section {
+
+    background:
+        var(--vc-white);
+}
+
+
+/* ============================================================
+   SECTION HEADING
+============================================================= */
+
+.vc-addresses-heading {
+
+    display:
+        flex;
+
+    align-items:
+        flex-end;
+
+    justify-content:
+        space-between;
+
+    gap:
+        25px;
+
+    margin-bottom:
+        30px;
+
+    padding-bottom:
+        19px;
+
+    border-bottom:
+        1px solid var(--vc-border);
+}
+
+.vc-addresses-heading h2 {
+
+    margin:
+        0;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(1.9rem, 3vw, 2.5rem);
+
+    font-weight:
+        400;
+
+    line-height:
+        1.1;
+
+    letter-spacing:
+        -0.04em;
+}
+
+.vc-addresses-heading .vc-eyebrow {
+
+    margin-bottom:
+        7px;
+}
+
+.vc-address-add-button {
+
+    white-space:
+        nowrap;
+}
+
+
+/* ============================================================
+   ADDRESS CARD
+============================================================= */
+
+.vc-address-card {
+
+    height:
+        100%;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    border:
+        1px solid var(--vc-border);
+
+    background:
+        var(--vc-white);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.vc-address-card:hover {
+
+    transform:
+        translateY(-4px);
+
+    box-shadow:
+        var(--vc-shadow-sm);
+}
+
+.vc-address-card-default {
+
+    border-color:
+        #cfc7b8;
+
+    box-shadow:
+        inset 0 2px 0 var(--vc-black);
+}
+
+
+/* ============================================================
+   CARD HEADER
+============================================================= */
+
+.vc-address-card-header {
+
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    justify-content:
+        space-between;
+
+    gap:
+        12px;
+
+    padding:
+        20px;
+
+    border-bottom:
+        1px solid var(--vc-border);
+
+    background:
+        #fcfcfa;
+}
+
+.vc-address-type {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        11px;
+
+    min-width:
+        0;
+}
+
+.vc-address-type-icon {
+
+    width:
+        38px;
+
+    height:
+        38px;
+
+    flex:
+        0 0 38px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border:
+        1px solid var(--vc-border);
+
+    background:
+        var(--vc-white);
+
+    color:
+        var(--vc-black);
+
+    font-size:
+        0.78rem;
+}
+
+.vc-address-type div {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        3px;
+
+    min-width:
+        0;
+}
+
+.vc-address-type div span {
+
+    color:
+        var(--vc-muted);
+
+    font-size:
+        0.55rem;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.08em;
+
+    text-transform:
+        uppercase;
+}
+
+.vc-address-type div strong {
+
+    overflow:
+        hidden;
+
+    color:
+        var(--vc-black);
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        0.95rem;
+
+    font-weight:
+        400;
+
+    text-overflow:
+        ellipsis;
+
+    white-space:
+        nowrap;
+}
+
+
+/* ============================================================
+   DEFAULT BADGE
+============================================================= */
+
+.vc-default-badge {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        5px;
+
+    padding:
+        5px 8px;
+
+    border:
+        1px solid #dce8df;
+
+    background:
+        #f5faf6;
+
+    color:
+        var(--vc-success);
+
+    font-size:
+        0.55rem;
+
+    font-weight:
+        700;
+
+    white-space:
+        nowrap;
+}
+
+.vc-default-badge i {
+
+    font-size:
+        0.6rem;
+}
+
+
+/* ============================================================
+   CARD BODY
+============================================================= */
+
+.vc-address-card-body {
+
+    flex:
+        1;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        12px;
+
+    padding:
+        20px;
+}
+
+.vc-address-detail {
+
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    gap:
+        10px;
+
+    color:
+        var(--vc-muted);
+
+    font-size:
+        0.68rem;
+
+    line-height:
+        1.55;
+}
+
+.vc-address-detail i {
+
+    width:
+        15px;
+
+    flex:
+        0 0 15px;
+
+    margin-top:
+        2px;
+
+    color:
+        var(--vc-black);
+
+    font-size:
+        0.72rem;
+}
+
+.vc-address-detail span {
+
+    word-break:
+        break-word;
+}
+
+.vc-address-location span {
+
+    color:
+        var(--vc-black);
+
+    line-height:
+        1.7;
+}
+
+
+/* ============================================================
+   CARD ACTIONS
+============================================================= */
+
+.vc-address-card-actions {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        8px;
+
+    padding:
+        14px 20px;
+
+    border-top:
+        1px solid var(--vc-border);
+
+    background:
+        #fcfcfa;
+}
+
+.vc-address-card-actions form {
+
+    margin:
+        0;
+}
+
+.vc-address-card-actions button,
+.vc-address-card-actions a {
+
+    min-height:
+        30px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        5px;
+
+    padding:
+        5px 8px;
+
+    border:
+        0;
+
+    background:
+        transparent;
+
+    color:
+        var(--vc-muted);
+
+    font-size:
+        0.57rem;
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+.vc-address-edit:hover {
+
+    color:
+        var(--vc-black);
+}
+
+.vc-address-default-button:hover {
+
+    color:
+        var(--vc-success);
+}
+
+.vc-address-delete:hover {
+
+    color:
+        var(--vc-danger);
+}
+
+
+/* ============================================================
+   EMPTY STATE
+============================================================= */
+
+.vc-empty-addresses {
+
+    max-width:
+        720px;
+
+    margin:
+        10px auto 45px;
+
+    padding:
+        75px 25px;
+
+    border:
+        1px solid var(--vc-border);
+
+    background:
+        var(--vc-off-white);
+
+    text-align:
+        center;
+}
+
+.vc-empty-address-icon {
+
+    width:
+        78px;
+
+    height:
+        78px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    margin:
+        0 auto 23px;
+
+    border:
+        1px solid var(--vc-border);
+
+    border-radius:
+        50%;
+
+    background:
+        var(--vc-white);
+
+    font-size:
+        1.8rem;
+}
+
+.vc-empty-addresses h2 {
+
+    margin:
+        0;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        2.25rem;
+
+    font-weight:
+        400;
+
+    line-height:
+        1.15;
+
+    letter-spacing:
+        -0.04em;
+}
+
+.vc-empty-addresses p {
+
+    max-width:
+        460px;
+
+    margin:
+        12px auto 25px;
+
+    color:
+        var(--vc-muted);
+
+    font-size:
+        0.75rem;
+
+    line-height:
+        1.7;
+}
+
+
+/* ============================================================
+   INFORMATION SECTION
+============================================================= */
+
+.vc-address-info-section {
+
+    padding:
+        0 0 75px;
+
+    background:
+        var(--vc-white);
+}
+
+.vc-address-info-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    border-top:
+        1px solid var(--vc-border);
+
+    border-bottom:
+        1px solid var(--vc-border);
+}
+
+.vc-address-info-item {
+
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    gap:
+        12px;
+
+    padding:
+        25px 20px;
+}
+
+.vc-address-info-item + .vc-address-info-item {
+
+    border-left:
+        1px solid var(--vc-border);
+}
+
+.vc-address-info-icon {
+
+    width:
+        35px;
+
+    height:
+        35px;
+
+    flex:
+        0 0 35px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border:
+        1px solid var(--vc-border);
+
+    font-size:
+        0.75rem;
+}
+
+.vc-address-info-item strong {
+
+    display:
+        block;
+
+    margin-bottom:
+        5px;
+
+    color:
+        var(--vc-black);
+
+    font-size:
+        0.65rem;
+
+    font-weight:
+        700;
+}
+
+.vc-address-info-item p {
+
+    margin:
+        0;
+
+    color:
+        var(--vc-muted);
+
+    font-size:
+        0.6rem;
+
+    line-height:
+        1.55;
+}
+
+
+/* ============================================================
+   TABLET
+============================================================= */
+
+@media (max-width: 991.98px) {
+
+    .vc-address-info-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .vc-address-info-item + .vc-address-info-item {
+
+        border-top:
+            1px solid var(--vc-border);
+
+        border-left:
+            0;
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================= */
+
+@media (max-width: 767.98px) {
+
+    .vc-addresses-page-header {
+
+        padding:
+            45px 0;
+    }
+
+    .vc-addresses-section {
+
+        padding-top:
+            30px !important;
+    }
+
+    .vc-addresses-heading {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+        gap:
+            15px;
+    }
+
+    .vc-address-add-button {
+
+        width:
+            100%;
+    }
+
+    .vc-address-card-header {
+
+        padding:
+            17px;
+    }
+
+    .vc-address-card-body {
+
+        padding:
+            18px 17px;
+    }
+
+    .vc-address-card-actions {
+
+        padding:
+            12px 17px;
+    }
+
+    .vc-empty-addresses {
+
+        padding:
+            60px 20px;
+    }
+
+    .vc-empty-addresses h2 {
+
+        font-size:
+            1.9rem;
+    }
+
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+============================================================= */
+
+@media (max-width: 575.98px) {
+
+    .vc-address-card-header {
+
+        flex-direction:
+            column;
+    }
+
+    .vc-address-type {
+
+        width:
+            100%;
+    }
+
+}
+
+</style>
+
+
+{% endblock %}

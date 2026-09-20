@@ -1,0 +1,110 @@
+{% extends "super_admin_base.html" %}
+
+{% block title %}Super Admin Dashboard | VisionCart{% endblock %}
+
+{% block content %}
+<div class="sa-page">
+    <section class="sa-hero">
+        <div>
+            <span class="sa-eyebrow">SUPER ADMINISTRATION</span>
+            <h1>System Dashboard</h1>
+            <p>Manage VisionCart administration, Web Admin accounts and store operations from one secure workspace.</p>
+        </div>
+        <div class="sa-identity">
+            <div class="sa-identity-icon"><i class="bi bi-shield-check"></i></div>
+            <div>
+                <span>Signed in as</span>
+                <strong>{{ request.user.username }}</strong>
+                <small>Super Admin</small>
+            </div>
+        </div>
+    </section>
+
+    <section class="sa-stats">
+        <div class="sa-stat"><span>Total Web Admins</span><strong>{{ total_web_admins }}</strong><small>Management accounts</small></div>
+        <div class="sa-stat"><span>Active Web Admins</span><strong>{{ active_web_admins }}</strong><small>Currently enabled</small></div>
+        <div class="sa-stat"><span>Inactive Web Admins</span><strong>{{ inactive_web_admins }}</strong><small>Currently disabled</small></div>
+    </section>
+
+    <section class="sa-section">
+        <div class="sa-section-head">
+            <div>
+                <span class="sa-eyebrow">ADMINISTRATION</span>
+                <h2>Control Center</h2>
+                <p>Access the areas that require Super Admin authority.</p>
+            </div>
+        </div>
+
+        <div class="sa-module-grid">
+            <a href="{% url 'super-admin-web-admin-list' %}" class="sa-module">
+                <div class="sa-module-icon"><i class="bi bi-person-gear"></i></div>
+                <div><span>ACCOUNT CONTROL</span><h3>Web Admin Management</h3><p>Create, edit, activate, deactivate and delete Web Admin accounts.</p></div>
+                <i class="bi bi-arrow-up-right sa-arrow"></i>
+            </a>
+
+            <a href="{% url 'web-admin-products' %}" class="sa-module">
+                <div class="sa-module-icon"><i class="bi bi-eyeglasses"></i></div>
+                <div><span>STORE ACCESS</span><h3>Products</h3><p>Open the existing VisionCart product management workspace.</p></div>
+                <i class="bi bi-arrow-up-right sa-arrow"></i>
+            </a>
+
+            <a href="{% url 'web-admin-orders' %}" class="sa-module">
+                <div class="sa-module-icon"><i class="bi bi-receipt"></i></div>
+                <div><span>STORE ACCESS</span><h3>Orders</h3><p>Review the existing order management workspace.</p></div>
+                <i class="bi bi-arrow-up-right sa-arrow"></i>
+            </a>
+
+            <a href="{% url 'web-admin-customers' %}" class="sa-module">
+                <div class="sa-module-icon"><i class="bi bi-people"></i></div>
+                <div><span>STORE ACCESS</span><h3>Customers</h3><p>Review and manage customer accounts through the existing workspace.</p></div>
+                <i class="bi bi-arrow-up-right sa-arrow"></i>
+            </a>
+        </div>
+    </section>
+
+    <section class="sa-section">
+        <div class="sa-section-head">
+            <div>
+                <span class="sa-eyebrow">WEB ADMIN ACCOUNTS</span>
+                <h2>Recent Management Accounts</h2>
+                <p>Existing Web Admin accounts and their current access status.</p>
+            </div>
+            <a href="{% url 'super-admin-web-admin-list' %}" class="sa-outline">Manage Accounts <i class="bi bi-arrow-right"></i></a>
+        </div>
+
+        <div class="sa-card">
+            {% if web_admins %}
+                <div class="sa-table-wrap">
+                    <table class="sa-table">
+                        <thead>
+                            <tr><th>Account</th><th>Email</th><th>Phone</th><th>Joined</th><th>Status</th><th></th></tr>
+                        </thead>
+                        <tbody>
+                        {% for web_admin in web_admins %}
+                            <tr>
+                                <td><div class="sa-person"><div class="sa-avatar">{{ web_admin.username|first|upper }}</div><div><strong>{{ web_admin.username }}</strong><small>Web Admin #{{ web_admin.id }}</small></div></div></td>
+                                <td>{{ web_admin.email }}</td>
+                                <td>{% if web_admin.phone %}{{ web_admin.phone }}{% else %}<span class="sa-muted">Not provided</span>{% endif %}</td>
+                                <td>{{ web_admin.date_joined|date:"d M Y" }}</td>
+                                <td>{% if web_admin.is_active %}<span class="sa-status active">Active</span>{% else %}<span class="sa-status inactive">Inactive</span>{% endif %}</td>
+                                <td class="sa-table-action"><a href="{% url 'super-admin-web-admin-edit' web_admin.id %}">Edit</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="sa-empty"><i class="bi bi-person-gear"></i><h3>No Web Admin accounts</h3><p>Create the first Web Admin account from Web Admin Management.</p><a href="{% url 'super-admin-web-admin-list' %}" class="sa-primary">Open Management</a></div>
+            {% endif %}
+        </div>
+    </section>
+
+    <div class="sa-note"><i class="bi bi-shield-lock"></i><div><strong>Super Admin authority</strong><p>Super Admin has the highest management level in VisionCart and controls Web Admin accounts while retaining access to the store-management workspace.</p></div></div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.sa-page{font-family:Inter,"Segoe UI",Arial,sans-serif;color:#172431}.sa-eyebrow{display:block;margin-bottom:7px;color:#7b8494;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase}.sa-hero{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px 30px;margin-bottom:15px;background:#fff;border:1px solid #e7eaf0;border-radius:17px;box-shadow:0 7px 24px rgba(25,35,55,.045)}.sa-hero h1{margin:0;font-size:40px;letter-spacing:-.03em}.sa-hero p{max-width:680px;margin:8px 0 0;color:#667085;font-size:15px;line-height:1.65}.sa-identity{display:flex;align-items:center;gap:11px;min-width:190px;padding:11px 13px;border:1px solid #e7eaf0;border-radius:11px;background:#fafbfc}.sa-identity-icon{width:37px;height:37px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:#172033;color:#fff}.sa-identity span,.sa-identity small{display:block;color:#8a93a3;font-size:12px}.sa-identity strong{display:block;margin:2px 0;font-size:14px}.sa-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:27px}.sa-stat{padding:19px 20px;background:#fff;border:1px solid #e7eaf0;border-radius:14px;box-shadow:0 5px 18px rgba(25,35,55,.035)}.sa-stat span{display:block;color:#7b8494;font-size:12px;font-weight:800;letter-spacing:.8px;text-transform:uppercase}.sa-stat strong{display:block;margin-top:7px;font-size:32px}.sa-stat small{display:block;margin-top:5px;color:#8a93a3;font-size:12px}.sa-section{margin-bottom:27px}.sa-section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:12px}.sa-section-head h2{margin:0;font-size:26px;letter-spacing:-.02em}.sa-section-head p{margin:5px 0 0;color:#778091;font-size:14px}.sa-module-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.sa-module{position:relative;display:flex;align-items:flex-start;gap:13px;min-height:150px;padding:22px;background:#fff;border:1px solid #e7eaf0;border-radius:14px;color:#172033;box-shadow:0 5px 18px rgba(25,35,55,.035);transition:.18s}.sa-module:hover{transform:translateY(-2px);border-color:#cfd5dd;box-shadow:0 10px 25px rgba(25,35,55,.06)}.sa-module-icon{width:43px;height:43px;flex:0 0 43px;display:flex;align-items:center;justify-content:center;border-radius:11px;background:#f1f3f6;color:#344054;font-size:17px}.sa-module span{display:block;color:#8a93a3;font-size:11px;font-weight:800;letter-spacing:1px}.sa-module h3{margin:5px 0 5px;font-size:18px}.sa-module p{max-width:390px;margin:0;color:#778091;font-size:14px;line-height:1.6}.sa-arrow{position:absolute;top:18px;right:18px;color:#9aa2af;font-size:12px}.sa-outline,.sa-primary{display:inline-flex;align-items:center;gap:7px;min-height:37px;padding:0 12px;border-radius:9px;font-size:14px;font-weight:800}.sa-outline{border:1px solid #dfe4ea;color:#344054;background:#fff}.sa-outline:hover{border-color:#172033;color:#172033}.sa-primary{border:1px solid #172033;background:#172033;color:#fff}.sa-card{overflow:hidden;background:#fff;border:1px solid #e7eaf0;border-radius:14px;box-shadow:0 5px 18px rgba(25,35,55,.035)}.sa-table-wrap{overflow-x:auto}.sa-table{width:100%;min-width:800px;border-collapse:collapse}.sa-table th{padding:12px 16px;background:#fafbfc;color:#7b8494;font-size:12px;font-weight:800;letter-spacing:.9px;text-align:left;text-transform:uppercase}.sa-table td{padding:13px 16px;border-top:1px solid #edf0f4;color:#667085;font-size:13px;vertical-align:middle}.sa-person{display:flex;align-items:center;gap:9px}.sa-avatar{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:#172033;color:#fff;font-size:10px;font-weight:800}.sa-person strong{display:block;color:#172033;font-size:15px}.sa-person small{display:block;margin-top:2px;color:#8a93a3;font-size:13px}.sa-muted{color:#9aa2af}.sa-status{display:inline-flex;padding:6px 9px;border-radius:7px;font-size:11px;font-weight:800}.sa-status.active{background:#eef8f2;color:#24704a}.sa-status.inactive{background:#f1f3f6;color:#737b88}.sa-table-action{text-align:right}.sa-table-action a{color:#344054;font-size:12px;font-weight:800}.sa-table-action a:hover{color:#1769aa}.sa-empty{text-align:center;padding:48px 20px}.sa-empty>i{display:inline-flex;width:47px;height:47px;align-items:center;justify-content:center;border-radius:12px;background:#f1f3f6;font-size:18px;color:#667085}.sa-empty h3{margin:12px 0 5px;font-size:20px}.sa-empty p{margin:0 auto 15px;color:#778091;font-size:14px}.sa-note{display:flex;gap:11px;padding:15px 16px;border:1px solid #e1e6ed;border-radius:12px;background:#fff}.sa-note>i{color:#667085;font-size:15px}.sa-note strong{display:block;font-size:14px}.sa-note p{margin:3px 0 0;color:#778091;font-size:13px;line-height:1.6}@media(max-width:800px){.sa-hero{align-items:flex-start;flex-direction:column}.sa-identity{width:100%}.sa-module-grid{grid-template-columns:1fr}}@media(max-width:600px){.sa-stats{grid-template-columns:1fr}.sa-hero{padding:22px 20px}.sa-hero h1{font-size:32px}.sa-section-head{align-items:flex-start;flex-direction:column}}
+</style>
+{% endblock %}

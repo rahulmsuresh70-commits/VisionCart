@@ -1,0 +1,1014 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}VisionCart | Shopping Cart{% endblock %}
+
+{% block content %}
+
+<main class="vc-cart-page">
+
+    <section class="vc-cart-hero">
+        <div class="vc-cart-container">
+            <div class="vc-cart-hero-row">
+                <div>
+                    <span class="vc-cart-eyebrow">
+                        <i class="bi bi-bag-heart"></i>
+                        Your Selection
+                    </span>
+                    <h1>Shopping Cart</h1>
+                    <p>
+                        Review your selected eyewear before continuing to checkout.
+                    </p>
+                </div>
+
+                {% if items %}
+                    <div class="vc-cart-count">
+                        <i class="bi bi-bag"></i>
+                        <span>{{ items|length }} item{{ items|length|pluralize }}</span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <section class="vc-cart-content">
+        <div class="vc-cart-container">
+
+            {% if items %}
+
+                <div class="vc-cart-layout">
+
+                    <section class="vc-cart-items-card">
+
+                        <div class="vc-cart-section-head">
+                            <div>
+                                <span class="vc-cart-section-label">YOUR CART</span>
+                                <h2>Your Eyewear</h2>
+                                <p>Review the frames you selected.</p>
+                            </div>
+
+                            <span class="vc-cart-items-total">
+                                {{ items|length }} item{{ items|length|pluralize }}
+                            </span>
+                        </div>
+
+                        <div class="vc-cart-list">
+
+                            {% for item in items %}
+
+                                <article class="vc-cart-item">
+
+                                    <a
+                                        href="{% url 'product-detail' item.product.id %}"
+                                        class="vc-cart-image"
+                                        aria-label="View {{ item.product.name }}"
+                                    >
+                                        {% if item.product.image %}
+                                            <img
+                                                src="{{ item.product.image.url }}"
+                                                alt="{{ item.product.name }}"
+                                                loading="lazy"
+                                                decoding="async"
+                                            >
+                                        {% else %}
+                                            <div class="vc-cart-image-placeholder">
+                                                <i class="bi bi-eyeglasses"></i>
+                                                <span>VisionCart</span>
+                                            </div>
+                                        {% endif %}
+                                    </a>
+
+                                    <div class="vc-cart-product">
+
+                                        {% if item.product.brand %}
+                                            <span class="vc-cart-brand">
+                                                {{ item.product.brand }}
+                                            </span>
+                                        {% else %}
+                                            <span class="vc-cart-brand">VISIONCART</span>
+                                        {% endif %}
+
+                                        <h3>
+                                            <a href="{% url 'product-detail' item.product.id %}">
+                                                {{ item.product.name }}
+                                            </a>
+                                        </h3>
+
+                                        <span class="vc-cart-category">
+                                            {{ item.product.category.name }}
+                                        </span>
+
+                                        <div class="vc-cart-price">
+                                            ₹{{ item.product.price|floatformat:0 }}
+                                            <span>per item</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="vc-cart-quantity">
+
+                                        <span class="vc-cart-label">Quantity</span>
+
+                                        <div class="vc-cart-quantity-control">
+
+                                            {% if item.quantity > 1 %}
+                                                <form
+                                                    method="post"
+                                                    action="{% url 'decrease-cart' item.id %}"
+                                                    data-protect-submit
+                                                >
+                                                    {% csrf_token %}
+                                                    <button
+                                                        type="submit"
+                                                        aria-label="Decrease quantity"
+                                                        title="Decrease quantity"
+                                                    >
+                                                        <i class="bi bi-dash"></i>
+                                                    </button>
+                                                </form>
+                                            {% else %}
+                                                <span class="vc-cart-disabled">
+                                                    <i class="bi bi-dash"></i>
+                                                </span>
+                                            {% endif %}
+
+                                            <span class="vc-cart-quantity-number">
+                                                {{ item.quantity }}
+                                            </span>
+
+                                            {% if item.quantity < item.product.stock %}
+                                                <form
+                                                    method="post"
+                                                    action="{% url 'increase-cart' item.id %}"
+                                                    data-protect-submit
+                                                >
+                                                    {% csrf_token %}
+                                                    <button
+                                                        type="submit"
+                                                        aria-label="Increase quantity"
+                                                        title="Increase quantity"
+                                                    >
+                                                        <i class="bi bi-plus"></i>
+                                                    </button>
+                                                </form>
+                                            {% else %}
+                                                <span class="vc-cart-disabled">
+                                                    <i class="bi bi-plus"></i>
+                                                </span>
+                                            {% endif %}
+
+                                        </div>
+
+                                        {% if item.quantity >= item.product.stock %}
+                                            <span class="vc-cart-quantity-note">
+                                                Maximum available
+                                            </span>
+                                        {% endif %}
+
+                                    </div>
+
+                                    <div class="vc-cart-subtotal">
+
+                                        <span class="vc-cart-label">Subtotal</span>
+
+                                        <strong>
+                                            ₹{{ item.subtotal|floatformat:0 }}
+                                        </strong>
+
+                                    </div>
+
+                                    <form
+                                        method="post"
+                                        action="{% url 'remove-cart-item' item.id %}"
+                                        class="vc-cart-remove-form"
+                                    >
+                                        {% csrf_token %}
+                                        <button
+                                            type="submit"
+                                            class="vc-cart-remove"
+                                            aria-label="Remove {{ item.product.name }}"
+                                            title="Remove from cart"
+                                            data-delete-confirm="Are you sure you want to remove this item from your cart?"
+                                        >
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
+                                    </form>
+
+                                </article>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </section>
+
+                    <div class="vc-cart-left-bottom">
+                        <a href="{% url 'products' %}" class="vc-cart-continue">
+                            <i class="bi bi-arrow-left"></i>
+                            Continue Shopping
+                        </a>
+                    </div>
+
+                    <aside class="vc-cart-summary">
+
+                        <span class="vc-cart-eyebrow">Order Summary</span>
+                        <h2>Cart Total</h2>
+
+                        <div class="vc-cart-summary-rows">
+
+                            <div class="vc-cart-summary-row">
+                                <span>Items</span>
+                                <strong>{{ items|length }}</strong>
+                            </div>
+
+                            <div class="vc-cart-summary-row">
+                                <span>Subtotal</span>
+                                <strong>₹{{ total|floatformat:0 }}</strong>
+                            </div>
+
+                            <div class="vc-cart-summary-row">
+                                <span>Standard Delivery</span>
+                                <strong class="vc-cart-free">Free</strong>
+                            </div>
+
+                        </div>
+
+                        <div class="vc-cart-grand-total">
+                            <span>Total</span>
+                            <strong>₹{{ total|floatformat:0 }}</strong>
+                        </div>
+
+                        <a
+                            href="{% url 'checkout' %}"
+                            class="vc-cart-checkout"
+                        >
+                            Continue to Checkout
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+
+                        <p class="vc-cart-note">
+                            <i class="bi bi-shield-check"></i>
+                            Your order details will be reviewed before final placement.
+                        </p>
+
+                    </aside>
+
+                </div>
+
+            {% else %}
+
+                <section class="vc-cart-empty">
+
+                    <div class="vc-cart-empty-icon">
+                        <i class="bi bi-bag"></i>
+                    </div>
+
+                    <span class="vc-cart-eyebrow">YOUR CART</span>
+
+                    <h2>Your cart is empty</h2>
+
+                    <p>
+                        You haven't added any eyewear yet.
+                        Explore the collection and find a frame you love.
+                    </p>
+
+                    <a href="{% url 'products' %}" class="vc-cart-empty-button">
+                        Explore Eyewear
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+
+                </section>
+
+            {% endif %}
+
+        </div>
+    </section>
+
+</main>
+
+<style>
+/* ============================================================
+   VISIONCART CART — DESIGN ONLY
+   Same visual language as the approved User-Side pages.
+   Existing Django routes/forms/functionality are preserved.
+============================================================ */
+
+.vc-cart-page {
+    --vc-navy: #102a43;
+    --vc-blue: #1769aa;
+    --vc-dark: #101b26;
+    --vc-text: #172431;
+    --vc-muted: #68747f;
+    --vc-border: #e4e8ec;
+    --vc-soft: #f6f8fa;
+    --vc-soft-blue: #edf4f9;
+    background: #fff;
+    color: var(--vc-text);
+}
+
+.vc-cart-page,
+.vc-cart-page * {
+    box-sizing: border-box;
+}
+
+.vc-cart-page a {
+    text-decoration: none;
+}
+
+.vc-cart-page,
+.vc-cart-page button,
+.vc-cart-page input,
+.vc-cart-page select,
+.vc-cart-page textarea,
+.vc-cart-page h1,
+.vc-cart-page h2,
+.vc-cart-page h3,
+.vc-cart-page h4,
+.vc-cart-page h5,
+.vc-cart-page h6,
+.vc-cart-page p,
+.vc-cart-page span,
+.vc-cart-page strong,
+.vc-cart-page label,
+.vc-cart-page a {
+    font-family: "Inter", "Segoe UI", Arial, sans-serif !important;
+}
+
+.vc-cart-page i,
+.vc-cart-page i::before,
+.vc-cart-page i::after {
+    font-family: "bootstrap-icons" !important;
+}
+
+.vc-cart-container {
+    width: min(1240px, calc(100% - 40px));
+    margin: 0 auto;
+}
+
+/* HERO */
+
+.vc-cart-hero {
+    background: linear-gradient(135deg, #edf3f7 0%, #f8fafb 60%, #fff 100%);
+    border-bottom: 1px solid var(--vc-border);
+    padding: 56px 0;
+}
+
+.vc-cart-hero-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 35px;
+}
+
+.vc-cart-eyebrow,
+.vc-cart-section-label {
+    display: inline-block;
+    color: var(--vc-blue);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.vc-cart-eyebrow i {
+    margin-right: 5px;
+}
+
+.vc-cart-hero h1 {
+    margin: 10px 0 12px;
+    color: var(--vc-navy);
+    font-size: clamp(42px, 5.2vw, 64px);
+    font-weight: 700;
+    line-height: .98;
+    letter-spacing: -2px;
+}
+
+.vc-cart-hero p {
+    max-width: 600px;
+    margin: 0;
+    color: var(--vc-muted);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.vc-cart-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 13px 17px;
+    border: 1px solid var(--vc-border);
+    border-radius: 999px;
+    background: rgba(255,255,255,.72);
+    color: var(--vc-navy);
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.vc-cart-count i {
+    color: var(--vc-blue);
+}
+
+/* CONTENT */
+
+.vc-cart-content {
+    padding: 58px 0 80px;
+}
+
+.vc-cart-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 28px;
+    align-items: start;
+}
+
+.vc-cart-items-card {
+    min-width: 0;
+    border: 1px solid var(--vc-border);
+    border-radius: 20px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.vc-cart-section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 27px 28px 23px;
+    border-bottom: 1px solid var(--vc-border);
+}
+
+.vc-cart-section-head h2,
+.vc-cart-summary h2 {
+    margin: 7px 0 0;
+    color: var(--vc-navy);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -.7px;
+}
+
+.vc-cart-section-head p {
+    margin: 6px 0 0;
+    color: var(--vc-muted);
+    font-size: 13px;
+}
+
+.vc-cart-items-total {
+    color: var(--vc-muted);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* ITEMS */
+
+.vc-cart-list {
+    width: 100%;
+}
+
+.vc-cart-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 104px minmax(190px, 1fr) 125px 105px 42px;
+    gap: 18px;
+    align-items: center;
+    padding: 22px 24px;
+    border-bottom: 1px solid var(--vc-border);
+}
+
+.vc-cart-item:last-child {
+    border-bottom: 0;
+}
+
+.vc-cart-image {
+    display: block;
+    width: 104px;
+    height: 118px;
+    border-radius: 13px;
+    overflow: hidden;
+    background: var(--vc-soft);
+    border: 1px solid var(--vc-border);
+}
+
+.vc-cart-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.vc-cart-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    color: var(--vc-muted);
+}
+
+.vc-cart-image-placeholder i {
+    color: var(--vc-blue);
+    font-size: 25px;
+}
+
+.vc-cart-image-placeholder span {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.vc-cart-product {
+    min-width: 0;
+}
+
+.vc-cart-brand {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--vc-blue);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+}
+
+.vc-cart-product h3 {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.3;
+    font-weight: 700;
+}
+
+.vc-cart-product h3 a {
+    color: var(--vc-navy);
+}
+
+.vc-cart-product h3 a:hover {
+    color: var(--vc-blue);
+}
+
+.vc-cart-category {
+    display: block;
+    margin-top: 7px;
+    color: var(--vc-muted);
+    font-size: 11px;
+}
+
+.vc-cart-price {
+    margin-top: 13px;
+    color: var(--vc-text);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.vc-cart-price span {
+    margin-left: 4px;
+    color: var(--vc-muted);
+    font-size: 10px;
+    font-weight: 500;
+}
+
+/* QUANTITY */
+
+.vc-cart-quantity,
+.vc-cart-subtotal {
+    align-self: center;
+}
+
+.vc-cart-label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--vc-muted);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.vc-cart-quantity-control {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    border: 1px solid var(--vc-border);
+    border-radius: 9px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.vc-cart-quantity-control form,
+.vc-cart-quantity-control button {
+    margin: 0;
+}
+
+.vc-cart-quantity-control button,
+.vc-cart-disabled {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 36px;
+    border: 0;
+    background: transparent;
+    color: var(--vc-navy);
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.vc-cart-quantity-control button:hover {
+    background: var(--vc-soft-blue);
+    color: var(--vc-blue);
+}
+
+.vc-cart-disabled {
+    color: #b8c0c7;
+    cursor: default;
+}
+
+.vc-cart-quantity-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 36px;
+    border-left: 1px solid var(--vc-border);
+    border-right: 1px solid var(--vc-border);
+    color: var(--vc-text);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.vc-cart-quantity-note {
+    display: block;
+    margin-top: 6px;
+    color: var(--vc-muted);
+    font-size: 9px;
+}
+
+.vc-cart-subtotal strong {
+    color: var(--vc-navy);
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.vc-cart-remove-form {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.vc-cart-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    border: 1px solid var(--vc-border);
+    border-radius: 9px;
+    background: #fff;
+    color: var(--vc-muted);
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.vc-cart-remove:hover {
+    border-color: #d7b9b9;
+    color: #a34d4d;
+    background: #fffafa;
+}
+
+/* LEFT BOTTOM */
+
+.vc-cart-left-bottom {
+    padding-top: 16px;
+}
+
+.vc-cart-continue {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--vc-navy);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.vc-cart-continue:hover {
+    color: var(--vc-blue);
+}
+
+/* SUMMARY */
+
+.vc-cart-summary {
+    position: sticky;
+    top: 20px;
+    padding: 27px;
+    border: 1px solid var(--vc-border);
+    border-radius: 20px;
+    background: #fff;
+}
+
+.vc-cart-summary h2 {
+    margin-bottom: 25px;
+}
+
+.vc-cart-summary-rows {
+    border-top: 1px solid var(--vc-border);
+}
+
+.vc-cart-summary-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--vc-border);
+    color: var(--vc-muted);
+    font-size: 12px;
+}
+
+.vc-cart-summary-row strong {
+    color: var(--vc-text);
+    font-size: 12px;
+}
+
+.vc-cart-summary-row .vc-cart-free {
+    color: #28794e;
+}
+
+.vc-cart-grand-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 21px 0;
+}
+
+.vc-cart-grand-total span {
+    color: var(--vc-navy);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.vc-cart-grand-total strong {
+    color: var(--vc-navy);
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -.5px;
+}
+
+.vc-cart-checkout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 50px;
+    padding: 13px 17px;
+    border-radius: 10px;
+    background: var(--vc-navy);
+    color: #fff !important;
+    font-size: 12px;
+    font-weight: 800;
+    transition: .2s ease;
+}
+
+.vc-cart-checkout:hover {
+    background: var(--vc-blue);
+    color: #fff !important;
+}
+
+.vc-cart-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 15px 0 0;
+    color: var(--vc-muted);
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.vc-cart-note i {
+    flex: 0 0 auto;
+    color: var(--vc-blue);
+    margin-top: 1px;
+}
+
+/* EMPTY */
+
+.vc-cart-empty {
+    max-width: 680px;
+    margin: 10px auto 0;
+    padding: 70px 30px;
+    border: 1px solid var(--vc-border);
+    border-radius: 20px;
+    text-align: center;
+    background: linear-gradient(180deg, #fff 0%, #fafcfd 100%);
+}
+
+.vc-cart-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 78px;
+    height: 78px;
+    margin: 0 auto 22px;
+    border-radius: 50%;
+    background: var(--vc-soft-blue);
+    color: var(--vc-blue);
+    font-size: 29px;
+}
+
+.vc-cart-empty h2 {
+    margin: 10px 0 10px;
+    color: var(--vc-navy);
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.vc-cart-empty p {
+    max-width: 490px;
+    margin: 0 auto 25px;
+    color: var(--vc-muted);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.vc-cart-empty-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 46px;
+    padding: 12px 19px;
+    border-radius: 9px;
+    background: var(--vc-navy);
+    color: #fff !important;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.vc-cart-empty-button:hover {
+    background: var(--vc-blue);
+    color: #fff !important;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+    .vc-cart-layout {
+        grid-template-columns: minmax(0, 1fr) 320px;
+    }
+
+    .vc-cart-item {
+        grid-template-columns: 90px minmax(170px, 1fr) 112px 90px 38px;
+        gap: 13px;
+        padding: 19px;
+    }
+
+    .vc-cart-image {
+        width: 90px;
+        height: 105px;
+    }
+
+    .vc-cart-product h3 {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 900px) {
+    .vc-cart-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .vc-cart-summary {
+        position: static;
+    }
+
+    .vc-cart-item {
+        grid-template-columns: 96px minmax(0, 1fr) 110px;
+        align-items: start;
+    }
+
+    .vc-cart-quantity {
+        grid-column: 2;
+    }
+
+    .vc-cart-subtotal {
+        grid-column: 3;
+        grid-row: 2;
+    }
+
+    .vc-cart-remove-form {
+        position: absolute;
+        top: 20px;
+        right: 19px;
+    }
+
+    .vc-cart-product {
+        padding-right: 36px;
+    }
+}
+
+@media (max-width: 650px) {
+    .vc-cart-container {
+        width: min(100% - 28px, 1240px);
+    }
+
+    .vc-cart-hero {
+        padding: 42px 0;
+    }
+
+    .vc-cart-hero-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .vc-cart-hero h1 {
+        font-size: clamp(38px, 12vw, 52px);
+    }
+
+    .vc-cart-content {
+        padding: 36px 0 55px;
+    }
+
+    .vc-cart-section-head {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 23px 20px;
+    }
+
+    .vc-cart-item {
+        grid-template-columns: 78px minmax(0, 1fr);
+        gap: 13px;
+        padding: 18px;
+    }
+
+    .vc-cart-image {
+        width: 78px;
+        height: 94px;
+    }
+
+    .vc-cart-product h3 {
+        font-size: 14px;
+    }
+
+    .vc-cart-quantity {
+        grid-column: 2;
+    }
+
+    .vc-cart-subtotal {
+        grid-column: 2;
+        grid-row: auto;
+        margin-top: 2px;
+    }
+
+    .vc-cart-remove-form {
+        top: 17px;
+        right: 16px;
+    }
+
+    .vc-cart-summary {
+        padding: 22px;
+    }
+
+    .vc-cart-empty {
+        padding: 55px 20px;
+    }
+
+    .vc-cart-empty h2 {
+        font-size: 29px;
+    }
+}
+
+@media (max-width: 420px) {
+    .vc-cart-item {
+        grid-template-columns: 70px minmax(0, 1fr);
+        gap: 11px;
+    }
+
+    .vc-cart-image {
+        width: 70px;
+        height: 84px;
+    }
+
+    .vc-cart-brand {
+        font-size: 8px;
+    }
+
+    .vc-cart-product h3 {
+        font-size: 13px;
+    }
+
+    .vc-cart-category {
+        font-size: 10px;
+    }
+
+    .vc-cart-price {
+        font-size: 12px;
+    }
+}
+</style>
+
+{% endblock %}

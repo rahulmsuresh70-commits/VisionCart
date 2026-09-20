@@ -1,0 +1,1101 @@
+{% extends "web_admin_base.html" %}
+
+{% block title %}Order Management | VisionCart{% endblock %}
+
+{% block content %}
+
+<div class="container py-4 py-lg-5">
+
+    <!-- ==================================================
+         PAGE HEADER
+    =================================================== -->
+
+    <div class="vc-orders-header mb-4">
+
+        <div>
+
+            <span class="vc-orders-eyebrow">
+                STORE MANAGEMENT
+            </span>
+
+            <h1 class="vc-orders-title">
+                Order Management
+            </h1>
+
+            <p class="vc-orders-subtitle">
+                View customer orders and manage their fulfillment status.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'web-admin-dashboard' %}"
+            class="vc-orders-back"
+        >
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- ==================================================
+         SEARCH / STATUS FILTER
+    =================================================== -->
+
+    <section class="vc-orders-card mb-4">
+
+        <div class="vc-orders-card-header">
+
+            <div class="vc-orders-card-icon">
+                #
+            </div>
+
+            <div>
+
+                <h2>
+                    Order Search
+                </h2>
+
+                <p>
+                    Filter orders by their current fulfillment status.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="vc-orders-filter-body">
+
+            <form
+                method="GET"
+                action="{% url 'web-admin-orders' %}"
+            >
+
+                <div class="row g-3 align-items-end">
+
+                    <div class="col-12 col-md-8">
+
+                        <label
+                            for="orderStatus"
+                            class="vc-orders-label"
+                        >
+                            Order Status
+                        </label>
+
+                        <select
+                            name="status"
+                            id="orderStatus"
+                            class="form-select vc-orders-input"
+                        >
+
+                            <option
+                                value=""
+                                {% if not selected_status %}selected{% endif %}
+                            >
+                                All Orders
+                            </option>
+
+                            {% for value, label in status_choices %}
+
+                                <option
+                                    value="{{ value }}"
+                                    {% if selected_status == value %}selected{% endif %}
+                                >
+                                    {{ label }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="col-12 col-md-4">
+
+                        <button
+                            type="submit"
+                            class="vc-orders-filter-button"
+                        >
+                            Apply Filter
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         ORDER LIST
+    =================================================== -->
+
+    <section class="vc-orders-card">
+
+        <div class="vc-orders-list-header">
+
+            <div>
+
+                <span class="vc-orders-list-eyebrow">
+                    CUSTOMER ORDERS
+                </span>
+
+                <h2>
+                    Orders
+                </h2>
+
+                <p>
+                    Review order information and fulfillment progress.
+                </p>
+
+            </div>
+
+            {% if selected_status %}
+
+                <span class="vc-orders-filter-badge">
+                    {{ selected_status }}
+                </span>
+
+            {% endif %}
+
+        </div>
+
+
+        {% if orders %}
+
+        <div class="table-responsive">
+
+            <table class="table vc-orders-table align-middle mb-0">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Order
+                        </th>
+
+                        <th>
+                            Customer
+                        </th>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Payment
+                        </th>
+
+                        <th>
+                            Amount
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th class="text-end">
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for order in orders %}
+
+                    <tr>
+
+                        <!-- ORDER -->
+
+                        <td>
+
+                            <div class="vc-order-number">
+
+                                <strong>
+                                    {{ order.order_number }}
+                                </strong>
+
+                                <small>
+                                    Order #{{ order.id }}
+                                </small>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- CUSTOMER -->
+
+                        <td>
+
+                            <div class="vc-order-customer">
+
+                                <div class="vc-order-avatar">
+                                    {{ order.user.username|first|upper }}
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        {{ order.user.username }}
+                                    </strong>
+
+                                    <small>
+                                        {{ order.user.email }}
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- DATE -->
+
+                        <td>
+
+                            <span class="vc-order-date">
+                                {{ order.created_at|date:"d M Y" }}
+                            </span>
+
+                            <small class="vc-order-time">
+                                {{ order.created_at|date:"h:i A" }}
+                            </small>
+
+                        </td>
+
+
+                        <!-- PAYMENT -->
+
+                        <td>
+
+                            <div class="vc-order-payment">
+
+                                {% if order.payment_method == "COD" %}
+                                    <strong>Cash on Delivery</strong>
+                                {% else %}
+                                    <strong>Online Payment</strong>
+                                {% endif %}
+
+                                <small>
+                                    {% if order.payment_status %}
+                                        {{ order.payment_status }}
+                                    {% else %}
+                                        Not available
+                                    {% endif %}
+                                </small>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- AMOUNT -->
+
+                        <td>
+
+                            <strong class="vc-order-amount">
+                                ₹{{ order.total_amount|floatformat:2 }}
+                            </strong>
+
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            {% if order.status == "PLACED" %}
+
+                                <span class="vc-order-status placed">
+                                    {{ order.get_status_display }}
+                                </span>
+
+                            {% elif order.status == "CONFIRMED" %}
+
+                                <span class="vc-order-status confirmed">
+                                    {{ order.get_status_display }}
+                                </span>
+
+                            {% elif order.status == "PROCESSING" %}
+
+                                <span class="vc-order-status processing">
+                                    {{ order.get_status_display }}
+                                </span>
+
+                            {% elif order.status == "SHIPPED" %}
+
+                                <span class="vc-order-status shipped">
+                                    {{ order.get_status_display }}
+                                </span>
+
+                            {% elif order.status == "OUT_FOR_DELIVERY" %}
+
+                                <span class="vc-order-status out-delivery">
+                                    {{ order.get_status_display }}
+                                </span>
+
+                            {% elif order.status == "DELIVERED" %}
+
+                                <span class="vc-order-status delivered">
+                                    {{ order.get_status_display }}
+                                </span>
+
+                            {% elif order.status == "CANCELLED" %}
+
+                                <span class="vc-order-status cancelled">
+                                    {{ order.get_status_display }}
+                                </span>
+
+                            {% else %}
+
+                                <span class="vc-order-status">
+                                    {{ order.get_status_display }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- ACTION -->
+
+                        <td>
+
+                            <div class="vc-order-action">
+
+                                <a
+                                    href="{% url 'web-admin-order-detail' order.id %}"
+                                    class="vc-order-view"
+                                >
+                                    View Order
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+        <!-- ==================================================
+             EMPTY STATE
+        =================================================== -->
+
+        <div class="vc-orders-empty">
+
+            <div class="vc-orders-empty-icon">
+                #
+            </div>
+
+            <h3>
+                No orders found
+            </h3>
+
+            <p>
+                There are no orders matching the selected status.
+            </p>
+
+            <a
+                href="{% url 'web-admin-orders' %}"
+                class="vc-orders-reset"
+            >
+                View All Orders
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- ==================================================
+         MANAGEMENT NOTE
+    =================================================== -->
+
+    <div class="vc-orders-note mt-4">
+
+        <div class="vc-orders-note-icon">
+            ✓
+        </div>
+
+        <div>
+
+            <h3>
+                Order Fulfillment
+            </h3>
+
+            <p>
+                Open an order to review the customer, delivery and payment
+                information and update its fulfillment status.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================================
+     STEP 44 — DESIGN ONLY
+
+     Existing backend context preserved:
+     - orders
+     - selected_status
+     - status_choices
+     - order.user
+     - order.address
+     - order.created_at
+     - order.order_number
+     - order.payment_method
+     - order.payment_status
+     - order.total_amount
+     - order.status
+
+     Existing routes preserved:
+     - web-admin-orders
+     - web-admin-order-detail
+=========================================================== -->
+
+<style>
+
+    /* =====================================================
+       PAGE HEADER
+    ===================================================== */
+
+    .vc-orders-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 25px;
+        padding: 28px 30px;
+        background: #ffffff;
+        border: 1px solid #e7eaf0;
+        border-radius: 18px;
+        box-shadow: 0 8px 28px rgba(25,35,55,.05);
+    }
+
+    .vc-orders-eyebrow {
+        display: block;
+        margin-bottom: 8px;
+        color: #687284;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.4px;
+    }
+
+    .vc-orders-title {
+        margin: 0 0 7px;
+        color: #172033;
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .vc-orders-subtitle {
+        margin: 0;
+        color: #697384;
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+    .vc-orders-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 10px 16px;
+        border: 1px solid #dfe3e9;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #596273;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: all .2s ease;
+    }
+
+    .vc-orders-back:hover {
+        background: #f7f8fa;
+        border-color: #cfd5de;
+        color: #172033;
+        transform: translateY(-1px);
+    }
+
+
+    /* =====================================================
+       CARD
+    ===================================================== */
+
+    .vc-orders-card {
+        overflow: hidden;
+        border: 1px solid #e7eaf0;
+        border-radius: 17px;
+        background: #ffffff;
+        box-shadow: 0 6px 22px rgba(25,35,55,.04);
+    }
+
+    .vc-orders-card-header {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 21px 22px;
+        border-bottom: 1px solid #edf0f4;
+    }
+
+    .vc-orders-card-icon {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 11px;
+        background: #f1f3f6;
+        color: #172033;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .vc-orders-card-header h2 {
+        margin: 0 0 3px;
+        color: #172033;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .vc-orders-card-header p {
+        margin: 0;
+        color: #7e8796;
+        font-size: 12px;
+    }
+
+    .vc-orders-filter-body {
+        padding: 23px 22px;
+    }
+
+    .vc-orders-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #3d4655;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .vc-orders-input {
+        min-height: 45px;
+        border: 1px solid #dfe3e9;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #172033;
+        font-size: 14px;
+        box-shadow: none;
+    }
+
+    .vc-orders-input:focus {
+        border-color: #9da5b2;
+        box-shadow: 0 0 0 3px rgba(23,32,51,.07);
+    }
+
+    .vc-orders-filter-button {
+        width: 100%;
+        min-height: 45px;
+        border: 1px solid #172033;
+        border-radius: 10px;
+        background: #172033;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all .2s ease;
+    }
+
+    .vc-orders-filter-button:hover {
+        background: #273249;
+        border-color: #273249;
+        transform: translateY(-1px);
+    }
+
+
+    /* =====================================================
+       LIST HEADER
+    ===================================================== */
+
+    .vc-orders-list-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 21px 22px;
+        border-bottom: 1px solid #edf0f4;
+    }
+
+    .vc-orders-list-eyebrow {
+        display: block;
+        margin-bottom: 5px;
+        color: #929aa7;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+
+    .vc-orders-list-header h2 {
+        margin: 0 0 4px;
+        color: #172033;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .vc-orders-list-header p {
+        margin: 0;
+        color: #7e8796;
+        font-size: 12px;
+    }
+
+    .vc-orders-filter-badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 30px;
+        padding: 5px 10px;
+        border: 1px solid #e1e5eb;
+        border-radius: 20px;
+        background: #fafbfc;
+        color: #697383;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+
+    /* =====================================================
+       TABLE
+    ===================================================== */
+
+    .vc-orders-table {
+        min-width: 1150px;
+    }
+
+    .vc-orders-table thead th {
+        padding: 13px 18px;
+        border-bottom: 1px solid #e5e8ed;
+        background: #fafbfc;
+        color: #727b8b;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: .3px;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .vc-orders-table tbody td {
+        padding: 16px 18px;
+        border-bottom: 1px solid #edf0f4;
+        color: #4f5969;
+        font-size: 13px;
+        vertical-align: middle;
+    }
+
+    .vc-orders-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .vc-orders-table tbody tr {
+        transition: background .2s ease;
+    }
+
+    .vc-orders-table tbody tr:hover {
+        background: #fcfcfd;
+    }
+
+
+    /* =====================================================
+       ORDER NUMBER
+    ===================================================== */
+
+    .vc-order-number {
+        min-width: 145px;
+    }
+
+    .vc-order-number strong {
+        display: block;
+        margin-bottom: 4px;
+        color: #293346;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .vc-order-number small {
+        display: block;
+        color: #929aa7;
+        font-size: 10px;
+    }
+
+
+    /* =====================================================
+       CUSTOMER
+    ===================================================== */
+
+    .vc-order-customer {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 175px;
+    }
+
+    .vc-order-avatar {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: #f0f2f5;
+        color: #4f5969;
+        font-size: 13px;
+        font-weight: 800;
+    }
+
+    .vc-order-customer strong {
+        display: block;
+        margin-bottom: 3px;
+        color: #30394a;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .vc-order-customer small {
+        display: block;
+        max-width: 150px;
+        overflow: hidden;
+        color: #959da9;
+        font-size: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+
+    /* =====================================================
+       DATE
+    ===================================================== */
+
+    .vc-order-date {
+        display: block;
+        color: #596273;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    .vc-order-time {
+        display: block;
+        margin-top: 3px;
+        color: #9aa2ae;
+        font-size: 10px;
+    }
+
+
+    /* =====================================================
+       PAYMENT
+    ===================================================== */
+
+    .vc-order-payment {
+        min-width: 125px;
+    }
+
+    .vc-order-payment strong {
+        display: block;
+        margin-bottom: 3px;
+        color: #596273;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .vc-order-payment small {
+        display: block;
+        color: #929aa7;
+        font-size: 10px;
+    }
+
+
+    /* =====================================================
+       AMOUNT
+    ===================================================== */
+
+    .vc-order-amount {
+        color: #293346;
+        font-size: 14px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+
+    /* =====================================================
+       STATUS
+    ===================================================== */
+
+    .vc-order-status {
+        display: inline-flex;
+        align-items: center;
+        min-height: 27px;
+        padding: 5px 10px;
+        border: 1px solid #e0e3e7;
+        border-radius: 20px;
+        background: #f7f8f9;
+        color: #68717e;
+        font-size: 10px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .vc-order-status.placed {
+        border-color: #e1e4e8;
+        background: #f6f7f8;
+        color: #68717e;
+    }
+
+    .vc-order-status.confirmed {
+        border-color: #dce3e9;
+        background: #f5f7f9;
+        color: #5d6976;
+    }
+
+    .vc-order-status.processing {
+        border-color: #e4dfd2;
+        background: #faf8f2;
+        color: #756b57;
+    }
+
+    .vc-order-status.shipped {
+        border-color: #d9e1e8;
+        background: #f4f7f9;
+        color: #586875;
+    }
+
+    .vc-order-status.out-delivery {
+        border-color: #dce3df;
+        background: #f4f8f6;
+        color: #5e7167;
+    }
+
+    .vc-order-status.delivered {
+        border-color: #d8e4dc;
+        background: #f2f7f3;
+        color: #526b5b;
+    }
+
+    .vc-order-status.cancelled {
+        border-color: #e4d8d8;
+        background: #faf6f6;
+        color: #795f5f;
+    }
+
+
+    /* =====================================================
+       ACTION
+    ===================================================== */
+
+    .vc-order-action {
+        display: flex;
+        justify-content: flex-end;
+        min-width: 105px;
+    }
+
+    .vc-order-view {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 34px;
+        padding: 7px 11px;
+        border: 1px solid #dfe3e9;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #596273;
+        font-size: 11px;
+        font-weight: 700;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: all .2s ease;
+    }
+
+    .vc-order-view:hover {
+        background: #f6f7f9;
+        border-color: #cfd5de;
+        color: #172033;
+    }
+
+
+    /* =====================================================
+       EMPTY STATE
+    ===================================================== */
+
+    .vc-orders-empty {
+        min-height: 340px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .vc-orders-empty-icon {
+        width: 58px;
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        border-radius: 15px;
+        background: #f1f3f6;
+        color: #697383;
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+    .vc-orders-empty h3 {
+        margin: 0 0 7px;
+        color: #273143;
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+    .vc-orders-empty p {
+        max-width: 450px;
+        margin: 0 0 18px;
+        color: #858e9c;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .vc-orders-reset {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        padding: 8px 14px;
+        border: 1px solid #dfe3e9;
+        border-radius: 9px;
+        background: #ffffff;
+        color: #596273;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .vc-orders-reset:hover {
+        background: #f6f7f9;
+        color: #172033;
+    }
+
+
+    /* =====================================================
+       NOTE
+    ===================================================== */
+
+    .vc-orders-note {
+        display: flex;
+        align-items: flex-start;
+        gap: 13px;
+        padding: 19px 21px;
+        border: 1px solid #e5e8ed;
+        border-radius: 14px;
+        background: #ffffff;
+        box-shadow: 0 5px 18px rgba(25,35,55,.03);
+    }
+
+    .vc-orders-note-icon {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 10px;
+        background: #f1f3f6;
+        color: #596273;
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+    .vc-orders-note h3 {
+        margin: 0 0 4px;
+        color: #303a4b;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .vc-orders-note p {
+        margin: 0;
+        color: #858e9c;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 767.98px) {
+
+        .vc-orders-header {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 23px;
+        }
+
+        .vc-orders-title {
+            font-size: 30px;
+        }
+
+        .vc-orders-back {
+            width: 100%;
+        }
+
+        .vc-orders-card-header {
+            padding: 18px;
+        }
+
+        .vc-orders-filter-body {
+            padding: 18px;
+        }
+
+        .vc-orders-list-header {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 18px;
+        }
+
+        .vc-orders-note {
+            padding: 17px;
+        }
+
+    }
+
+</style>
+
+{% endblock %}

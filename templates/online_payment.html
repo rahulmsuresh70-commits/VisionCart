@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Online Payment | VisionCart{% endblock %}
+
+{% block content %}
+<section class="vc-online-page">
+    <div class="vc-online-container">
+        <div class="vc-online-heading">
+            <span class="vc-online-kicker">SECURE PAYMENT</span>
+            <h1>Complete Payment</h1>
+            <p>Your order is ready. Review the details below and complete the online payment.</p>
+        </div>
+
+        <div class="vc-online-grid">
+            <main class="vc-online-main">
+                <section class="vc-online-card">
+                    <div class="vc-online-card-head">
+                        <div class="vc-online-icon"><i class="bi bi-credit-card-2-front"></i></div>
+                        <div>
+                            <span class="vc-online-label">PAYMENT METHOD</span>
+                            <h2>Online Payment</h2>
+                            <p>Secure online payment for your VisionCart order.</p>
+                        </div>
+                        <span class="vc-secure-badge"><i class="bi bi-shield-check"></i> Secure</span>
+                    </div>
+
+                    <div class="vc-online-body">
+                        <div class="vc-method-title">
+                            <span class="vc-online-label">PAYMENT OPTIONS</span>
+                            <h3>Select your preferred method</h3>
+                        </div>
+
+                        <form method="post" action="{% url 'confirm-online-payment' %}" data-protect-submit>
+                            {% csrf_token %}
+                            <input type="hidden" name="address_id" value="{{ address.id }}">
+                            <input type="hidden" name="payment_method" value="ONLINE">
+                            <input type="hidden" name="payment_option" value="CARD" id="vc-selected-payment-option">
+
+                            <div class="vc-method-list" role="radiogroup" aria-label="Payment options">
+                                <label class="vc-method-card is-active">
+                                    <input type="radio" name="payment_choice" value="CARD" checked>
+                                    <span class="vc-method-icon"><i class="bi bi-credit-card-2-front"></i></span>
+                                    <span class="vc-method-copy"><strong>Card Payment</strong><small>Credit / Debit Card</small></span>
+                                    <span class="vc-method-check"><i class="bi bi-check"></i></span>
+                                </label>
+
+                                <label class="vc-method-card">
+                                    <input type="radio" name="payment_choice" value="UPI">
+                                    <span class="vc-method-icon"><i class="bi bi-phone"></i></span>
+                                    <span class="vc-method-copy"><strong>UPI</strong><small>Pay using UPI</small></span>
+                                    <span class="vc-method-check"><i class="bi bi-check"></i></span>
+                                </label>
+
+                                <label class="vc-method-card">
+                                    <input type="radio" name="payment_choice" value="NET_BANKING">
+                                    <span class="vc-method-icon"><i class="bi bi-bank"></i></span>
+                                    <span class="vc-method-copy"><strong>Net Banking</strong><small>Pay through your bank</small></span>
+                                    <span class="vc-method-check"><i class="bi bi-check"></i></span>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="vc-pay-button" data-vc-click-feedback>
+                                <span><i class="bi bi-lock-fill"></i> Pay ₹{{ grand_total|floatformat:0 }}</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </form>
+
+                        <div class="vc-payment-note">
+                            <i class="bi bi-shield-lock"></i>
+                            <span>Your payment details are used only for this project demonstration.</span>
+                        </div>
+                    </div>
+                </section>
+
+                <a href="{% url 'checkout' %}" class="vc-online-back"><i class="bi bi-arrow-left"></i> Back to Checkout</a>
+            </main>
+
+            <aside class="vc-payment-summary">
+                <div class="vc-summary-head">
+                    <span class="vc-online-label">ORDER REVIEW</span>
+                    <h2>Your Order</h2>
+                </div>
+
+                {% if address %}
+                <div class="vc-delivery-box">
+                    <div class="vc-delivery-title"><span>Delivery Address</span><i class="bi bi-geo-alt"></i></div>
+                    <strong>{{ address.name }}</strong>
+                    <p>{{ address.address }}<br>{{ address.city }}, {{ address.state }}<br>{{ address.pincode }}</p>
+                    <span class="vc-delivery-phone"><i class="bi bi-telephone"></i>{{ address.phone }}</span>
+                </div>
+                {% endif %}
+
+                <div class="vc-payment-items">
+                    {% for item in items %}
+                    <div class="vc-payment-item">
+                        <div class="vc-payment-item-image">
+                            {% if item.product.image %}<img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" loading="lazy">{% else %}<i class="bi bi-eyeglasses"></i>{% endif %}
+                        </div>
+                        <div class="vc-payment-item-copy"><strong>{{ item.product.name }}</strong><span>Qty {{ item.quantity }}</span></div>
+                        <strong>₹{{ item.subtotal|floatformat:0 }}</strong>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="vc-payment-lines">
+                    <div><span>Subtotal</span><strong>₹{{ total|floatformat:0 }}</strong></div>
+                    <div><span>Standard Delivery</span><strong class="vc-free">Free</strong></div>
+                </div>
+
+                <div class="vc-payment-total"><span>Total</span><strong>₹{{ grand_total|floatformat:0 }}</strong></div>
+
+                <div class="vc-payment-trust">
+                    <div><i class="bi bi-shield-check"></i><span>Secure</span></div>
+                    <div><i class="bi bi-credit-card"></i><span>Protected</span></div>
+                    <div><i class="bi bi-headset"></i><span>Support</span></div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* VisionCart Online Payment — BODY ONLY. Existing common header/footer remain untouched. */
+.vc-online-page{background:#f6f8fa;padding:42px 0 70px;font-family:Inter,"Segoe UI",Arial,sans-serif;color:#172431;min-height:calc(100vh - 1px)}
+.vc-online-container{width:min(1160px,calc(100% - 40px));margin:0 auto}
+.vc-online-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;padding:4px 0 30px;border-bottom:1px solid #e4e8ec}
+.vc-online-kicker,.vc-online-label{display:block;color:#68747f;font-size:10px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
+.vc-online-heading h1{margin:7px 0 7px;font-size:34px;line-height:1.08;font-weight:700;letter-spacing:-.04em;color:#102a43}
+.vc-online-heading p{margin:0;color:#68747f;font-size:13px;line-height:1.6}
+.vc-online-grid{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:24px;align-items:start;padding-top:28px}
+.vc-online-main{min-width:0}
+.vc-online-card,.vc-payment-summary{border:1px solid #e4e8ec;background:#fff;border-radius:8px;box-shadow:0 3px 14px rgba(16,42,67,.045);overflow:hidden}
+.vc-online-card-head{display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:14px;align-items:start;padding:22px;border-bottom:1px solid #e8edf1}
+.vc-online-icon{width:32px;height:32px;border-radius:50%;background:#edf4f9;color:#1769aa;display:grid;place-items:center;font-size:14px}
+.vc-online-card-head h2{margin:5px 0 5px;font-size:19px;line-height:1.2;font-weight:700;letter-spacing:-.025em;color:#102a43}
+.vc-online-card-head p{margin:0;color:#68747f;font-size:11px;line-height:1.55}
+.vc-secure-badge{display:inline-flex;align-items:center;gap:5px;border:1px solid #cfe1ef;color:#1769aa;background:#f7fbfe;border-radius:5px;padding:7px 9px;font-size:9px;font-weight:750}
+.vc-online-body{padding:22px}
+.vc-method-title{padding:2px 0 15px}
+.vc-method-title h3{margin:5px 0 0;font-size:16px;letter-spacing:-.02em;color:#102a43}
+.vc-method-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.vc-method-card{position:relative;min-height:82px;display:grid;grid-template-columns:38px minmax(0,1fr) 20px;align-items:center;gap:10px;border:1px solid #dfe5ea;border-radius:7px;padding:13px;cursor:pointer;transition:.2s ease;background:#fff}
+.vc-method-card:hover{border-color:#9db4c6;background:#fbfdfe}
+.vc-method-card:has(input:checked),.vc-method-card.is-active{border-color:#1769aa;box-shadow:inset 0 0 0 1px #1769aa;background:#f8fbfd}
+.vc-method-card input{position:absolute;opacity:0;pointer-events:none}
+.vc-method-icon{width:38px;height:38px;border-radius:6px;display:grid;place-items:center;background:#edf4f9;color:#1769aa;font-size:15px}
+.vc-method-copy{display:flex;flex-direction:column;gap:4px;min-width:0}
+.vc-method-card strong{font-size:11px;color:#172431}
+.vc-method-card small{color:#68747f;font-size:9px;line-height:1.4}
+.vc-method-check{width:18px;height:18px;border:1px solid #b8c5cf;border-radius:50%;display:grid;place-items:center;color:transparent;font-size:9px}
+.vc-method-card input:checked~.vc-method-check{border-color:#1769aa;background:#1769aa;color:#fff}
+.vc-pay-button{width:100%;margin-top:22px;min-height:50px;border:1px solid #1769aa;border-radius:6px;background:#1769aa;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 17px;cursor:pointer;font-size:11px;font-weight:750;transition:.2s ease}
+.vc-pay-button:hover{background:#102a43;border-color:#102a43}
+.vc-pay-button span{display:inline-flex;align-items:center;gap:7px}
+.vc-payment-note{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:13px;color:#68747f;font-size:9px;text-align:center}
+.vc-online-back{display:inline-flex;align-items:center;gap:7px;margin-top:16px;color:#68747f;text-decoration:none;font-size:10px;font-weight:700}
+.vc-online-back:hover{color:#1769aa}
+.vc-payment-summary{position:sticky;top:22px}
+.vc-summary-head{padding:21px 20px 18px;background:#f8fbfd;border-bottom:1px solid #e8edf1}
+.vc-summary-head h2{margin:6px 0 0;font-size:20px;letter-spacing:-.03em;color:#102a43}
+.vc-delivery-box{margin:18px 20px 0;padding:14px;border:1px solid #dfe5ea;border-radius:6px;background:#fbfdfe}
+.vc-delivery-title{display:flex;justify-content:space-between;color:#68747f;font-size:8px;font-weight:750;letter-spacing:.08em;text-transform:uppercase;margin-bottom:9px}
+.vc-delivery-title i{color:#1769aa;font-size:12px}
+.vc-delivery-box>strong{display:block;font-size:10px;margin-bottom:5px;color:#172431}.vc-delivery-box p{margin:0;color:#68747f;font-size:9px;line-height:1.65}.vc-delivery-phone{display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:9px;font-weight:650;color:#172431}
+.vc-payment-items{display:flex;flex-direction:column;gap:12px;padding:18px 20px}
+.vc-payment-item{display:grid;grid-template-columns:45px minmax(0,1fr) auto;gap:9px;align-items:center}
+.vc-payment-item-image{width:45px;height:45px;display:grid;place-items:center;overflow:hidden;border:1px solid #dfe5ea;border-radius:5px;background:#f3f7fa;color:#9aa7b1}.vc-payment-item-image img{width:100%;height:100%;object-fit:cover}
+.vc-payment-item-copy{min-width:0;display:flex;flex-direction:column;gap:3px}.vc-payment-item-copy strong{font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#172431}.vc-payment-item-copy span,.vc-payment-item>strong{font-size:8px;color:#68747f}.vc-payment-item>strong{color:#172431;white-space:nowrap}
+.vc-payment-lines{margin:0 20px;padding:14px 0;border-top:1px solid #e6ebef;border-bottom:1px solid #e6ebef;display:flex;flex-direction:column;gap:9px}.vc-payment-lines div{display:flex;justify-content:space-between}.vc-payment-lines span,.vc-payment-lines strong{font-size:9px}.vc-payment-lines span{color:#68747f}.vc-free{color:#2f7651!important}
+.vc-payment-total{display:flex;justify-content:space-between;align-items:center;padding:17px 20px}.vc-payment-total span{font-size:11px;font-weight:750;color:#172431}.vc-payment-total strong{font-size:22px;letter-spacing:-.04em;color:#102a43}
+.vc-payment-trust{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:18px 20px 20px;border-top:1px solid #edf0f2}.vc-payment-trust div{display:flex;flex-direction:column;align-items:center;gap:5px;color:#68747f;font-size:8px}.vc-payment-trust i{font-size:13px;color:#1769aa}
+@media(max-width:900px){.vc-online-grid{grid-template-columns:minmax(0,1fr) 310px}.vc-method-list{grid-template-columns:1fr}}
+@media(max-width:767px){.vc-online-page{padding:32px 0 52px}.vc-online-container{width:min(100% - 28px,1160px)}.vc-online-heading{align-items:flex-start}.vc-online-heading h1{font-size:29px}.vc-online-grid{display:flex;flex-direction:column;padding-top:22px}.vc-payment-summary{position:static;width:100%;order:-1}.vc-online-card-head{grid-template-columns:38px minmax(0,1fr);padding:18px}.vc-secure-badge{grid-column:2;width:max-content}.vc-online-body{padding:18px}.vc-method-list{grid-template-columns:1fr}}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const choices = document.querySelectorAll('input[name="payment_choice"]');
+    const hidden = document.getElementById("vc-selected-payment-option");
+    const cards = document.querySelectorAll(".vc-method-card");
+    choices.forEach(function (choice) {
+        choice.addEventListener("change", function () {
+            if (hidden) hidden.value = choice.value;
+            cards.forEach(function (card) { card.classList.remove("is-active"); });
+            const card = choice.closest(".vc-method-card");
+            if (card) card.classList.add("is-active");
+        });
+    });
+});
+</script>
+{% endblock %}

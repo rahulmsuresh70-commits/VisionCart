@@ -1,0 +1,742 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Order Details | VisionCart{% endblock %}
+
+{% block content %}
+<section class="vc-order-detail-page">
+    <div class="vc-order-detail-container">
+
+        <div class="vc-order-detail-topline">
+            <a href="{% url 'orders' %}" class="vc-back-link">
+                <i class="bi bi-arrow-left"></i>
+                My Orders
+            </a>
+        </div>
+
+        <header class="vc-order-detail-heading">
+            <div>
+                <span class="vc-order-kicker">VISIONCART ORDER</span>
+                <h1>{{ order.order_number }}</h1>
+                <p>
+                    Placed on
+                    <strong>{{ order.created_at|date:"d M Y, h:i A" }}</strong>
+                </p>
+            </div>
+
+            <span class="vc-order-status
+                {% if order.status == 'CANCELLED' %}is-cancelled
+                {% elif order.status == 'DELIVERED' %}is-delivered
+                {% elif order.status == 'SHIPPED' %}is-shipped
+                {% else %}is-active{% endif %}">
+                <span></span>
+                {{ order.get_status_display }}
+            </span>
+        </header>
+
+        <div class="vc-order-detail-grid">
+
+            <main class="vc-order-main">
+
+                <!-- ORDER ITEMS -->
+                <section class="vc-order-panel">
+                    <div class="vc-panel-heading">
+                        <div>
+                            <span class="vc-panel-kicker">YOUR PURCHASE</span>
+                            <h2>Order Items</h2>
+                        </div>
+                        <span class="vc-panel-count">
+                            {{ order.items.all|length }} item(s)
+                        </span>
+                    </div>
+
+                    <div class="vc-order-items">
+                        {% for item in order.items.all %}
+                            <article class="vc-detail-item">
+
+                                <div class="vc-detail-item-image">
+                                    {% if item.product %}
+                                        {% if item.product.main_image %}
+                                            <img src="{{ item.product.main_image.url }}"
+                                                 alt="{{ item.product_name|default:item.product.name }}">
+                                        {% elif item.product.image %}
+                                            <img src="{{ item.product.image.url }}"
+                                                 alt="{{ item.product_name|default:item.product.name }}">
+                                        {% else %}
+                                            <i class="bi bi-eyeglasses"></i>
+                                        {% endif %}
+                                    {% else %}
+                                        <i class="bi bi-eyeglasses"></i>
+                                    {% endif %}
+                                </div>
+
+                                <div class="vc-detail-item-content">
+                                    <span class="vc-item-brand">
+                                        {% if item.product.brand %}
+                                            {{ item.product.brand }}
+                                        {% else %}
+                                            VisionCart
+                                        {% endif %}
+                                    </span>
+
+                                    <h3>
+                                        {% if item.product_name %}
+                                            {{ item.product_name }}
+                                        {% elif item.product %}
+                                            {{ item.product.name }}
+                                        {% else %}
+                                            Eyewear Product
+                                        {% endif %}
+                                    </h3>
+
+                                    <div class="vc-item-meta">
+                                        {% if item.sku %}
+                                            <span>SKU <strong>{{ item.sku }}</strong></span>
+                                        {% endif %}
+                                        {% if item.size %}
+                                            <span>Size <strong>{{ item.size }}</strong></span>
+                                        {% endif %}
+                                        {% if item.color %}
+                                            <span>Color <strong>{{ item.color }}</strong></span>
+                                        {% endif %}
+                                        <span>Qty <strong>{{ item.quantity }}</strong></span>
+                                    </div>
+                                </div>
+
+                                <div class="vc-detail-item-price">
+                                    {% if item.total_price %}
+                                        ₹{{ item.total_price|floatformat:2 }}
+                                    {% elif item.unit_price %}
+                                        ₹{{ item.unit_price|floatformat:2 }}
+                                    {% elif item.product %}
+                                        ₹{{ item.product.price|floatformat:2 }}
+                                    {% endif %}
+                                </div>
+
+                            </article>
+                        {% empty %}
+                            <div class="vc-order-empty-items">
+                                No order items were found.
+                            </div>
+                        {% endfor %}
+                    </div>
+                </section>
+
+                <!-- DELIVERY ADDRESS -->
+                <section class="vc-order-panel vc-address-panel">
+                    <div class="vc-panel-heading">
+                        <div>
+                            <span class="vc-panel-kicker">DELIVERY</span>
+                            <h2>Shipping Address</h2>
+                        </div>
+                        <i class="bi bi-geo-alt vc-heading-icon"></i>
+                    </div>
+
+                    <div class="vc-address-content">
+                        {% if order.address %}
+                            <div class="vc-address-name">
+                                {% if order.address.full_name %}
+                                    {{ order.address.full_name }}
+                                {% elif order.address.name %}
+                                    {{ order.address.name }}
+                                {% else %}
+                                    {{ request.user.get_full_name|default:request.user.username }}
+                                {% endif %}
+                            </div>
+
+                            {% if order.address.phone %}
+                                <div class="vc-address-line">
+                                    <i class="bi bi-telephone"></i>
+                                    {{ order.address.phone }}
+                                </div>
+                            {% endif %}
+
+                            <div class="vc-address-line vc-address-main">
+                                {% if order.address.address %}
+                                    {{ order.address.address }}<br>
+                                {% endif %}
+                                {% if order.address.address_line1 %}
+                                    {{ order.address.address_line1 }}<br>
+                                {% endif %}
+                                {% if order.address.address_line2 %}
+                                    {{ order.address.address_line2 }}<br>
+                                {% endif %}
+                                {% if order.address.city %}
+                                    {{ order.address.city }},
+                                {% endif %}
+                                {% if order.address.state %}
+                                    {{ order.address.state }}
+                                {% endif %}
+                                {% if order.address.pincode %}
+                                    - {{ order.address.pincode }}
+                                {% elif order.address.postal_code %}
+                                    - {{ order.address.postal_code }}
+                                {% endif %}
+                            </div>
+
+                            {% if order.address.landmark %}
+                                <div class="vc-address-line">
+                                    <span class="vc-address-muted">Landmark:</span>
+                                    {{ order.address.landmark }}
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="vc-address-unavailable">
+                                Delivery address is unavailable for this order.
+                            </div>
+                        {% endif %}
+                    </div>
+                </section>
+
+                {% if order.notes %}
+                    <section class="vc-order-panel">
+                        <div class="vc-panel-heading">
+                            <div>
+                                <span class="vc-panel-kicker">ADDITIONAL</span>
+                                <h2>Order Notes</h2>
+                            </div>
+                        </div>
+                        <div class="vc-notes-content">
+                            {{ order.notes|linebreaksbr }}
+                        </div>
+                    </section>
+                {% endif %}
+
+            </main>
+
+            <aside class="vc-order-sidebar">
+
+                <!-- SUMMARY -->
+                <section class="vc-order-panel vc-summary-panel">
+                    <div class="vc-panel-heading">
+                        <div>
+                            <span class="vc-panel-kicker">PAYMENT</span>
+                            <h2>Order Summary</h2>
+                        </div>
+                    </div>
+
+                    <div class="vc-summary-body">
+                        {% if order.subtotal %}
+                            <div class="vc-summary-row">
+                                <span>Subtotal</span>
+                                <strong>₹{{ order.subtotal|floatformat:2 }}</strong>
+                            </div>
+                        {% endif %}
+
+                        {% if order.discount %}
+                            <div class="vc-summary-row vc-discount-row">
+                                <span>Discount</span>
+                                <strong>-₹{{ order.discount|floatformat:2 }}</strong>
+                            </div>
+                        {% endif %}
+
+                        <div class="vc-summary-row">
+                            <span>Shipping</span>
+                            <strong>
+                                {% if order.shipping_charge %}
+                                    ₹{{ order.shipping_charge|floatformat:2 }}
+                                {% else %}
+                                    FREE
+                                {% endif %}
+                            </strong>
+                        </div>
+
+                        {% if order.tax %}
+                            <div class="vc-summary-row">
+                                <span>Tax</span>
+                                <strong>₹{{ order.tax|floatformat:2 }}</strong>
+                            </div>
+                        {% endif %}
+
+                        <div class="vc-summary-total">
+                            <span>Total</span>
+                            <strong>
+                                {% if order.total_amount %}
+                                    ₹{{ order.total_amount|floatformat:2 }}
+                                {% else %}
+                                    ₹{{ order.total|floatformat:2 }}
+                                {% endif %}
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="vc-payment-details">
+                        <div class="vc-payment-row">
+                            <span>Payment Method</span>
+                            <strong>{{ order.get_payment_method_display }}</strong>
+                        </div>
+                        <div class="vc-payment-row">
+                            <span>Payment Status</span>
+                            <strong>{{ order.payment_status|default:"—" }}</strong>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DELIVERY STATUS -->
+                <section class="vc-order-panel vc-delivery-panel">
+                    <div class="vc-panel-heading">
+                        <div>
+                            <span class="vc-panel-kicker">FULFILLMENT</span>
+                            <h2>Delivery Status</h2>
+                        </div>
+                    </div>
+
+                    <div class="vc-delivery-details">
+                        {% if order.shipping_method %}
+                            <div class="vc-detail-row">
+                                <span>Shipping Method</span>
+                                <strong>{{ order.get_shipping_method_display }}</strong>
+                            </div>
+                        {% endif %}
+
+                        <div class="vc-detail-row">
+                            <span>Estimated Delivery</span>
+                            <strong>
+                                {% if order.estimated_delivery_date %}
+                                    {{ order.estimated_delivery_date|date:"d M Y" }}
+                                {% else %}
+                                    Not available
+                                {% endif %}
+                            </strong>
+                        </div>
+
+                        <div class="vc-detail-row">
+                            <span>Tracking Number</span>
+                            <strong>
+                                {% if order.tracking_number %}
+                                    {{ order.tracking_number }}
+                                {% else %}
+                                    Not assigned
+                                {% endif %}
+                            </strong>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ACTIONS -->
+                <section class="vc-order-actions">
+                    <a href="{% url 'orders' %}" class="vc-secondary-button">
+                        <i class="bi bi-arrow-left"></i>
+                        My Orders
+                    </a>
+
+                    {% if order.status == 'PLACED' or order.status == 'CONFIRMED' %}
+                        <form method="post"
+                              action="{% url 'cancel-order' order.id %}"
+                              class="vc-cancel-form"
+                              data-protect-submit
+                              onsubmit="return confirm('Are you sure you want to cancel this order?');">
+                            {% csrf_token %}
+                            <button type="submit" class="vc-cancel-button">
+                                <i class="bi bi-x-circle"></i>
+                                Cancel Order
+                            </button>
+                        </form>
+
+                        <p class="vc-cancel-note">
+                            You can cancel this order while it is still placed or confirmed.
+                        </p>
+                    {% endif %}
+                </section>
+
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.vc-order-detail-page{
+    min-height:70vh;
+    padding:48px 0 78px;
+    background:#fff;
+    color:var(--dashboard-text,#172033);
+    font-family:Inter,"Segoe UI",Arial,sans-serif;
+}
+.vc-order-detail-container{
+    width:min(1160px,calc(100% - 44px));
+    margin:0 auto;
+}
+.vc-order-detail-topline{
+    margin-bottom:22px;
+}
+.vc-back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:#174a80;
+    text-decoration:none;
+    font-size:10px;
+    font-weight:750;
+}
+.vc-back-link:hover{color:#123b67}
+.vc-order-detail-heading{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:25px;
+    padding-bottom:30px;
+    border-bottom:1px solid #e2e7ee;
+}
+.vc-order-kicker,
+.vc-panel-kicker{
+    display:block;
+    color:#6b7788;
+    font-size:10px;
+    font-weight:750;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+}
+.vc-order-detail-heading h1{
+    margin:7px 0 7px;
+    color:#172033;
+    font-size:35px;
+    line-height:1.08;
+    font-weight:750;
+    letter-spacing:-.045em;
+}
+.vc-order-detail-heading p{
+    margin:0;
+    color:#707b8b;
+    font-size:12px;
+}
+.vc-order-detail-heading p strong{
+    color:#344054;
+    font-weight:700;
+}
+.vc-order-status{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    min-height:34px;
+    padding:0 12px;
+    border:1px solid #cbd9e8;
+    background:#f5f9fd;
+    color:#174a80;
+    font-size:9px;
+    font-weight:750;
+    letter-spacing:.07em;
+    text-transform:uppercase;
+}
+.vc-order-status>span{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#2d72b8;
+}
+.vc-order-status.is-delivered{
+    border-color:#cbe1d3;
+    background:#f4faf6;
+    color:#287047;
+}
+.vc-order-status.is-delivered>span{background:#287047}
+.vc-order-status.is-shipped{
+    border-color:#cbdcf0;
+    background:#f3f8fd;
+    color:#235d91;
+}
+.vc-order-status.is-shipped>span{background:#235d91}
+.vc-order-status.is-cancelled{
+    border-color:#ead0d0;
+    background:#fff7f7;
+    color:#a04747;
+}
+.vc-order-status.is-cancelled>span{background:#a04747}
+.vc-order-detail-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1.55fr) minmax(310px,.75fr);
+    gap:22px;
+    align-items:start;
+    padding-top:28px;
+}
+.vc-order-main{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+.vc-order-sidebar{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    position:sticky;
+    top:100px;
+}
+.vc-order-panel{
+    overflow:hidden;
+    border:1px solid #dfe5ed;
+    background:#fff;
+}
+.vc-panel-heading{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    padding:20px 22px;
+    border-bottom:1px solid #e7ebf0;
+}
+.vc-panel-heading h2{
+    margin:6px 0 0;
+    color:#1b2735;
+    font-size:18px;
+    font-weight:750;
+    letter-spacing:-.025em;
+}
+.vc-panel-count{
+    color:#718096;
+    font-size:10px;
+    font-weight:650;
+}
+.vc-heading-icon{
+    color:#174a80;
+    font-size:17px;
+}
+.vc-order-items{
+    padding:0 22px;
+}
+.vc-detail-item{
+    display:grid;
+    grid-template-columns:84px minmax(0,1fr) auto;
+    gap:17px;
+    align-items:center;
+    padding:19px 0;
+    border-bottom:1px solid #edf0f4;
+}
+.vc-detail-item:last-child{border-bottom:0}
+.vc-detail-item-image{
+    width:84px;
+    height:84px;
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+    border:1px solid #e0e6ed;
+    background:#f7f9fb;
+    color:#174a80;
+}
+.vc-detail-item-image img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+.vc-detail-item-image i{font-size:25px}
+.vc-item-brand{
+    display:block;
+    margin-bottom:5px;
+    color:#6d7888;
+    font-size:9px;
+    font-weight:750;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+}
+.vc-detail-item-content h3{
+    margin:0 0 9px;
+    color:#1c2736;
+    font-size:14px;
+    line-height:1.35;
+    font-weight:750;
+}
+.vc-item-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px 14px;
+    color:#7a8492;
+    font-size:10px;
+}
+.vc-item-meta strong{
+    color:#3b4655;
+    font-weight:700;
+}
+.vc-detail-item-price{
+    color:#174a80;
+    font-size:14px;
+    font-weight:750;
+    white-space:nowrap;
+}
+.vc-order-empty-items{
+    padding:28px 0;
+    color:#7a8492;
+    text-align:center;
+    font-size:11px;
+}
+.vc-address-content{
+    padding:22px;
+}
+.vc-address-name{
+    margin-bottom:8px;
+    color:#1b2735;
+    font-size:14px;
+    font-weight:750;
+}
+.vc-address-line{
+    display:flex;
+    gap:8px;
+    color:#667085;
+    font-size:11px;
+    line-height:1.75;
+}
+.vc-address-line i{
+    flex:0 0 auto;
+    margin-top:3px;
+    color:#174a80;
+}
+.vc-address-main{
+    display:block;
+    margin-top:10px;
+    color:#344054;
+}
+.vc-address-muted{color:#7a8492}
+.vc-address-unavailable{
+    color:#7a8492;
+    font-size:11px;
+}
+.vc-summary-body{
+    padding:8px 22px 21px;
+}
+.vc-summary-row,
+.vc-payment-row,
+.vc-detail-row{
+    display:flex;
+    justify-content:space-between;
+    gap:18px;
+}
+.vc-summary-row{
+    padding:12px 0;
+    border-bottom:1px solid #edf0f4;
+    color:#718096;
+    font-size:11px;
+}
+.vc-summary-row strong{
+    color:#344054;
+    font-weight:700;
+}
+.vc-summary-row.vc-discount-row strong{color:#287047}
+.vc-summary-total{
+    display:flex;
+    justify-content:space-between;
+    gap:18px;
+    padding-top:19px;
+    color:#1b2735;
+    font-size:15px;
+    font-weight:750;
+}
+.vc-summary-total strong{color:#174a80}
+.vc-payment-details{
+    padding:16px 22px 20px;
+    border-top:1px solid #e7ebf0;
+    background:#fbfcfe;
+}
+.vc-payment-row{
+    padding:6px 0;
+    font-size:10px;
+}
+.vc-payment-row span{color:#7a8492}
+.vc-payment-row strong{
+    color:#344054;
+    font-weight:700;
+    text-align:right;
+}
+.vc-delivery-details{
+    padding:10px 22px 17px;
+}
+.vc-detail-row{
+    padding:11px 0;
+    border-bottom:1px solid #edf0f4;
+    color:#718096;
+    font-size:10px;
+}
+.vc-detail-row:last-child{border-bottom:0}
+.vc-detail-row strong{
+    max-width:58%;
+    color:#344054;
+    font-weight:700;
+    text-align:right;
+}
+.vc-order-actions{
+    padding:18px;
+    border:1px solid #dfe5ed;
+    background:#fbfcfe;
+}
+.vc-secondary-button,
+.vc-cancel-button{
+    width:100%;
+    min-height:43px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    font-family:inherit;
+    font-size:10px;
+    font-weight:750;
+    text-decoration:none;
+    cursor:pointer;
+    transition:.2s ease;
+}
+.vc-secondary-button{
+    border:1px solid #d5deea;
+    background:#fff;
+    color:#174a80;
+}
+.vc-secondary-button:hover{
+    border-color:#174a80;
+    background:#f5f9fd;
+    color:#174a80;
+}
+.vc-cancel-form{margin-top:9px}
+.vc-cancel-button{
+    border:1px solid #e3bfc3;
+    background:#fff7f7;
+    color:#a04747;
+}
+.vc-cancel-button:hover{
+    border-color:#c98b91;
+    background:#fff1f2;
+    color:#8f363e;
+}
+.vc-cancel-note{
+    margin:10px 2px 0;
+    color:#8a94a2;
+    font-size:9px;
+    line-height:1.6;
+    text-align:center;
+}
+.vc-notes-content{
+    padding:20px 22px;
+    color:#667085;
+    font-size:11px;
+    line-height:1.75;
+}
+@media(max-width:900px){
+    .vc-order-detail-grid{grid-template-columns:1fr}
+    .vc-order-sidebar{position:static}
+}
+@media(max-width:620px){
+    .vc-order-detail-page{padding:32px 0 55px}
+    .vc-order-detail-container{width:calc(100% - 28px)}
+    .vc-order-detail-heading{
+        align-items:flex-start;
+        flex-direction:column;
+        padding-bottom:23px;
+    }
+    .vc-order-detail-heading h1{font-size:28px}
+    .vc-order-status{align-self:flex-start}
+    .vc-order-detail-grid{padding-top:20px}
+    .vc-panel-heading{padding:17px}
+    .vc-order-items{padding:0 17px}
+    .vc-detail-item{
+        grid-template-columns:66px minmax(0,1fr);
+        gap:13px;
+    }
+    .vc-detail-item-image{
+        width:66px;
+        height:66px;
+    }
+    .vc-detail-item-price{
+        grid-column:2;
+    }
+    .vc-address-content,
+    .vc-summary-body,
+    .vc-payment-details,
+    .vc-delivery-details{padding-left:17px;padding-right:17px}
+}
+</style>
+{% endblock %}

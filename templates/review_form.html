@@ -1,0 +1,805 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Write a Review | VisionCart{% endblock %}
+
+{% block content %}
+<section class="vc-review-page">
+    <div class="vc-review-container">
+
+        <div class="vc-review-topline">
+            <a href="{% url 'product-detail' product.id %}" class="vc-review-back">
+                <i class="bi bi-arrow-left"></i>
+                Back to Product
+            </a>
+        </div>
+
+        <div class="vc-review-heading">
+            <div>
+                <span class="vc-review-kicker">YOUR EXPERIENCE</span>
+                <h1>Write a Review</h1>
+                <p>
+                    Share your experience and help other customers make a better choice.
+                </p>
+            </div>
+        </div>
+
+        <div class="vc-review-layout">
+
+            <!-- PRODUCT PREVIEW -->
+            <aside class="vc-review-product-card">
+
+                <div class="vc-review-card-label">
+                    <span>REVIEWING</span>
+                </div>
+
+                <div class="vc-review-product-image">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <div class="vc-review-image-placeholder">
+                            <i class="bi bi-eyeglasses"></i>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="vc-review-product-info">
+
+                    {% if product.brand %}
+                        <span class="vc-review-brand">{{ product.brand }}</span>
+                    {% else %}
+                        <span class="vc-review-brand">VISIONCART</span>
+                    {% endif %}
+
+                    <h2>{{ product.name }}</h2>
+
+                    {% if product.category %}
+                        <span class="vc-review-category">
+                            {{ product.category.name }}
+                        </span>
+                    {% endif %}
+
+                    {% if product.price %}
+                        <div class="vc-review-price">
+                            ₹{{ product.price|floatformat:2 }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="vc-review-note">
+                    <i class="bi bi-chat-quote"></i>
+                    <p>
+                        Your honest feedback helps other shoppers choose the right eyewear.
+                    </p>
+                </div>
+
+            </aside>
+
+
+            <!-- REVIEW FORM -->
+            <section class="vc-review-form-card">
+
+                <div class="vc-review-form-header">
+                    <span class="vc-review-kicker">PRODUCT REVIEW</span>
+                    <h2>How was your experience?</h2>
+                    <p>
+                        Rate the product and share a few useful details about your experience.
+                    </p>
+                </div>
+
+                <form
+                    method="post"
+                    class="vc-review-form"
+                    data-protect-submit
+                >
+                    {% csrf_token %}
+
+                    <!-- RATING -->
+                    <div class="vc-form-group">
+
+                        <div class="vc-field-heading">
+                            <label>Rating <span>*</span></label>
+                            <small>Select one</small>
+                        </div>
+
+                        <div class="vc-rating-options" role="radiogroup" aria-label="Product rating">
+
+                            {% for value in "12345" %}
+                                <label
+                                    class="vc-rating-option"
+                                    for="rating-{{ value }}"
+                                >
+                                    <input
+                                        type="radio"
+                                        name="rating"
+                                        id="rating-{{ value }}"
+                                        value="{{ value }}"
+                                        {% if rating == value %}checked{% endif %}
+                                        required
+                                    >
+
+                                    <span class="vc-rating-number">{{ value }}</span>
+
+                                    <span class="vc-rating-stars" aria-hidden="true">
+                                        {% if value == "1" %}
+                                            ★
+                                        {% elif value == "2" %}
+                                            ★★
+                                        {% elif value == "3" %}
+                                            ★★★
+                                        {% elif value == "4" %}
+                                            ★★★★
+                                        {% elif value == "5" %}
+                                            ★★★★★
+                                        {% endif %}
+                                    </span>
+                                </label>
+                            {% endfor %}
+
+                        </div>
+
+                        <small class="vc-form-help">
+                            1 = Not satisfied &nbsp; · &nbsp; 5 = Excellent
+                        </small>
+
+                    </div>
+
+
+                    <!-- COMMENT -->
+                    <div class="vc-form-group">
+
+                        <div class="vc-field-heading">
+                            <label for="id_comment">
+                                Your Review <span>*</span>
+                            </label>
+                            <small>Maximum 1000 characters</small>
+                        </div>
+
+                        <textarea
+                            name="comment"
+                            id="id_comment"
+                            rows="8"
+                            maxlength="1000"
+                            placeholder="Tell us about the fit, quality, comfort, design or your overall experience..."
+                            required
+                        >{{ comment|default:"" }}</textarea>
+
+                        <div class="vc-textarea-footer">
+                            <small class="vc-form-help">
+                                Keep your review clear, genuine and helpful.
+                            </small>
+                            <span id="vc-review-counter">0 / 1000</span>
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTIONS -->
+                    <div class="vc-review-actions">
+
+                        <a
+                            href="{% url 'product-detail' product.id %}"
+                            class="vc-secondary-button"
+                        >
+                            <i class="bi bi-arrow-left"></i>
+                            Back to Product
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="vc-primary-button"
+                            data-vc-click-feedback
+                        >
+                            Submit Review
+                            <i class="bi bi-arrow-right"></i>
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+        </div>
+
+
+        <!-- TRUST / BENEFITS -->
+        <div class="vc-review-benefits">
+
+            <div class="vc-review-benefit">
+                <span class="vc-benefit-icon">
+                    <i class="bi bi-stars"></i>
+                </span>
+                <div>
+                    <strong>Honest Feedback</strong>
+                    <span>Share your genuine experience.</span>
+                </div>
+            </div>
+
+            <div class="vc-review-benefit">
+                <span class="vc-benefit-icon">
+                    <i class="bi bi-people"></i>
+                </span>
+                <div>
+                    <strong>Help Other Shoppers</strong>
+                    <span>Your review can guide their choice.</span>
+                </div>
+            </div>
+
+            <div class="vc-review-benefit">
+                <span class="vc-benefit-icon">
+                    <i class="bi bi-shield-check"></i>
+                </span>
+                <div>
+                    <strong>Customer First</strong>
+                    <span>Every VisionCart opinion matters.</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.vc-review-page{
+    min-height:70vh;
+    padding:42px 0 78px;
+    background:#fff;
+    color:#172033;
+    font-family:Inter,"Segoe UI",Arial,sans-serif;
+}
+
+.vc-review-container{
+    width:min(1080px,calc(100% - 44px));
+    margin:0 auto;
+}
+
+.vc-review-topline{
+    margin-bottom:24px;
+}
+
+.vc-review-back{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    color:#174a80;
+    font-size:10px;
+    font-weight:750;
+    text-decoration:none;
+}
+
+.vc-review-back:hover{
+    color:#123b67;
+}
+
+.vc-review-heading{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    padding-bottom:28px;
+    border-bottom:1px solid #e2e7ee;
+}
+
+.vc-review-kicker{
+    display:block;
+    color:#6b7788;
+    font-size:9px;
+    font-weight:750;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+}
+
+.vc-review-heading h1{
+    margin:7px 0 8px;
+    color:#172033;
+    font-size:34px;
+    line-height:1.1;
+    font-weight:750;
+    letter-spacing:-.045em;
+}
+
+.vc-review-heading p{
+    max-width:560px;
+    margin:0;
+    color:#707b8b;
+    font-size:11px;
+    line-height:1.7;
+}
+
+.vc-review-layout{
+    display:grid;
+    grid-template-columns:320px minmax(0,1fr);
+    align-items:start;
+    gap:22px;
+    margin-top:28px;
+}
+
+.vc-review-product-card,
+.vc-review-form-card{
+    border:1px solid #dfe5ed;
+    background:#fff;
+}
+
+.vc-review-product-card{
+    overflow:hidden;
+}
+
+.vc-review-card-label{
+    padding:18px 20px 0;
+}
+
+.vc-review-card-label span{
+    color:#6b7788;
+    font-size:9px;
+    font-weight:750;
+    letter-spacing:.13em;
+}
+
+.vc-review-product-image{
+    height:260px;
+    margin:16px 20px 0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    border:1px solid #e0e6ed;
+    background:#f6f8fa;
+}
+
+.vc-review-product-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform .35s ease;
+}
+
+.vc-review-product-card:hover .vc-review-product-image img{
+    transform:scale(1.025);
+}
+
+.vc-review-image-placeholder{
+    display:grid;
+    place-items:center;
+    width:100%;
+    height:100%;
+    color:#9aa5b3;
+    font-size:34px;
+}
+
+.vc-review-product-info{
+    padding:20px;
+}
+
+.vc-review-brand{
+    display:block;
+    margin-bottom:6px;
+    color:#1769aa;
+    font-size:9px;
+    font-weight:750;
+    letter-spacing:.11em;
+    text-transform:uppercase;
+}
+
+.vc-review-product-info h2{
+    margin:0;
+    color:#172033;
+    font-size:21px;
+    line-height:1.2;
+    font-weight:750;
+    letter-spacing:-.025em;
+}
+
+.vc-review-category{
+    display:block;
+    margin-top:7px;
+    color:#7a8492;
+    font-size:10px;
+}
+
+.vc-review-price{
+    margin-top:13px;
+    color:#174a80;
+    font-size:14px;
+    font-weight:750;
+}
+
+.vc-review-note{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    margin:0 20px 20px;
+    padding:14px;
+    border:1px solid #e2e7ee;
+    background:#f8fafc;
+}
+
+.vc-review-note i{
+    flex:0 0 auto;
+    margin-top:1px;
+    color:#1769aa;
+    font-size:14px;
+}
+
+.vc-review-note p{
+    margin:0;
+    color:#707b8b;
+    font-size:9px;
+    line-height:1.65;
+}
+
+.vc-review-form-card{
+    min-width:0;
+}
+
+.vc-review-form-header{
+    padding:25px;
+    border-bottom:1px solid #dfe5ed;
+    background:#f8fafc;
+}
+
+.vc-review-form-header h2{
+    margin:7px 0 7px;
+    color:#172033;
+    font-size:25px;
+    line-height:1.15;
+    font-weight:750;
+    letter-spacing:-.035em;
+}
+
+.vc-review-form-header p{
+    margin:0;
+    color:#707b8b;
+    font-size:10px;
+    line-height:1.65;
+}
+
+.vc-review-form{
+    padding:25px;
+}
+
+.vc-form-group{
+    margin-bottom:26px;
+}
+
+.vc-field-heading{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:10px;
+}
+
+.vc-field-heading label{
+    color:#344054;
+    font-size:10px;
+    font-weight:750;
+}
+
+.vc-field-heading label span{
+    color:#b44b4b;
+}
+
+.vc-field-heading small{
+    color:#8a94a3;
+    font-size:8px;
+}
+
+.vc-rating-options{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:7px;
+}
+
+.vc-rating-option{
+    position:relative;
+    display:block;
+    min-width:0;
+    cursor:pointer;
+}
+
+.vc-rating-option input{
+    position:absolute;
+    opacity:0;
+    pointer-events:none;
+}
+
+.vc-rating-number{
+    min-height:62px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid #d9e0e8;
+    background:#fff;
+    color:#667386;
+    font-size:12px;
+    font-weight:750;
+    transition:.2s ease;
+}
+
+.vc-rating-stars{
+    position:absolute;
+    left:50%;
+    bottom:6px;
+    transform:translateX(-50%);
+    color:#9aabc0;
+    font-size:6px;
+    letter-spacing:.03em;
+    white-space:nowrap;
+    transition:.2s ease;
+}
+
+.vc-rating-option:hover .vc-rating-number{
+    border-color:#174a80;
+    color:#174a80;
+}
+
+.vc-rating-option input:checked + .vc-rating-number{
+    border-color:#174a80;
+    background:#174a80;
+    color:#fff;
+}
+
+.vc-rating-option input:checked ~ .vc-rating-stars{
+    color:#dceeff;
+}
+
+.vc-form-help{
+    display:block;
+    margin-top:7px;
+    color:#818b99;
+    font-size:8px;
+    line-height:1.5;
+}
+
+.vc-review-form textarea{
+    display:block;
+    width:100%;
+    min-height:165px;
+    padding:13px 14px;
+    resize:vertical;
+    border:1px solid #d9e0e8;
+    border-radius:0;
+    outline:none;
+    background:#fff;
+    color:#344054;
+    font-family:inherit;
+    font-size:10px;
+    line-height:1.7;
+    transition:border-color .2s ease,box-shadow .2s ease;
+}
+
+.vc-review-form textarea::placeholder{
+    color:#9aa3ae;
+}
+
+.vc-review-form textarea:focus{
+    border-color:#174a80;
+    box-shadow:0 0 0 3px rgba(23,105,170,.07);
+}
+
+.vc-textarea-footer{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:15px;
+}
+
+#vc-review-counter{
+    margin-top:7px;
+    color:#8a94a3;
+    font-size:8px;
+    white-space:nowrap;
+}
+
+.vc-review-actions{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding-top:20px;
+    border-top:1px solid #e2e7ee;
+}
+
+.vc-primary-button,
+.vc-secondary-button{
+    min-height:42px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:0 18px;
+    font-family:inherit;
+    font-size:9px;
+    font-weight:750;
+    text-decoration:none;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.vc-primary-button{
+    border:1px solid #174a80;
+    background:#174a80;
+    color:#fff;
+}
+
+.vc-primary-button:hover{
+    border-color:#123b67;
+    background:#123b67;
+    color:#fff;
+}
+
+.vc-secondary-button{
+    border:1px solid #d5deea;
+    background:#fff;
+    color:#174a80;
+}
+
+.vc-secondary-button:hover{
+    border-color:#174a80;
+    background:#f5f9fd;
+    color:#174a80;
+}
+
+.vc-review-benefits{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    margin-top:18px;
+    border:1px solid #dfe5ed;
+    background:#fff;
+}
+
+.vc-review-benefit{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    min-width:0;
+    padding:18px;
+    border-right:1px solid #e2e7ee;
+}
+
+.vc-review-benefit:last-child{
+    border-right:0;
+}
+
+.vc-benefit-icon{
+    width:34px;
+    height:34px;
+    flex:0 0 34px;
+    display:grid;
+    place-items:center;
+    border:1px solid #dfe5ed;
+    color:#1769aa;
+    font-size:12px;
+}
+
+.vc-review-benefit div{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+    min-width:0;
+}
+
+.vc-review-benefit strong{
+    color:#344054;
+    font-size:9px;
+    font-weight:750;
+}
+
+.vc-review-benefit span{
+    color:#818b99;
+    font-size:8px;
+    line-height:1.45;
+}
+
+@media(max-width:900px){
+    .vc-review-layout{
+        grid-template-columns:280px minmax(0,1fr);
+    }
+
+    .vc-review-product-image{
+        height:225px;
+    }
+}
+
+@media(max-width:700px){
+    .vc-review-page{
+        padding:32px 0 56px;
+    }
+
+    .vc-review-container{
+        width:calc(100% - 28px);
+    }
+
+    .vc-review-heading h1{
+        font-size:28px;
+    }
+
+    .vc-review-layout{
+        display:flex;
+        flex-direction:column;
+    }
+
+    .vc-review-product-card,
+    .vc-review-form-card{
+        width:100%;
+    }
+
+    .vc-review-product-image{
+        height:245px;
+    }
+
+    .vc-review-form-header,
+    .vc-review-form{
+        padding:20px;
+    }
+
+    .vc-review-actions{
+        align-items:stretch;
+        flex-direction:column-reverse;
+    }
+
+    .vc-primary-button,
+    .vc-secondary-button{
+        width:100%;
+    }
+
+    .vc-review-benefits{
+        grid-template-columns:1fr;
+    }
+
+    .vc-review-benefit{
+        border-right:0;
+        border-bottom:1px solid #e2e7ee;
+    }
+
+    .vc-review-benefit:last-child{
+        border-bottom:0;
+    }
+}
+
+@media(max-width:420px){
+    .vc-rating-options{
+        gap:5px;
+    }
+
+    .vc-rating-number{
+        min-height:55px;
+        font-size:11px;
+    }
+
+    .vc-rating-stars{
+        font-size:5px;
+    }
+
+    .vc-textarea-footer{
+        flex-direction:column;
+        gap:0;
+    }
+
+    #vc-review-counter{
+        align-self:flex-end;
+    }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const textarea = document.getElementById("id_comment");
+    const counter = document.getElementById("vc-review-counter");
+
+    if (!textarea || !counter) {
+        return;
+    }
+
+    function updateCounter() {
+        counter.textContent = textarea.value.length + " / 1000";
+    }
+
+    textarea.addEventListener("input", updateCounter);
+    updateCounter();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,1001 @@
+{% comment %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}VisionCart{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/typography.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="vcu-site-body">
+
+<header class="vcu-site-header">
+    <nav class="vcu-main-nav" aria-label="VisionCart main navigation">
+        <div class="vcu-nav-container">
+
+            <a class="vcu-brand"
+               href="{% if user.is_authenticated and user.role == 'CUSTOMER' %}{% url 'profile' %}{% else %}{% url 'home' %}{% endif %}">
+                <span class="vcu-brand-mark"><i class="bi bi-eyeglasses"></i></span>
+                <span class="vcu-brand-copy">
+                    <strong>VisionCart</strong>
+                    <small>Clear Vision · Better Tomorrow</small>
+                </span>
+            </a>
+
+            <button class="vcu-nav-toggle"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#vcMainNavigation"
+                    aria-controls="vcMainNavigation"
+                    aria-expanded="false"
+                    aria-label="Open navigation">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <div class="collapse vcu-nav-menu" id="vcMainNavigation">
+
+                {% if user.is_authenticated and user.role == "CUSTOMER" %}
+
+                    <div class="vcu-nav-links">
+                        <a class="vcu-nav-link {% if request.resolver_match.url_name == 'profile' %}is-active{% endif %}"
+                           href="{% url 'profile' %}">
+                            <i class="bi bi-house-door"></i><span>Home</span>
+                        </a>
+
+                        <a class="vcu-nav-link {% if request.resolver_match.url_name == 'products' %}is-active{% endif %}"
+                           href="{% url 'products' %}">
+                            <i class="bi bi-shop"></i><span>Shop</span>
+                        </a>
+
+                        <a class="vcu-nav-link {% if request.resolver_match.url_name == 'wishlist' %}is-active{% endif %}"
+                           href="{% url 'wishlist' %}">
+                            <i class="bi bi-heart"></i><span>Wishlist</span>
+                        </a>
+
+                        <a class="vcu-nav-link {% if request.resolver_match.url_name == 'orders' %}is-active{% endif %}"
+                           href="{% url 'orders' %}">
+                            <i class="bi bi-box-seam"></i><span>Orders</span>
+                        </a>
+
+                        <a class="vcu-nav-link {% if request.resolver_match.url_name == 'addresses' %}is-active{% endif %}"
+                           href="{% url 'addresses' %}">
+                            <i class="bi bi-geo-alt"></i><span>Addresses</span>
+                        </a>
+                    </div>
+
+                    <div class="vcu-nav-actions">
+                        <form class="vcu-nav-search" method="get" action="{% url 'products' %}">
+                            <i class="bi bi-search"></i>
+                            <input type="search" name="q" placeholder="Search eyewear..." aria-label="Search eyewear">
+                        </form>
+
+                        <a class="vcu-icon-action" href="{% url 'wishlist' %}" aria-label="Wishlist" title="Wishlist">
+                            <i class="bi bi-heart"></i>
+                            <span class="vcu-icon-badge">0</span>
+                        </a>
+
+                        <a class="vcu-icon-action" href="{% url 'cart' %}" aria-label="Cart" title="Cart">
+                            <i class="bi bi-bag"></i>
+                            <span class="vcu-icon-badge">0</span>
+                        </a>
+
+                        <a class="vcu-account-action" href="{% url 'profile-management' %}">
+                            <span class="vcu-account-avatar"><i class="bi bi-person"></i></span>
+                            <span>{{ user.username }}</span>
+                        </a>
+
+                        <form method="post" action="{% url 'logout' %}" class="vcu-logout-form">
+                            {% csrf_token %}
+                            <button type="submit" class="vcu-logout-button">
+                                <i class="bi bi-box-arrow-right"></i><span>Logout</span>
+                            </button>
+                        </form>
+                    </div>
+
+                {% elif user.is_authenticated and user.role == "SUPER_ADMIN" %}
+
+                    <div class="vcu-nav-links">
+                        <a class="vcu-nav-link" href="{% url 'super-admin-dashboard' %}">
+                            <i class="bi bi-grid"></i><span>Dashboard</span>
+                        </a>
+                    </div>
+
+                    <div class="vcu-nav-actions">
+                        <form method="post" action="{% url 'management-logout' %}" class="vcu-logout-form">
+                            {% csrf_token %}
+                            <button type="submit" class="vcu-logout-button">
+                                <i class="bi bi-box-arrow-right"></i><span>Logout</span>
+                            </button>
+                        </form>
+                    </div>
+
+                {% elif user.is_authenticated and user.role == "WEB_ADMIN" %}
+
+                    <div class="vcu-nav-links">
+                        <a class="vcu-nav-link" href="{% url 'web-admin-dashboard' %}">
+                            <i class="bi bi-grid"></i><span>Dashboard</span>
+                        </a>
+                    </div>
+
+                    <div class="vcu-nav-actions">
+                        <form method="post" action="{% url 'management-logout' %}" class="vcu-logout-form">
+                            {% csrf_token %}
+                            <button type="submit" class="vcu-logout-button">
+                                <i class="bi bi-box-arrow-right"></i><span>Logout</span>
+                            </button>
+                        </form>
+                    </div>
+
+                {% else %}
+
+                    <div class="vcu-nav-links">
+                        <a class="vcu-nav-link {% if request.resolver_match.url_name == 'home' %}is-active{% endif %}"
+                           href="{% url 'home' %}">
+                            <i class="bi bi-house-door"></i><span>Home</span>
+                        </a>
+                        <a class="vcu-nav-link {% if request.resolver_match.url_name == 'products' %}is-active{% endif %}"
+                           href="{% url 'products' %}">
+                            <i class="bi bi-shop"></i><span>Shop</span>
+                        </a>
+                    </div>
+
+                    <div class="vcu-nav-actions">
+                        <a class="vcu-auth-button vcu-auth-outline" href="{% url 'login' %}">Login</a>
+                        <a class="vcu-auth-button vcu-auth-primary" href="{% url 'register' %}">Create Account</a>
+                    </div>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </nav>
+</header>
+
+{% if messages %}
+<div class="container vcu-message-area">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<main class="vcu-page-shell">
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="vcu-footer">
+    <div class="container">
+        <div class="vcu-footer-main">
+
+            <div class="vcu-footer-brand">
+                <a class="vcu-brand vcu-footer-brand-link"
+                   href="{% if user.is_authenticated and user.role == 'CUSTOMER' %}{% url 'profile' %}{% else %}{% url 'home' %}{% endif %}">
+                    <span class="vcu-brand-mark"><i class="bi bi-eyeglasses"></i></span>
+                    <span class="vcu-brand-copy">
+                        <strong>VisionCart</strong>
+                        <small>Clear Vision · Better Tomorrow</small>
+                    </span>
+                </a>
+                <p>
+                    Discover stylish eyewear, save your favourites and enjoy a simple
+                    shopping experience built around better vision.
+                </p>
+            </div>
+
+            <div class="vcu-footer-column">
+                <h3>Shop</h3>
+                <a href="{% url 'products' %}">All Eyewear</a>
+                {% if user.is_authenticated and user.role == "CUSTOMER" %}
+                    <a href="{% url 'wishlist' %}">Wishlist</a>
+                    <a href="{% url 'cart' %}">Cart</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </div>
+
+            <div class="vcu-footer-column">
+                <h3>Customer Care</h3>
+                {% if user.is_authenticated and user.role == "CUSTOMER" %}
+                    <a href="{% url 'orders' %}">My Orders</a>
+                    <a href="{% url 'addresses' %}">My Addresses</a>
+                    <a href="{% url 'profile' %}">My Profile</a>
+                {% else %}
+                    <a href="{% url 'register' %}">Create Account</a>
+                {% endif %}
+            </div>
+
+            <div class="vcu-footer-column">
+                <h3>Why VisionCart</h3>
+                <span><i class="bi bi-shield-check"></i> Trusted shopping</span>
+                <span><i class="bi bi-truck"></i> Easy delivery</span>
+                <span><i class="bi bi-arrow-repeat"></i> Easy returns</span>
+            </div>
+
+        </div>
+
+        <div class="vcu-footer-bottom">
+            <span>© {% now "Y" %} VisionCart. All rights reserved.</span>
+            <span>Clear Vision · Better Tomorrow</span>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/script.js' %}"></script>
+<script>
+window.addEventListener("pageshow", function(event) {
+    if (event.persisted) {
+        window.location.reload();
+    }
+});
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>
+     {% endcomment %}
+
+
+
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}VisionCart{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/typography.css' %}">
+
+    {% block extra_css %}{% endblock %}
+
+    <style>
+
+        /* =========================================================
+           CUSTOMER NAVIGATION
+           ONLY REQUESTED CHANGES
+           ========================================================= */
+
+        .vcu-nav-menu .vcu-nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: nowrap;
+        }
+
+        .vcu-nav-menu .vcu-nav-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            white-space: nowrap;
+            padding: 10px 15px;
+            margin: 0;
+        }
+
+        /* Remove icons from customer navigation */
+        .vcu-nav-menu .vcu-nav-link > i {
+            display: none;
+        }
+
+        /* =========================================================
+           CUSTOMER NAVIGATION POSITION
+           SLIGHTLY MOVED TO THE LEFT
+           ========================================================= */
+
+        @media (min-width: 992px) {
+
+            .vcu-nav-menu:has(.vcu-customer-actions) {
+                position: relative;
+            }
+
+            .vcu-nav-menu:has(.vcu-customer-actions) .vcu-nav-links {
+
+                position: absolute;
+
+                /* Moved slightly left */
+                left: 38%;
+
+                top: 50%;
+
+                transform: translate(-50%, -50%);
+
+                display: flex;
+
+                align-items: center;
+
+                justify-content: center;
+
+                gap: 6px;
+
+                white-space: nowrap;
+            }
+
+            /* Keep profile and logout on the right */
+            .vcu-customer-actions {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-left: auto;
+                flex-shrink: 0;
+            }
+        }
+
+        /* =========================================================
+           PROFILE BOX
+           ========================================================= */
+
+        .vcu-account-profile-box {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            min-height: 44px;
+            padding: 6px 13px 6px 7px;
+            border: 1px solid rgba(0, 0, 0, 0.10);
+            border-radius: 12px;
+            background: #ffffff;
+            text-decoration: none;
+            white-space: nowrap;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .vcu-account-profile-box:hover {
+            border-color: rgba(0, 0, 0, 0.18);
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .vcu-account-profile-box .vcu-account-avatar {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+            background: #f2f4f7;
+            color: #1f2937;
+            font-size: 15px;
+        }
+
+        .vcu-account-profile-box .vcu-account-name {
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1;
+            color: #202124;
+        }
+
+        .vcu-customer-actions .vcu-logout-form {
+            margin: 0;
+            flex-shrink: 0;
+        }
+
+        /* =========================================================
+           MOBILE
+           ========================================================= */
+
+        @media (max-width: 991.98px) {
+
+            .vcu-nav-menu .vcu-nav-links {
+                position: static !important;
+                transform: none !important;
+
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 2px;
+                margin-top: 10px;
+            }
+
+            .vcu-nav-menu .vcu-nav-link {
+                justify-content: flex-start;
+                width: 100%;
+            }
+
+            .vcu-customer-actions {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+                margin-left: 0;
+                margin-top: 8px;
+                gap: 8px;
+            }
+
+            .vcu-account-profile-box {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .vcu-customer-actions .vcu-logout-form,
+            .vcu-customer-actions .vcu-logout-form .vcu-logout-button {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body class="vcu-site-body">
+
+
+<header class="vcu-site-header">
+
+    <nav class="vcu-main-nav" aria-label="VisionCart main navigation">
+
+        <div class="vcu-nav-container">
+
+            <a class="vcu-brand"
+               href="{% if user.is_authenticated and user.role == 'CUSTOMER' %}{% url 'profile' %}{% else %}{% url 'home' %}{% endif %}">
+
+                <span class="vcu-brand-mark">
+                    <i class="bi bi-eyeglasses"></i>
+                </span>
+
+                <span class="vcu-brand-copy">
+
+                    <strong>VisionCart</strong>
+
+                    <small>Clear Vision · Better Tomorrow</small>
+
+                </span>
+
+            </a>
+
+
+            <button class="vcu-nav-toggle"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#vcMainNavigation"
+                    aria-controls="vcMainNavigation"
+                    aria-expanded="false"
+                    aria-label="Open navigation">
+
+                <i class="bi bi-list"></i>
+
+            </button>
+
+
+            <div class="collapse vcu-nav-menu" id="vcMainNavigation">
+
+
+                {% if user.is_authenticated and user.role == "CUSTOMER" %}
+
+
+                    <div class="vcu-nav-links">
+
+
+                        <!-- HOME -->
+                        <a class="vcu-nav-link {% if request.resolver_match.url_name == 'profile' %}is-active{% endif %}"
+                           href="{% url 'profile' %}">
+
+                            <span>Home</span>
+
+                        </a>
+
+
+                        <!-- SHOP -->
+                        <a class="vcu-nav-link {% if request.resolver_match.url_name == 'products' %}is-active{% endif %}"
+                           href="{% url 'products' %}">
+
+                            <span>Shop</span>
+
+                        </a>
+
+
+                        <!-- ORDERS -->
+                        <a class="vcu-nav-link {% if request.resolver_match.url_name == 'orders' %}is-active{% endif %}"
+                           href="{% url 'orders' %}">
+
+                            <span>Orders</span>
+
+                        </a>
+
+
+                        <!-- WISHLIST -->
+                        <a class="vcu-nav-link {% if request.resolver_match.url_name == 'wishlist' %}is-active{% endif %}"
+                           href="{% url 'wishlist' %}">
+
+                            <span>Wishlist</span>
+
+                        </a>
+
+
+                        <!-- ADDRESS -->
+                        <a class="vcu-nav-link {% if request.resolver_match.url_name == 'addresses' %}is-active{% endif %}"
+                           href="{% url 'addresses' %}">
+
+                            <span>Address</span>
+
+                        </a>
+
+
+                        <!-- CART
+                             IMPORTANT:
+                             Same vcu-nav-link class as all other navigation items
+                             so Cart gets EXACTLY the same font/style.
+                        -->
+                        <a class="vcu-nav-link {% if request.resolver_match.url_name == 'cart' %}is-active{% endif %}"
+                           href="{% url 'cart' %}">
+
+                            <span>Cart</span>
+
+                        </a>
+
+
+                    </div>
+
+
+                    <div class="vcu-customer-actions">
+
+
+                        <!-- PROFILE -->
+                        <a class="vcu-account-profile-box"
+                           href="{% url 'profile-management' %}"
+                           aria-label="Open profile"
+                           title="Profile">
+
+                            <span class="vcu-account-avatar">
+
+                                <i class="bi bi-person"></i>
+
+                            </span>
+
+                            <span class="vcu-account-name">
+
+                                {{ user.username }}
+
+                            </span>
+
+                        </a>
+
+
+                        <!-- LOGOUT -->
+                        <form method="post"
+                              action="{% url 'logout' %}"
+                              class="vcu-logout-form">
+
+                            {% csrf_token %}
+
+                            <button type="submit" class="vcu-logout-button">
+
+                                <i class="bi bi-box-arrow-right"></i>
+
+                                <span>Logout</span>
+
+                            </button>
+
+                        </form>
+
+
+                    </div>
+
+
+                {% elif user.is_authenticated and user.role == "SUPER_ADMIN" %}
+
+
+                    <div class="vcu-nav-links">
+
+                        <a class="vcu-nav-link"
+                           href="{% url 'super-admin-dashboard' %}">
+
+                            <i class="bi bi-grid"></i>
+
+                            <span>Dashboard</span>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="vcu-nav-actions">
+
+                        <form method="post"
+                              action="{% url 'management-logout' %}"
+                              class="vcu-logout-form">
+
+                            {% csrf_token %}
+
+                            <button type="submit" class="vcu-logout-button">
+
+                                <i class="bi bi-box-arrow-right"></i>
+
+                                <span>Logout</span>
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                {% elif user.is_authenticated and user.role == "WEB_ADMIN" %}
+
+
+                    <div class="vcu-nav-links">
+
+                        <a class="vcu-nav-link"
+                           href="{% url 'web-admin-dashboard' %}">
+
+                            <i class="bi bi-grid"></i>
+
+                            <span>Dashboard</span>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="vcu-nav-actions">
+
+                        <form method="post"
+                              action="{% url 'management-logout' %}"
+                              class="vcu-logout-form">
+
+                            {% csrf_token %}
+
+                            <button type="submit" class="vcu-logout-button">
+
+                                <i class="bi bi-box-arrow-right"></i>
+
+                                <span>Logout</span>
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                {% else %}
+
+
+                    <div class="vcu-nav-links">
+
+
+                        <a class="vcu-nav-link {% if request.resolver_match.url_name == 'home' %}is-active{% endif %}"
+                           href="{% url 'home' %}">
+
+                            <i class="bi bi-house-door"></i>
+
+                            <span>Home</span>
+
+                        </a>
+
+
+                        <a class="vcu-nav-link {% if request.resolver_match.url_name == 'products' %}is-active{% endif %}"
+                           href="{% url 'products' %}">
+
+                            <i class="bi bi-shop"></i>
+
+                            <span>Shop</span>
+
+                        </a>
+
+
+                    </div>
+
+
+                    <div class="vcu-nav-actions">
+
+                        <a class="vcu-auth-button vcu-auth-outline"
+                           href="{% url 'login' %}">
+
+                            Login
+
+                        </a>
+
+
+                        <a class="vcu-auth-button vcu-auth-primary"
+                           href="{% url 'register' %}">
+
+                            Create Account
+
+                        </a>
+
+                    </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+{% if messages %}
+
+
+<div class="container vcu-message-area">
+
+
+    {% for message in messages %}
+
+
+        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show"
+             role="alert">
+
+            {{ message }}
+
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close">
+
+            </button>
+
+        </div>
+
+
+    {% endfor %}
+
+
+</div>
+
+
+{% endif %}
+
+
+<main class="vcu-page-shell">
+
+    {% block content %}{% endblock %}
+
+</main>
+
+
+<footer class="vcu-footer">
+
+    <div class="container">
+
+
+        <div class="vcu-footer-main">
+
+
+            <div class="vcu-footer-brand">
+
+
+                <a class="vcu-brand vcu-footer-brand-link"
+                   href="{% if user.is_authenticated and user.role == 'CUSTOMER' %}{% url 'profile' %}{% else %}{% url 'home' %}{% endif %}">
+
+                    <span class="vcu-brand-mark">
+
+                        <i class="bi bi-eyeglasses"></i>
+
+                    </span>
+
+
+                    <span class="vcu-brand-copy">
+
+                        <strong>VisionCart</strong>
+
+                        <small>Clear Vision · Better Tomorrow</small>
+
+                    </span>
+
+                </a>
+
+
+                <p>
+
+                    Discover stylish eyewear, save your favourites and enjoy a simple
+                    shopping experience built around better vision.
+
+                </p>
+
+
+            </div>
+
+
+            <div class="vcu-footer-column">
+
+                <h3>Shop</h3>
+
+
+                <a href="{% url 'products' %}">
+
+                    All Eyewear
+
+                </a>
+
+
+                {% if user.is_authenticated and user.role == "CUSTOMER" %}
+
+
+                    <a href="{% url 'wishlist' %}">
+
+                        Wishlist
+
+                    </a>
+
+
+                    <a href="{% url 'cart' %}">
+
+                        Cart
+
+                    </a>
+
+
+                {% else %}
+
+
+                    <a href="{% url 'login' %}">
+
+                        Login
+
+                    </a>
+
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="vcu-footer-column">
+
+                <h3>Customer Care</h3>
+
+
+                {% if user.is_authenticated and user.role == "CUSTOMER" %}
+
+
+                    <a href="{% url 'orders' %}">
+
+                        My Orders
+
+                    </a>
+
+
+                    <a href="{% url 'addresses' %}">
+
+                        My Addresses
+
+                    </a>
+
+
+                    <a href="{% url 'profile' %}">
+
+                        My Profile
+
+                    </a>
+
+
+                {% else %}
+
+
+                    <a href="{% url 'register' %}">
+
+                        Create Account
+
+                    </a>
+
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="vcu-footer-column">
+
+                <h3>Why VisionCart</h3>
+
+
+                <span>
+
+                    <i class="bi bi-shield-check"></i>
+
+                    Trusted shopping
+
+                </span>
+
+
+                <span>
+
+                    <i class="bi bi-truck"></i>
+
+                    Easy delivery
+
+                </span>
+
+
+                <span>
+
+                    <i class="bi bi-arrow-repeat"></i>
+
+                    Easy returns
+
+                </span>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="vcu-footer-bottom">
+
+            <span>
+
+                © {% now "Y" %} VisionCart. All rights reserved.
+
+            </span>
+
+
+            <span>
+
+                Clear Vision · Better Tomorrow
+
+            </span>
+
+        </div>
+
+
+    </div>
+
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="{% static 'js/script.js' %}"></script>
+
+
+<script>
+
+window.addEventListener("pageshow", function(event) {
+
+    if (event.persisted) {
+
+        window.location.reload();
+
+    }
+
+});
+
+</script>
+
+
+{% block extra_js %}{% endblock %}
+
+
+</body>
+
+</html>

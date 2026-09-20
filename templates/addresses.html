@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Addresses | VisionCart{% endblock %}
+
+{% block content %}
+<section class="vc-addresses-page">
+    <div class="vc-addresses-container">
+
+        <div class="vc-addresses-hero">
+            <div>
+                <span class="vc-addresses-kicker">DELIVERY INFORMATION</span>
+                <h1>My Addresses</h1>
+                <p>Manage the delivery addresses you use for your VisionCart orders.</p>
+            </div>
+
+            <a href="{% url 'add-address' %}" class="vc-addresses-primary-btn">
+                <i class="bi bi-plus-lg"></i>
+                Add New Address
+            </a>
+        </div>
+
+        {% if messages %}
+            <div class="vc-addresses-messages" aria-live="polite">
+                {% for message in messages %}
+                    <div class="vc-address-message vc-message-{{ message.tags|default:'info' }}">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="vc-addresses-section-heading">
+            <div>
+                <span class="vc-addresses-section-kicker">SAVED LOCATIONS</span>
+                <h2>Your Delivery Addresses</h2>
+            </div>
+            {% if addresses %}
+                <span class="vc-addresses-count">{{ addresses|length }} saved</span>
+            {% endif %}
+        </div>
+
+        {% if addresses %}
+            <div class="vc-addresses-grid">
+                {% for address in addresses %}
+                    <article class="vc-address-card {% if address.is_default %}is-default{% endif %}">
+                        <div class="vc-address-card-top">
+                            <div class="vc-address-card-title">
+                                <span class="vc-address-icon"><i class="bi bi-geo-alt"></i></span>
+                                <div>
+                                    <span class="vc-address-label">DELIVERY ADDRESS</span>
+                                    <h3>{{ address.name }}</h3>
+                                </div>
+                            </div>
+
+                            {% if address.is_default %}
+                                <span class="vc-address-default-badge">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    Default
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        <div class="vc-address-details">
+                            <div class="vc-address-detail-row">
+                                <i class="bi bi-person"></i>
+                                <div>
+                                    <span>Name</span>
+                                    <strong>{{ address.name }}</strong>
+                                </div>
+                            </div>
+
+                            <div class="vc-address-detail-row">
+                                <i class="bi bi-telephone"></i>
+                                <div>
+                                    <span>Phone</span>
+                                    <strong>{{ address.phone }}</strong>
+                                </div>
+                            </div>
+
+                            <div class="vc-address-detail-row vc-address-location-row">
+                                <i class="bi bi-house"></i>
+                                <div>
+                                    <span>Address</span>
+                                    <strong>
+                                        {{ address.address }}<br>
+                                        {{ address.city }}, {{ address.state }}<br>
+                                        {{ address.pincode }}
+                                    </strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="vc-address-card-actions">
+                            <a href="{% url 'edit-address' address.id %}" class="vc-address-edit-btn">
+                                <i class="bi bi-pencil-square"></i>
+                                Edit
+                            </a>
+
+                            <form method="POST" action="{% url 'delete-address' address.id %}" class="vc-address-inline-form">
+                                {% csrf_token %}
+                                <button
+                                    type="submit"
+                                    class="vc-address-delete-btn"
+                                    onclick="return confirm('Are you sure you want to delete this address?');"
+                                >
+                                    <i class="bi bi-trash3"></i>
+                                    Delete
+                                </button>
+                            </form>
+
+                            {% if not address.is_default %}
+                                <form method="POST" action="{% url 'set-default-address' address.id %}" class="vc-address-inline-form vc-address-default-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="vc-address-default-btn">
+                                        <i class="bi bi-check2-circle"></i>
+                                        Set Default
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <section class="vc-address-empty">
+                <div class="vc-address-empty-icon">
+                    <i class="bi bi-geo-alt"></i>
+                </div>
+                <span class="vc-addresses-section-kicker">NO SAVED LOCATIONS</span>
+                <h2>No delivery address yet</h2>
+                <p>Add your first address to make checkout quicker and easier.</p>
+                <a href="{% url 'add-address' %}" class="vc-addresses-primary-btn">
+                    <i class="bi bi-plus-lg"></i>
+                    Add Your First Address
+                </a>
+            </section>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================================
+   VISIONCART ADDRESSES — USER-SIDE DESIGN ONLY
+   Uses the existing master Dashboard shell from base.html.
+   No address backend, forms, URLs, or business logic changed.
+============================================================ */
+.vc-addresses-page{
+    --vc-blue: var(--dashboard-blue, #1769aa);
+    --vc-navy: var(--dashboard-navy, #102a43);
+    --vc-text: var(--dashboard-text, #172431);
+    --vc-muted: var(--dashboard-muted, #68747f);
+    --vc-border: var(--dashboard-border, #e4e8ec);
+    --vc-soft: var(--dashboard-soft-blue, #edf4f9);
+    --vc-light: var(--dashboard-light, #f6f8fa);
+    --vc-white: #fff;
+    background:#fff;
+    color:var(--vc-text);
+    padding:48px 0 82px;
+    font-family:Inter,"Segoe UI",Arial,sans-serif;
+}
+.vc-addresses-page *{box-sizing:border-box}
+.vc-addresses-container{width:min(1180px,calc(100% - 36px));margin:0 auto}
+.vc-addresses-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;padding-bottom:30px;border-bottom:1px solid var(--vc-border)}
+.vc-addresses-kicker,.vc-addresses-section-kicker,.vc-address-label{display:block;color:var(--vc-blue);font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+.vc-addresses-hero h1{margin:8px 0 8px;color:var(--vc-navy);font-size:clamp(32px,4vw,48px);line-height:1.08;font-weight:800;letter-spacing:-.035em}
+.vc-addresses-hero p{margin:0;color:var(--vc-muted);font-size:15px;line-height:1.7;max-width:610px}
+.vc-addresses-primary-btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;padding:0 20px;border:1px solid var(--vc-blue);border-radius:7px;background:var(--vc-blue);color:#fff;text-decoration:none;font-size:14px;font-weight:750;white-space:nowrap;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+.vc-addresses-primary-btn:hover{color:#fff;background:#125a92;transform:translateY(-2px);box-shadow:0 10px 24px rgba(23,105,170,.18)}
+.vc-addresses-messages{display:grid;gap:10px;margin:26px 0 0}
+.vc-address-message{display:flex;align-items:center;gap:10px;padding:13px 16px;border:1px solid #d9e7ef;border-radius:7px;background:#f5f9fb;color:var(--vc-text);font-size:14px}
+.vc-address-message i{color:#20865b}
+.vc-addresses-section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin:42px 0 20px}
+.vc-addresses-section-heading h2{margin:7px 0 0;color:var(--vc-navy);font-size:25px;line-height:1.2;font-weight:800;letter-spacing:-.02em}
+.vc-addresses-count{padding:7px 11px;border:1px solid var(--vc-border);border-radius:999px;background:var(--vc-light);color:var(--vc-muted);font-size:12px;font-weight:700}
+.vc-addresses-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.vc-address-card{display:flex;flex-direction:column;min-height:100%;border:1px solid var(--vc-border);border-radius:10px;background:#fff;box-shadow:0 8px 26px rgba(16,42,67,.05);overflow:hidden;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.vc-address-card:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(16,42,67,.09);border-color:#d5e1e9}
+.vc-address-card.is-default{border-color:#b9d5e7}
+.vc-address-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:22px 22px 18px;background:linear-gradient(180deg,#f9fbfc 0%,#fff 100%);border-bottom:1px solid var(--vc-border)}
+.vc-address-card-title{display:flex;align-items:center;gap:13px;min-width:0}
+.vc-address-icon{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;border-radius:8px;background:var(--vc-soft);color:var(--vc-blue);font-size:19px}
+.vc-address-label{font-size:9px;letter-spacing:.13em;color:var(--vc-muted);margin-bottom:5px}
+.vc-address-card h3{margin:0;color:var(--vc-navy);font-size:17px;font-weight:800;line-height:1.3;overflow-wrap:anywhere}
+.vc-address-default-badge{display:inline-flex;align-items:center;gap:5px;padding:6px 9px;border-radius:999px;background:#edf8f2;color:#207c57;font-size:11px;font-weight:800;white-space:nowrap}
+.vc-address-details{display:grid;gap:17px;padding:21px 22px;flex:1}
+.vc-address-detail-row{display:flex;align-items:flex-start;gap:12px}
+.vc-address-detail-row>i{width:20px;padding-top:2px;color:var(--vc-blue);font-size:15px;text-align:center}
+.vc-address-detail-row span{display:block;margin-bottom:4px;color:#8a949c;font-size:10px;font-weight:750;letter-spacing:.08em;text-transform:uppercase}
+.vc-address-detail-row strong{display:block;color:var(--vc-text);font-size:13px;line-height:1.65;font-weight:600;overflow-wrap:anywhere}
+.vc-address-location-row strong{font-weight:500}
+.vc-address-card-actions{display:flex;flex-wrap:wrap;gap:8px;padding:15px 18px;border-top:1px solid var(--vc-border);background:#fbfcfd}
+.vc-address-inline-form{display:inline-flex;margin:0}
+.vc-address-card-actions a,.vc-address-card-actions button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;padding:0 11px;border-radius:6px;font:inherit;font-size:12px;font-weight:750;cursor:pointer;text-decoration:none;transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s ease}
+.vc-address-edit-btn{border:1px solid #cfdbe3;background:#fff;color:var(--vc-navy)}
+.vc-address-edit-btn:hover{color:var(--vc-blue);border-color:#a9c9dc;background:var(--vc-soft)}
+.vc-address-delete-btn{border:1px solid #ead4d4;background:#fff;color:#a54b4b}
+.vc-address-delete-btn:hover{background:#fff4f4;border-color:#d9b5b5}
+.vc-address-default-btn{border:1px solid #c5ddea;background:var(--vc-soft);color:var(--vc-blue)}
+.vc-address-default-btn:hover{background:#e3f0f7;border-color:#a9c9dc}
+.vc-address-empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:64px 24px;border:1px dashed #cfdce4;border-radius:10px;background:#fbfcfd}
+.vc-address-empty-icon{display:grid;place-items:center;width:64px;height:64px;margin-bottom:18px;border-radius:50%;background:var(--vc-soft);color:var(--vc-blue);font-size:27px}
+.vc-address-empty h2{margin:9px 0 8px;color:var(--vc-navy);font-size:24px;font-weight:800}
+.vc-address-empty p{margin:0 0 22px;color:var(--vc-muted);font-size:14px;line-height:1.7}
+@media (max-width:1050px){.vc-addresses-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.vc-addresses-page{padding:34px 0 58px}.vc-addresses-container{width:min(100% - 28px,620px)}.vc-addresses-hero{align-items:flex-start;flex-direction:column}.vc-addresses-primary-btn{width:100%}.vc-addresses-section-heading{align-items:flex-start;flex-direction:column;margin-top:32px}.vc-addresses-grid{grid-template-columns:1fr;gap:16px}.vc-address-card-top{padding:19px}.vc-address-details{padding:19px}.vc-address-card-actions{padding:14px}.vc-address-card-actions a,.vc-address-card-actions button{flex:1}.vc-address-inline-form{flex:1}.vc-address-empty{padding:50px 18px}}
+@media (max-width:420px){.vc-addresses-hero h1{font-size:31px}.vc-address-card-actions{display:grid;grid-template-columns:1fr 1fr}.vc-address-default-form{grid-column:1/-1}.vc-address-default-form button{width:100%}.vc-address-default-badge{font-size:10px;padding:5px 7px}}
+@media (prefers-reduced-motion:reduce){.vc-addresses-page *{transition:none!important;scroll-behavior:auto!important}}
+</style>
+{% endblock %}

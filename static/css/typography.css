@@ -1,0 +1,338 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+
+/* Font family only: Poppins throughout VisionCart. */
+body,
+body :not(i):not([class^="bi"]):not([class*=" bi-"]) {
+    font-family: "Poppins", sans-serif !important;
+}
+
+/* ============================================================
+   VISIONCART GLOBAL TYPOGRAPHY STANDARD
+   Typography only — no layout, color, spacing, or functionality.
+============================================================= */
+
+:root {
+    --vc-body-font-size: 15px;
+    --vc-body-line-height: 1.65;
+    --vc-label-size: 12px;
+    --vc-small-size: 12px;
+    --vc-nav-size: 14px;
+    --vc-button-size: 14px;
+    --vc-section-heading-size: 26px;
+    --vc-page-heading-size: 40px;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-size: var(--vc-body-font-size) !important;
+    line-height: var(--vc-body-line-height) !important;
+}
+
+/* Main readable text */
+p,
+li,
+label,
+input,
+select,
+textarea,
+option,
+button,
+.form-control,
+.form-select,
+.form-check-label {
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+}
+
+/* Paragraphs */
+p,
+.text-muted,
+.text-light,
+small,
+.small {
+    font-size: 14px !important;
+    line-height: 1.65 !important;
+}
+
+/* Classic premium heading hierarchy */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: 1.2 !important;
+}
+
+h1 {
+    font-size: 40px !important;
+}
+
+h2 {
+    font-size: 28px !important;
+}
+
+h3 {
+    font-size: 22px !important;
+}
+
+h4 {
+    font-size: 19px !important;
+}
+
+h5 {
+    font-size: 17px !important;
+}
+
+h6 {
+    font-size: 15px !important;
+}
+
+/* Preserve the premium serif treatment for major headings. */
+.vc-eyebrow {
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+}
+
+/* Navigation */
+.navbar-brand {
+    font-size: 22px !important;
+}
+
+.navbar .nav-link,
+.navbar .btn-link.nav-link {
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+}
+
+/* Buttons */
+.btn,
+button,
+input[type="submit"],
+input[type="button"] {
+    font-size: 14px !important;
+    line-height: 1.35 !important;
+}
+
+/* Forms */
+.form-label,
+form label {
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+}
+
+.form-control,
+.form-select,
+input,
+select,
+textarea {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+}
+
+::placeholder {
+    font-size: 14px !important;
+}
+
+/* Tables and data-heavy management pages */
+table,
+thead,
+tbody,
+td,
+th,
+tbody td,
+tbody th {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+}
+
+/* Cards / common commerce content */
+.card-title {
+    font-size: 20px !important;
+    line-height: 1.3 !important;
+}
+
+.card-text {
+    font-size: 14px !important;
+    line-height: 1.65 !important;
+}
+
+/* Product names, customer information and prices */
+.product-name,
+.product-title,
+.customer-name {
+    font-size: 15px !important;
+    line-height: 1.45 !important;
+}
+
+.price,
+.product-price,
+.total-price {
+    font-size: 18px !important;
+    line-height: 1.35 !important;
+}
+
+/* Alerts / validation / feedback */
+.alert,
+.invalid-feedback,
+.valid-feedback,
+.errorlist,
+.helptext {
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+}
+
+/* Badges and status labels remain compact, but readable. */
+.badge,
+[class*="badge"],
+.status-badge {
+    font-size: 11px !important;
+    line-height: 1.35 !important;
+}
+
+/* Footer */
+footer p,
+footer li,
+footer a,
+footer small {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+}
+
+/* ============================================================
+   WEB ADMIN ORDER DETAIL TYPOGRAPHY
+   These rules intentionally change typography only.
+============================================================= */
+
+.vc-admin-order-detail-header h1 {
+    font-size: 40px !important;
+}
+
+.vc-admin-order-detail-header p {
+    font-size: 15px !important;
+    line-height: 1.65 !important;
+}
+
+.vc-admin-order-detail-back {
+    font-size: 14px !important;
+}
+
+.vc-admin-order-status-main span,
+.vc-admin-order-status-date span {
+    font-size: 12px !important;
+}
+
+.vc-admin-order-status-main strong {
+    font-size: 20px !important;
+}
+
+.vc-admin-order-status-date strong {
+    font-size: 13px !important;
+}
+
+.vc-admin-order-card-header h2 {
+    font-size: 26px !important;
+}
+
+.vc-admin-order-card-count {
+    font-size: 12px !important;
+}
+
+.vc-admin-order-item-info span,
+.vc-admin-order-item-info small,
+.vc-admin-order-item-quantity span,
+.vc-admin-order-item-price span,
+.vc-admin-order-item-subtotal span,
+.vc-admin-shipping-details span,
+.vc-admin-summary-rows span,
+.vc-admin-summary-total span {
+    font-size: 12px !important;
+}
+
+.vc-admin-order-item-info strong {
+    font-size: 15px !important;
+}
+
+.vc-admin-order-item-quantity strong,
+.vc-admin-order-item-price strong,
+.vc-admin-order-item-subtotal strong {
+    font-size: 14px !important;
+}
+
+.vc-admin-customer-details strong,
+.vc-admin-address-box strong {
+    font-size: 15px !important;
+}
+
+.vc-admin-customer-details span,
+.vc-admin-address-box span,
+.vc-admin-address-box p,
+.vc-admin-no-address {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+}
+
+.vc-admin-timeline-item strong {
+    font-size: 15px !important;
+}
+
+.vc-admin-timeline-item span {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+}
+
+.vc-admin-form-field label {
+    font-size: 12px !important;
+}
+
+.vc-admin-form-field select,
+.vc-admin-form-field input {
+    font-size: 14px !important;
+}
+
+.vc-admin-summary-rows strong,
+.vc-admin-shipping-details strong {
+    font-size: 14px !important;
+}
+
+.vc-admin-summary-total strong {
+    font-size: 20px !important;
+}
+
+.vc-admin-order-note strong {
+    font-size: 12px !important;
+}
+
+.vc-admin-order-note p {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+}
+
+/* Responsive heading scale */
+@media (max-width: 767.98px) {
+
+    h1,
+    .vc-admin-order-detail-header h1 {
+        font-size: 32px !important;
+    }
+
+    h2,
+    .vc-admin-order-card-header h2 {
+        font-size: 24px !important;
+    }
+
+    p,
+    .text-muted,
+    .text-light,
+    small,
+    .small,
+    .vc-admin-order-detail-header p,
+    .vc-admin-timeline-item span,
+    .vc-admin-address-box p,
+    .vc-admin-customer-details span {
+        font-size: 14px !important;
+    }
+}

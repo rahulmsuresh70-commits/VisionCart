@@ -1,0 +1,65 @@
+{% extends "super_admin_base.html" %}
+
+{% block title %}Edit Web Admin | VisionCart{% endblock %}
+
+{% block content %}
+<div class="sa-page">
+    <section class="sa-page-head">
+        <div><span class="sa-eyebrow">SUPER ADMIN · ACCOUNT CONTROL</span><h1>Edit Web Admin</h1><p>Update the selected Web Admin account while preserving its existing role and management permissions.</p></div>
+        <a href="{% url 'super-admin-web-admin-list' %}" class="sa-back"><i class="bi bi-arrow-left"></i> Back to Web Admins</a>
+    </section>
+
+    <div class="sa-edit-layout">
+        <section class="sa-card">
+            <div class="sa-card-head"><span class="sa-eyebrow">ACCOUNT DETAILS</span><h2>{{ web_admin.username }}</h2><p>Update username, email, phone or optionally set a new password.</p></div>
+
+            {% if errors %}
+                <div class="sa-errors">
+                    {% for error in errors %}<div><i class="bi bi-exclamation-circle"></i>{{ error }}</div>{% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="post" class="sa-edit-form" data-protect-submit>
+                {% csrf_token %}
+
+                <div class="sa-field"><label for="username">Username</label><input id="username" type="text" name="username" value="{{ username }}" maxlength="150" required autocomplete="username"></div>
+                <div class="sa-field"><label for="email">Email</label><input id="email" type="email" name="email" value="{{ email }}" required autocomplete="email"></div>
+                <div class="sa-field"><label for="phone">Phone <span>Optional</span></label><input id="phone" type="tel" name="phone" value="{{ phone }}" maxlength="10" inputmode="numeric" autocomplete="tel"></div>
+
+                <div class="sa-divider"><span>OPTIONAL PASSWORD CHANGE</span></div>
+
+                <div class="sa-grid">
+                    <div class="sa-field"><label for="password">New Password <span>Optional</span></label><input id="password" type="password" name="password" autocomplete="new-password"></div>
+                    <div class="sa-field"><label for="confirm-password">Confirm Password <span>Optional</span></label><input id="confirm-password" type="password" name="confirm_password" autocomplete="new-password"></div>
+                </div>
+
+                <div class="sa-actions-bottom">
+                    <a href="{% url 'super-admin-web-admin-list' %}" class="sa-cancel">Cancel</a>
+                    <button type="submit" class="sa-primary"><i class="bi bi-check2"></i> Save Changes</button>
+                </div>
+            </form>
+        </section>
+
+        <aside>
+            <section class="sa-card sa-account-summary">
+                <div class="sa-card-head"><span class="sa-eyebrow">ACCOUNT STATUS</span><h2>Access Overview</h2></div>
+                <div class="sa-summary-person"><div class="sa-avatar large">{{ web_admin.username|first|upper }}</div><div><strong>{{ web_admin.username }}</strong><span>Web Admin</span></div></div>
+                <div class="sa-summary-rows">
+                    <div><span>Email</span><strong>{{ web_admin.email }}</strong></div>
+                    <div><span>Phone</span><strong>{% if web_admin.phone %}{{ web_admin.phone }}{% else %}Not provided{% endif %}</strong></div>
+                    <div><span>Status</span><strong>{% if web_admin.is_active %}<em class="active">Active</em>{% else %}<em class="inactive">Inactive</em>{% endif %}</strong></div>
+                    <div><span>Joined</span><strong>{{ web_admin.date_joined|date:"d M Y" }}</strong></div>
+                </div>
+            </section>
+
+            <div class="sa-note"><i class="bi bi-shield-lock"></i><div><strong>Role protection</strong><p>The Web Admin role is controlled by the server and is not editable from this form.</p></div></div>
+        </aside>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.sa-page{font-family:Inter,Segoe UI,Arial,sans-serif;color:#172033}.sa-eyebrow{display:block;margin-bottom:7px;color:#7b8494;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase}.sa-page-head{display:flex;align-items:end;justify-content:space-between;gap:20px;padding:27px 29px;margin-bottom:15px;background:#fff;border:1px solid #e7eaf0;border-radius:17px;box-shadow:0 7px 24px rgba(25,35,55,.045)}.sa-page-head h1{margin:0;font-size:40px;letter-spacing:-.03em}.sa-page-head p{max-width:690px;margin:8px 0 0;color:#667085;font-size:15px;line-height:1.65}.sa-back{display:inline-flex;align-items:center;gap:7px;min-height:39px;padding:0 12px;border:1px solid #dfe4ea;border-radius:9px;color:#344054;background:#fff;font-size:14px;font-weight:800;white-space:nowrap}.sa-back:hover{border-color:#172033;color:#172033}.sa-edit-layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:14px}.sa-card{background:#fff;border:1px solid #e7eaf0;border-radius:15px;box-shadow:0 6px 22px rgba(25,35,55,.04);overflow:hidden}.sa-card-head{padding:19px 20px;border-bottom:1px solid #edf0f4}.sa-card-head h2{margin:0;font-size:22px;letter-spacing:-.02em}.sa-card-head p{margin:5px 0 0;color:#778091;font-size:14px;line-height:1.55}.sa-edit-form{padding:21px 20px}.sa-field{margin-bottom:15px}.sa-field label{display:flex;justify-content:space-between;gap:7px;margin-bottom:6px;color:#344054;font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}.sa-field label span{color:#8a93a3;font-weight:600;letter-spacing:0;text-transform:none}.sa-field input{width:100%;height:44px;padding:0 12px;border:1px solid #dfe4ea;border-radius:9px;outline:0;background:#fff;color:#172033;font:inherit;font-size:14px}.sa-field input:focus{border-color:#172033;box-shadow:0 0 0 3px rgba(23,32,51,.05)}.sa-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.sa-divider{display:flex;align-items:center;gap:10px;margin:21px 0 16px;color:#9aa2af;font-size:12px;font-weight:800;letter-spacing:1px}.sa-divider:before,.sa-divider:after{content:"";height:1px;background:#edf0f4;flex:1}.sa-actions-bottom{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-top:22px}.sa-primary,.sa-cancel{min-height:42px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:0 15px;border-radius:9px;font-size:14px;font-weight:800}.sa-primary{border:1px solid #172033;background:#172033;color:#fff}.sa-primary:hover{background:#273248;color:#fff}.sa-cancel{border:1px solid #dfe4ea;background:#fff;color:#667085}.sa-cancel:hover{border-color:#172033;color:#172033}.sa-errors{margin:15px 20px 0;padding:10px 12px;border:1px solid #ead0d0;border-radius:9px;background:#fff7f7;color:#a54b4b;font-size:14px}.sa-errors div{display:flex;gap:7px;align-items:flex-start;margin:3px 0}.sa-account-summary{margin-bottom:14px}.sa-summary-person{display:flex;align-items:center;gap:10px;padding:18px 20px;border-bottom:1px solid #edf0f4}.sa-avatar{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:#172033;color:#fff;font-size:12px;font-weight:800}.sa-avatar.large{width:46px;height:46px;border-radius:11px;font-size:14px}.sa-summary-person strong{display:block;font-size:15px}.sa-summary-person span{display:block;margin-top:2px;color:#8a93a3;font-size:12px}.sa-summary-rows{padding:7px 20px 12px}.sa-summary-rows>div{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #edf0f4}.sa-summary-rows>div:last-child{border-bottom:0}.sa-summary-rows span{color:#7b8494;font-size:12px}.sa-summary-rows strong{max-width:165px;color:#344054;font-size:13px;text-align:right;overflow-wrap:anywhere}.sa-summary-rows em{font-style:normal;font-size:11px;font-weight:800}.sa-summary-rows em.active{color:#24704a}.sa-summary-rows em.inactive{color:#737b88}.sa-note{display:flex;gap:11px;padding:15px 16px;border:1px solid #e1e6ed;border-radius:12px;background:#fff}.sa-note>i{color:#667085;font-size:15px}.sa-note strong{display:block;font-size:14px}.sa-note p{margin:3px 0 0;color:#778091;font-size:13px;line-height:1.6}@media(max-width:800px){.sa-page-head{align-items:flex-start;flex-direction:column}.sa-edit-layout{grid-template-columns:1fr}.sa-back{width:100%}}@media(max-width:600px){.sa-page-head{padding:22px 20px}.sa-page-head h1{font-size:27px}.sa-grid{grid-template-columns:1fr}.sa-actions-bottom{flex-direction:column-reverse}.sa-actions-bottom a,.sa-actions-bottom button{width:100%}}
+</style>
+{% endblock %}

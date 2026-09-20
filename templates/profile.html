@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}VisionCart | My Dashboard{% endblock %}
+
+{% block content %}
+<main class="vc2-dashboard">
+
+    <!-- HERO SLIDESHOW: exactly three supplied VisionCart images -->
+    <section class="vc2-hero" aria-label="VisionCart featured collection">
+        <div class="vc2-slides">
+            <div class="vc2-slide is-active">
+                <img src="{% static 'images/l12.jpg' %}" alt="VisionCart eyewear style">
+            </div>
+            <div class="vc2-slide">
+                <img src="{% static 'images/l13.jpg' %}" alt="VisionCart eyewear collection">
+            </div>
+            <div class="vc2-slide">
+                <img src="{% static 'images/l3.jpg' %}" alt="VisionCart eyewear lifestyle">
+            </div>
+        </div>
+
+        <!-- Lighter overlay so the model/product remains clearly visible -->
+        <div class="vc2-hero-overlay"></div>
+
+        <div class="container vc2-hero-inner">
+            <div class="vc2-hero-copy">
+                <span class="vc2-eyebrow">YOUR PERSONAL VISIONCART</span>
+                <h1>Welcome back,<br><span>{{ request.user.username }}</span></h1>
+                <p>
+                    Discover eyewear made for your everyday style, comfort and confidence.
+                    Explore the collection and manage your VisionCart journey from one place.
+                </p>
+                <div class="vc2-actions">
+                    <a href="{% url 'products' %}" class="vc2-btn vc2-primary">
+                        Shop Eyewear <i class="bi bi-arrow-right"></i>
+                    </a>
+                    <a href="{% url 'orders' %}" class="vc2-btn vc2-light">
+                        My Orders <i class="bi bi-box-seam"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="vc2-slide-controls" aria-label="Hero slides">
+                <button type="button" class="vc2-dot is-active" data-vc-slide="0" aria-label="Show slide 1"></button>
+                <button type="button" class="vc2-dot" data-vc-slide="1" aria-label="Show slide 2"></button>
+                <button type="button" class="vc2-dot" data-vc-slide="2" aria-label="Show slide 3"></button>
+            </div>
+        </div>
+
+        <div class="vc2-hero-benefits">
+            <div class="container vc2-benefit-grid">
+                <div><i class="bi bi-eyeglasses"></i><span><strong>Wide Selection</strong><small>Frames for every style</small></span></div>
+                <div><i class="bi bi-shield-check"></i><span><strong>Genuine Products</strong><small>Shop with confidence</small></span></div>
+                <div><i class="bi bi-truck"></i><span><strong>Easy Delivery</strong><small>Simple doorstep experience</small></span></div>
+                <div><i class="bi bi-headset"></i><span><strong>Customer Support</strong><small>We're here when you need us</small></span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUICK ACCESS -->
+    <section class="container vc2-section">
+        <div class="vc2-heading">
+            <div>
+                <span class="vc2-eyebrow vc2-blue">YOUR SHOPPING SPACE</span>
+                <h2>Everything you need, in one place</h2>
+                <p>Quick access to your account and shopping features.</p>
+            </div>
+        </div>
+
+        <div class="vc2-shortcuts">
+            <a href="{% url 'profile' %}" class="vc2-shortcut is-active"><span><i class="bi bi-person"></i></span><div><strong>My Profile</strong><small>Account information</small></div><i class="bi bi-arrow-up-right"></i></a>
+            <a href="{% url 'wishlist' %}" class="vc2-shortcut"><span><i class="bi bi-heart"></i></span><div><strong>My Wishlist</strong><small>Saved favourites</small></div><i class="bi bi-arrow-up-right"></i></a>
+            <a href="{% url 'cart' %}" class="vc2-shortcut"><span><i class="bi bi-bag"></i></span><div><strong>My Cart</strong><small>Ready-to-buy items</small></div><i class="bi bi-arrow-up-right"></i></a>
+            <a href="{% url 'orders' %}" class="vc2-shortcut"><span><i class="bi bi-box-seam"></i></span><div><strong>My Orders</strong><small>Track your purchases</small></div><i class="bi bi-arrow-up-right"></i></a>
+            <a href="{% url 'addresses' %}" class="vc2-shortcut"><span><i class="bi bi-geo-alt"></i></span><div><strong>My Addresses</strong><small>Manage delivery</small></div><i class="bi bi-arrow-up-right"></i></a>
+            <a href="{% url 'products' %}" class="vc2-shortcut vc2-shortcut-shop"><span><i class="bi bi-shop"></i></span><div><strong>Shop Eyewear</strong><small>Explore the collection</small></div><i class="bi bi-arrow-up-right"></i></a>
+        </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="vc2-section vc2-soft">
+        <div class="container">
+            <div class="vc2-heading vc2-heading-row">
+                <div>
+                    <span class="vc2-eyebrow vc2-blue">DISCOVER YOUR STYLE</span>
+                    <h2>Shop by category</h2>
+                    <p>Find the right look for work, weekends, travel and everyday life.</p>
+                </div>
+                <a href="{% url 'products' %}" class="vc2-view-all">View all <i class="bi bi-arrow-right"></i></a>
+            </div>
+
+            <div class="vc2-category-grid">
+                <a href="{% url 'products' %}" class="vc2-category-card"><img src="{% static 'images/l21.jpg' %}" alt="Eyeglasses"><div class="vc2-category-shade"></div><div><small>EVERYDAY STYLE</small><h3>Eyeglasses</h3><span>Explore <i class="bi bi-arrow-right"></i></span></div></a>
+                <a href="{% url 'products' %}" class="vc2-category-card"><img src="{% static 'images/l7.jpeg' %}" alt="Sunglasses"><div class="vc2-category-shade"></div><div><small>BRIGHT DAYS</small><h3>Sunglasses</h3><span>Explore <i class="bi bi-arrow-right"></i></span></div></a>
+                <a href="{% url 'products' %}" class="vc2-category-card"><img src="{% static 'images/l14.jpg' %}" alt="Kids eyewear"><div class="vc2-category-shade"></div><div><small>FOR LITTLE EYES</small><h3>Kids Eyewear</h3><span>Explore <i class="bi bi-arrow-right"></i></span></div></a>
+                <a href="{% url 'products' %}" class="vc2-category-card"><img src="{% static 'images/l15.jpg' %}" alt="Computer glasses"><div class="vc2-category-shade"></div><div><small>DIGITAL COMFORT</small><h3>Computer Glasses</h3><span>Explore <i class="bi bi-arrow-right"></i></span></div></a>
+                <a href="{% url 'products' %}" class="vc2-category-card"><img src="{% static 'images/l16.jpg' %}" alt="Contact lenses"><div class="vc2-category-shade"></div><div><small>CLEAR VISION</small><h3>Contact Lenses</h3><span>Explore <i class="bi bi-arrow-right"></i></span></div></a>
+                <a href="{% url 'products' %}" class="vc2-category-card"><img src="{% static 'images/l39.jpg' %}" alt="Sports eyewear"><div class="vc2-category-shade"></div><div><small>ACTIVE LIFE</small><h3>Sports Eyewear</h3><span>Explore <i class="bi bi-arrow-right"></i></span></div></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURED VISUAL COLLECTION: static visuals because profile_view supplies no products context -->
+    <section class="container vc2-section">
+        <div class="vc2-heading vc2-heading-row">
+            <div>
+                <span class="vc2-eyebrow vc2-blue">FEATURED COLLECTION</span>
+                <h2>Eyewear worth discovering</h2>
+                <p>Explore the VisionCart collection and find the style that feels right for you.</p>
+            </div>
+            <a href="{% url 'products' %}" class="vc2-view-all">Shop collection <i class="bi bi-arrow-right"></i></a>
+        </div>
+
+        <div class="vc2-feature-grid">
+            <a href="{% url 'products' %}" class="vc2-feature-main">
+                <img src="{% static 'images/l18.jpg' %}" alt="VisionCart eyewear collection">
+                <div class="vc2-feature-shade"></div>
+                <div class="vc2-feature-copy"><small>VISIONCART EDIT</small><h3>Frames for every version of you.</h3><p>Clean shapes, expressive details and everyday comfort.</p><span>Explore eyewear <i class="bi bi-arrow-right"></i></span></div>
+            </a>
+            <div class="vc2-feature-side">
+                <a href="{% url 'products' %}"><img src="{% static 'images/l25.jpg' %}" alt="Modern eyewear"><span><small>MODERN</small><strong>Fresh frame styles</strong><i class="bi bi-arrow-up-right"></i></span></a>
+                <a href="{% url 'products' %}"><img src="{% static 'images/l27.jpg' %}" alt="Statement eyewear"><span><small>STATEMENT</small><strong>Make your look yours</strong><i class="bi bi-arrow-up-right"></i></span></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- BRAND STORY -->
+    <section class="vc2-story">
+        <div class="container vc2-story-grid">
+            <div class="vc2-story-image"><img src="{% static 'images/l24.jpg' %}" alt="VisionCart eyewear"><div><strong>VisionCart</strong><small>Clear Vision · Better Tomorrow</small></div></div>
+            <div class="vc2-story-copy">
+                <span class="vc2-eyebrow vc2-blue">THE VISIONCART STORY</span>
+                <h2>Better eyewear should feel simple.</h2>
+                <p>VisionCart brings eyewear discovery, shopping and account management together in one clear experience.</p>
+                <p>Browse thoughtfully presented collections, save the styles you love, and manage your orders and delivery details from your personal dashboard.</p>
+                <a href="{% url 'products' %}" class="vc2-btn vc2-primary">Discover VisionCart <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRUST -->
+    <section class="container vc2-section">
+        <div class="vc2-heading vc2-center">
+            <span class="vc2-eyebrow vc2-blue">WHY VISIONCART</span>
+            <h2>A smoother way to shop for vision</h2>
+            <p>Designed to keep your eyewear journey simple and dependable.</p>
+        </div>
+        <div class="vc2-trust-grid">
+            <div><i class="bi bi-shield-check"></i><h3>Trusted Shopping</h3><p>Clear product information and a secure account experience.</p></div>
+            <div><i class="bi bi-bag-check"></i><h3>Easy Checkout</h3><p>Move from saved favourites to checkout with less friction.</p></div>
+            <div><i class="bi bi-truck"></i><h3>Simple Delivery</h3><p>Keep delivery details organised and orders easy to track.</p></div>
+            <div><i class="bi bi-heart"></i><h3>Your Favourites</h3><p>Save products you love and return to them whenever you like.</p></div>
+        </div>
+    </section>
+
+    <section class="container vc2-section vc2-cta-wrap">
+        <div class="vc2-cta">
+            <div><span class="vc2-eyebrow">FIND YOUR NEXT FRAME</span><h2>Ready to see your style differently?</h2><p>Explore the VisionCart collection and find eyewear made for you.</p></div>
+            <a href="{% url 'products' %}" class="vc2-btn vc2-white">Shop Now <i class="bi bi-arrow-right"></i></a>
+        </div>
+    </section>
+
+</main>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.vc2-dashboard{--n:#071a3d;--b:#1769ff;--t:#12213d;--m:#68778e;--l:#e3e9f2;background:#fff;color:var(--t);overflow:hidden}
+.vc2-hero{position:relative;min-height:650px;color:#fff;background:var(--n);overflow:hidden}
+.vc2-slides,.vc2-slide{position:absolute;inset:0}.vc2-slide{opacity:0;transition:opacity .8s ease}.vc2-slide.is-active{opacity:1}.vc2-slide img{width:100%;height:100%;object-fit:cover;object-position:center 35%}
+.vc2-hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,18,43,.78),rgba(5,18,43,.32) 48%,rgba(5,18,43,.08)),linear-gradient(0deg,rgba(5,18,43,.72),transparent 45%)}
+.vc2-hero-inner{position:relative;z-index:3;min-height:650px;padding:88px 12px 150px;display:flex;align-items:center}
+.vc2-hero-copy{max-width:620px}.vc2-eyebrow{display:inline-block;font-size:10px;letter-spacing:.17em;font-weight:850;color:#b9d3ff;margin-bottom:14px}
+.vc2-blue{color:var(--b)}.vc2-hero h1{font-size:clamp(43px,6vw,76px);line-height:.98;letter-spacing:-.045em;font-weight:850;margin:0 0 22px}.vc2-hero h1 span{color:#a9c9ff}
+.vc2-hero p{max-width:570px;color:#e0e8f5;font-size:16px;line-height:1.75;margin:0 0 28px}.vc2-actions{display:flex;flex-wrap:wrap;gap:10px}
+.vc2-btn{min-height:49px;padding:0 20px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-size:13px;font-weight:850;transition:.25s}.vc2-btn:hover{transform:translateY(-2px)}
+.vc2-primary{background:var(--b);color:#fff}.vc2-primary:hover{background:#2c78ff;color:#fff}.vc2-light{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.38);color:#fff;backdrop-filter:blur(8px)}.vc2-light:hover{background:#fff;color:var(--n)}
+.vc2-slide-controls{position:absolute;right:28px;bottom:166px;display:flex;gap:7px}.vc2-dot{width:28px;height:4px;border:0;border-radius:4px;background:rgba(255,255,255,.45);padding:0}.vc2-dot.is-active{background:#fff;width:48px}
+.vc2-hero-benefits{position:absolute;z-index:4;left:0;right:0;bottom:0;background:rgba(5,18,43,.78);border-top:1px solid rgba(255,255,255,.13);backdrop-filter:blur(12px)}
+.vc2-benefit-grid{display:grid;grid-template-columns:repeat(4,1fr)}.vc2-benefit-grid>div{min-height:84px;display:flex;align-items:center;gap:12px;padding:13px 16px;border-right:1px solid rgba(255,255,255,.12)}.vc2-benefit-grid>div:last-child{border-right:0}.vc2-benefit-grid i{font-size:21px;color:#8ebcff}.vc2-benefit-grid strong,.vc2-benefit-grid small{display:block}.vc2-benefit-grid strong{font-size:12px}.vc2-benefit-grid small{font-size:10px;color:#b8c8df;margin-top:3px}
+.vc2-section{padding:78px 12px}.vc2-heading{margin-bottom:30px}.vc2-heading h2{font-size:clamp(29px,4vw,44px);line-height:1.05;letter-spacing:-.04em;margin:0 0 9px;font-weight:850}.vc2-heading p{color:var(--m);margin:0;line-height:1.7;font-size:14px}.vc2-heading-row{display:flex;align-items:end;justify-content:space-between;gap:20px}.vc2-view-all{color:var(--b);font-size:13px;font-weight:850;white-space:nowrap}
+.vc2-shortcuts{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.vc2-shortcut{display:flex;align-items:center;gap:13px;padding:17px;border:1px solid var(--l);border-radius:16px;color:var(--t);transition:.24s;background:#fff}.vc2-shortcut:hover{transform:translateY(-3px);border-color:#abc6f5;box-shadow:0 15px 35px rgba(7,26,61,.08)}.vc2-shortcut>span{width:45px;height:45px;border-radius:13px;display:grid;place-items:center;background:#edf4ff;color:var(--b);font-size:19px}.vc2-shortcut>div{flex:1}.vc2-shortcut strong,.vc2-shortcut small{display:block}.vc2-shortcut strong{font-size:13px}.vc2-shortcut small{font-size:11px;color:var(--m);margin-top:3px}.vc2-shortcut>i{color:#91a0b6}.vc2-shortcut.is-active{background:#f7faff;border-color:#abc6f5}.vc2-shortcut-shop{background:var(--n);border-color:var(--n);color:#fff}.vc2-shortcut-shop>span{background:rgba(255,255,255,.12);color:#9ec3ff}.vc2-shortcut-shop small,.vc2-shortcut-shop>i{color:#b7c8df}
+.vc2-soft{background:#f5f8fc;border-top:1px solid #edf1f7;border-bottom:1px solid #edf1f7}.vc2-category-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.vc2-category-card{position:relative;height:315px;border-radius:19px;overflow:hidden;color:#fff;background:#dfe7f2}.vc2-category-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .55s}.vc2-category-card:hover img{transform:scale(1.055)}.vc2-category-shade{position:absolute;inset:0;background:linear-gradient(0deg,rgba(4,18,43,.88),rgba(4,18,43,.03) 70%)}.vc2-category-card>div:last-child{position:absolute;left:22px;right:22px;bottom:20px}.vc2-category-card small{font-size:9px;font-weight:850;letter-spacing:.15em;color:#a6c8ff}.vc2-category-card h3{font-size:24px;margin:6px 0 5px;font-weight:850}.vc2-category-card span{font-size:11px;color:#e3ebf7}
+.vc2-feature-grid{display:grid;grid-template-columns:1.4fr .8fr;gap:15px}.vc2-feature-main,.vc2-feature-side>a{position:relative;display:block;overflow:hidden;border-radius:20px;background:var(--n);color:#fff}.vc2-feature-main{min-height:490px}.vc2-feature-main>img,.vc2-feature-side>a>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .55s}.vc2-feature-main:hover>img,.vc2-feature-side>a:hover>img{transform:scale(1.05)}.vc2-feature-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,18,43,.88),rgba(4,18,43,.08))}.vc2-feature-copy{position:absolute;z-index:2;left:30px;right:30px;bottom:30px;max-width:450px}.vc2-feature-copy small,.vc2-feature-side small{font-size:9px;letter-spacing:.15em;font-weight:850;color:#a8c8ff}.vc2-feature-copy h3{font-size:37px;line-height:1.05;letter-spacing:-.035em;margin:9px 0}.vc2-feature-copy p{color:#d9e4f3;font-size:13px;line-height:1.65}.vc2-feature-copy span{font-size:12px;font-weight:850}.vc2-feature-side{display:grid;grid-template-rows:1fr 1fr;gap:15px}.vc2-feature-side>a{min-height:237px}.vc2-feature-side>a:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(4,18,43,.82),rgba(4,18,43,.03))}.vc2-feature-side>a>span{position:absolute;z-index:2;left:20px;right:20px;bottom:18px}.vc2-feature-side strong{display:block;font-size:18px;margin-top:4px}.vc2-feature-side i{position:absolute;right:0;bottom:1px}
+.vc2-story{padding:85px 0;background:#f5f8fc;border-top:1px solid var(--l);border-bottom:1px solid var(--l)}.vc2-story-grid{display:grid;grid-template-columns:1fr 1fr;gap:65px;align-items:center}.vc2-story-image{position:relative;min-height:500px;border-radius:22px;overflow:hidden}.vc2-story-image>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.vc2-story-image>div{position:absolute;left:20px;bottom:20px;background:#fff;padding:13px 16px;border-radius:13px;box-shadow:0 12px 30px rgba(7,26,61,.15)}.vc2-story-image strong,.vc2-story-image small{display:block}.vc2-story-image strong{font-size:14px}.vc2-story-image small{font-size:10px;color:var(--m);margin-top:3px}.vc2-story-copy h2{font-size:clamp(33px,4vw,51px);line-height:1.04;letter-spacing:-.04em;margin:0 0 18px;font-weight:850}.vc2-story-copy p{max-width:570px;color:var(--m);font-size:14px;line-height:1.8}.vc2-story-copy .vc2-btn{margin-top:8px}
+.vc2-center{text-align:center}.vc2-center p{margin-left:auto;margin-right:auto}.vc2-trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.vc2-trust-grid>div{padding:26px 22px;border:1px solid var(--l);border-radius:17px;background:#fff}.vc2-trust-grid i{width:43px;height:43px;border-radius:12px;display:grid;place-items:center;background:#edf4ff;color:var(--b);font-size:19px;margin-bottom:16px}.vc2-trust-grid h3{font-size:15px;font-weight:850;margin:0 0 7px}.vc2-trust-grid p{font-size:12px;line-height:1.65;color:var(--m);margin:0}
+.vc2-cta-wrap{padding-top:0}.vc2-cta{padding:43px 48px;border-radius:22px;background:linear-gradient(120deg,#071a3d,#0d3f9c);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:25px}.vc2-cta h2{font-size:clamp(27px,3.7vw,42px);line-height:1.05;letter-spacing:-.035em;margin:0 0 9px;font-weight:850}.vc2-cta p{margin:0;color:#cbd9ed;font-size:13px}.vc2-white{background:#fff;color:var(--n)}.vc2-white:hover{color:var(--n)}
+@media(max-width:1000px){.vc2-shortcuts,.vc2-category-grid{grid-template-columns:repeat(2,1fr)}.vc2-feature-grid,.vc2-story-grid{grid-template-columns:1fr}.vc2-feature-main{min-height:430px}.vc2-trust-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.vc2-hero{min-height:700px}.vc2-hero-inner{min-height:700px;padding-top:60px;padding-bottom:190px}.vc2-hero h1{font-size:44px}.vc2-hero p{font-size:14px}.vc2-slide-controls{right:16px;bottom:170px}.vc2-benefit-grid{grid-template-columns:repeat(2,1fr)}.vc2-benefit-grid>div{min-height:72px;padding:9px}.vc2-benefit-grid>div:nth-child(2){border-right:0}.vc2-benefit-grid>div:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,.12)}.vc2-section{padding:58px 12px}.vc2-heading-row{align-items:flex-start;flex-direction:column}.vc2-shortcuts,.vc2-category-grid,.vc2-trust-grid{grid-template-columns:1fr}.vc2-feature-side{grid-template-columns:1fr;grid-template-rows:1fr 1fr}.vc2-feature-side>a{min-height:205px}.vc2-story{padding:60px 0}.vc2-story-image{min-height:380px}.vc2-cta{padding:32px 25px;align-items:flex-start;flex-direction:column}}
+@media(max-width:430px){.vc2-actions .vc2-btn{width:100%}.vc2-hero h1{font-size:39px}.vc2-benefit-grid strong{font-size:10px}.vc2-benefit-grid small{font-size:9px}.vc2-feature-copy h3{font-size:30px}}
+@media(prefers-reduced-motion:reduce){.vc2-slide,.vc2-dashboard *{transition-duration:.01ms!important}}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function(){
+    const slides = Array.from(document.querySelectorAll(".vc2-slide"));
+    const dots = Array.from(document.querySelectorAll(".vc2-dot"));
+    if (!slides.length) return;
+    let current = 0;
+    let timer;
+
+    function show(index){
+        current = index;
+        slides.forEach((slide,i)=>slide.classList.toggle("is-active",i===current));
+        dots.forEach((dot,i)=>dot.classList.toggle("is-active",i===current));
+    }
+
+    function start(){
+        clearInterval(timer);
+        timer = setInterval(()=>show((current + 1) % slides.length), 5000);
+    }
+
+    dots.forEach(dot=>{
+        dot.addEventListener("click",()=>{
+            show(Number(dot.dataset.vcSlide));
+            start();
+        });
+    });
+
+    start();
+})();
+</script>
+{% endblock %}

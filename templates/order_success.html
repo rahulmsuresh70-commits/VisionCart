@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+
+{% block title %}Order Confirmed | VisionCart{% endblock %}
+
+{% block content %}
+<style>
+    .vc-order-success-page {
+        min-height: calc(100vh - 180px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 70px 20px;
+        background:
+            radial-gradient(circle at 50% 12%, rgba(23, 105, 255, .09), transparent 34%),
+            #f7f9fc;
+    }
+
+    .vc-order-success-card {
+        width: min(100%, 620px);
+        padding: 54px 34px 42px;
+        text-align: center;
+        border: 1px solid #e2e8f0;
+        border-radius: 28px;
+        background: #fff;
+        box-shadow: 0 24px 70px rgba(7, 26, 61, .10);
+        overflow: hidden;
+    }
+
+    .vc-success-animation {
+        position: relative;
+        width: 116px;
+        height: 116px;
+        margin: 0 auto 28px;
+    }
+
+    .vc-success-animation::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border: 4px solid #dce8ff;
+        border-top-color: #1769ff;
+        border-radius: 50%;
+        animation: vcSuccessSpin 1.05s cubic-bezier(.4, 0, .2, 1) forwards;
+    }
+
+    .vc-success-animation::after {
+        content: "";
+        position: absolute;
+        inset: 11px;
+        border-radius: 50%;
+        background: #edf4ff;
+        opacity: 0;
+        transform: scale(.7);
+        animation: vcSuccessCircle .45s ease 1.02s forwards;
+    }
+
+    .vc-success-check {
+        position: absolute;
+        z-index: 2;
+        left: 37px;
+        top: 29px;
+        width: 43px;
+        height: 25px;
+        border-left: 5px solid #1769ff;
+        border-bottom: 5px solid #1769ff;
+        transform: rotate(-45deg) scale(0);
+        transform-origin: center;
+        animation: vcSuccessCheck .55s cubic-bezier(.34, 1.56, .64, 1) 1.08s forwards;
+    }
+
+    .vc-success-kicker {
+        display: inline-block;
+        margin-bottom: 10px;
+        color: #1769ff;
+        font-size: 10px;
+        line-height: 1.2;
+        font-weight: 900;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+    }
+
+    .vc-order-success-card h1 {
+        margin: 0 0 12px;
+        color: #12213d;
+        font-size: clamp(30px, 5vw, 44px);
+        line-height: 1.05;
+        font-weight: 850;
+        letter-spacing: -.045em;
+        opacity: 0;
+        transform: translateY(10px);
+        animation: vcSuccessContent .55s ease 1.22s forwards;
+    }
+
+    .vc-success-message {
+        max-width: 470px;
+        margin: 0 auto;
+        color: #6f7e92;
+        font-size: 14px;
+        line-height: 1.7;
+        opacity: 0;
+        transform: translateY(10px);
+        animation: vcSuccessContent .55s ease 1.30s forwards;
+    }
+
+    .vc-success-order {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 20px;
+        padding: 9px 13px;
+        border: 1px solid #dce8fb;
+        border-radius: 999px;
+        background: #f4f8ff;
+        color: #0d47c7;
+        font-size: 11px;
+        font-weight: 850;
+        opacity: 0;
+        transform: translateY(8px);
+        animation: vcSuccessContent .5s ease 1.38s forwards;
+    }
+
+    .vc-success-order i {
+        font-size: 13px;
+    }
+
+    .vc-success-action {
+        margin-top: 28px;
+        opacity: 0;
+        transform: translateY(8px);
+        animation: vcSuccessContent .5s ease 1.46s forwards;
+    }
+
+    .vc-success-button {
+        min-width: 190px;
+        min-height: 46px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 20px;
+        border-radius: 11px;
+        background: #1769ff;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 850;
+        text-decoration: none;
+        box-shadow: 0 12px 28px rgba(23, 105, 255, .20);
+        transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+
+    .vc-success-button:hover {
+        background: #0d47c7;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 16px 34px rgba(23, 105, 255, .25);
+    }
+
+    @keyframes vcSuccessSpin {
+        0% {
+            transform: rotate(0deg);
+        }
+        75% {
+            transform: rotate(540deg);
+        }
+        100% {
+            transform: rotate(720deg);
+        }
+    }
+
+    @keyframes vcSuccessCircle {
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @keyframes vcSuccessCheck {
+        to {
+            transform: rotate(-45deg) scale(1);
+        }
+    }
+
+    @keyframes vcSuccessContent {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 600px) {
+        .vc-order-success-page {
+            min-height: calc(100vh - 140px);
+            padding: 42px 14px;
+        }
+
+        .vc-order-success-card {
+            padding: 42px 20px 34px;
+            border-radius: 22px;
+        }
+
+        .vc-success-animation {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 24px;
+        }
+
+        .vc-success-check {
+            left: 31px;
+            top: 25px;
+            width: 38px;
+            height: 22px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .vc-success-animation::before,
+        .vc-success-animation::after,
+        .vc-success-check,
+        .vc-order-success-card h1,
+        .vc-success-message,
+        .vc-success-order,
+        .vc-success-action {
+            animation-duration: .01ms !important;
+            animation-delay: 0ms !important;
+            animation-iteration-count: 1 !important;
+        }
+
+        .vc-order-success-card h1,
+        .vc-success-message,
+        .vc-success-order,
+        .vc-success-action {
+            opacity: 1;
+            transform: none;
+        }
+
+        .vc-success-animation::before {
+            transform: rotate(720deg);
+        }
+
+        .vc-success-animation::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .vc-success-check {
+            transform: rotate(-45deg) scale(1);
+        }
+    }
+</style>
+
+<main class="vc-order-success-page">
+    <section class="vc-order-success-card" aria-labelledby="order-success-title">
+
+        <div class="vc-success-animation" aria-hidden="true">
+            <span class="vc-success-check"></span>
+        </div>
+
+        <span class="vc-success-kicker">PAYMENT SUCCESSFUL</span>
+
+        <h1 id="order-success-title">Order Confirmed</h1>
+
+        <p class="vc-success-message">
+            Your payment was successful and your order has been placed successfully.
+        </p>
+
+        <div class="vc-success-order">
+            <i class="bi bi-receipt"></i>
+            Order {{ order.order_number }}
+        </div>
+
+        <div class="vc-success-action">
+            <a href="{% url 'orders' %}" class="vc-success-button">
+                View My Orders
+                <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+    </section>
+</main>
+{% endblock %}

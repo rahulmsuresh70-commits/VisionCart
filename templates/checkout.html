@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Checkout | VisionCart{% endblock %}
+
+{% block content %}
+<section class="vc-checkout-page">
+    <div class="vc-checkout-container">
+        <div class="vc-checkout-heading">
+            <div>
+                <span class="vc-checkout-kicker">SECURE CHECKOUT</span>
+                <h1>Checkout</h1>
+                <p>Review your delivery address and choose how you want to pay.</p>
+            </div>
+            <div class="vc-checkout-progress" aria-label="Checkout progress">
+                <span class="is-active">01</span><i></i><span>02</span><i></i><span>03</span>
+            </div>
+        </div>
+
+        <form method="post" action="{% url 'place-order' %}" class="vc-checkout-form" data-protect-submit>
+            {% csrf_token %}
+
+            <div class="vc-checkout-grid">
+                <main class="vc-checkout-main">
+                    <section class="vc-checkout-card">
+                        <div class="vc-checkout-card-head">
+                            <div class="vc-checkout-step-number">01</div>
+                            <div>
+                                <span class="vc-checkout-section-label">DELIVERY</span>
+                                <h2>Delivery Address</h2>
+                                <p>Select the address where you want your order delivered.</p>
+                            </div>
+                            <a href="{% url 'addresses' %}" class="vc-checkout-add-link">
+                                <i class="bi bi-plus-lg"></i> Add New
+                            </a>
+                        </div>
+
+                        {% if addresses %}
+                        <div class="vc-address-grid">
+                            {% for address in addresses %}
+                            <label class="vc-address-option {% if selected_address and selected_address.id == address.id %}is-selected{% endif %}">
+                                <input type="radio" name="address_id" value="{{ address.id }}" {% if selected_address and selected_address.id == address.id %}checked{% endif %} required>
+                                <span class="vc-address-radio"><i class="bi bi-check"></i></span>
+                                <span class="vc-address-copy">
+                                    <span class="vc-address-title-row">
+                                        <strong>{{ address.name }}</strong>
+                                        {% if address.is_default %}<em>Default</em>{% endif %}
+                                    </span>
+                                    <span class="vc-address-text">
+                                        {{ address.address }}<br>
+                                        {{ address.city }}, {{ address.state }}<br>
+                                        {{ address.pincode }}
+                                    </span>
+                                    <span class="vc-address-phone"><i class="bi bi-telephone"></i>{{ address.phone }}</span>
+                                </span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="vc-empty-address">
+                            <div class="vc-empty-icon"><i class="bi bi-geo-alt"></i></div>
+                            <div>
+                                <strong>No delivery address saved</strong>
+                                <p>Add an address before placing your order.</p>
+                            </div>
+                            <a href="{% url 'addresses' %}" class="vc-checkout-secondary-btn">Add Address</a>
+                        </div>
+                        {% endif %}
+                    </section>
+
+                    <section class="vc-checkout-card">
+                        <div class="vc-checkout-card-head">
+                            <div class="vc-checkout-step-number">02</div>
+                            <div>
+                                <span class="vc-checkout-section-label">DELIVERY METHOD</span>
+                                <h2>Shipping</h2>
+                                <p>Your order will be delivered using our standard delivery service.</p>
+                            </div>
+                        </div>
+
+                        <div class="vc-shipping-card">
+                            <div class="vc-shipping-icon"><i class="bi bi-truck"></i></div>
+                            <div class="vc-shipping-copy">
+                                <strong>Standard Delivery</strong>
+                                <span>Reliable delivery to your saved address</span>
+                            </div>
+                            <strong class="vc-free">Free</strong>
+                        </div>
+                        <input type="hidden" name="shipping_method" value="STANDARD">
+                    </section>
+
+                    <section class="vc-checkout-card">
+                        <div class="vc-checkout-card-head">
+                            <div class="vc-checkout-step-number">03</div>
+                            <div>
+                                <span class="vc-checkout-section-label">PAYMENT</span>
+                                <h2>Payment Method</h2>
+                                <p>Choose one of the payment methods available for this order.</p>
+                            </div>
+                        </div>
+
+                        <div class="vc-payment-choice-grid">
+                            <label class="vc-payment-choice">
+                                <input type="radio" name="payment_method" value="COD" required>
+                                <span class="vc-payment-choice-radio"><i class="bi bi-check"></i></span>
+                                <span class="vc-payment-choice-icon"><i class="bi bi-cash-stack"></i></span>
+                                <span class="vc-payment-choice-copy">
+                                    <strong>Cash on Delivery</strong>
+                                    <small>Pay when your order arrives.</small>
+                                </span>
+                            </label>
+
+                            <label class="vc-payment-choice">
+                                <input type="radio" name="payment_method" value="ONLINE" required>
+                                <span class="vc-payment-choice-radio"><i class="bi bi-check"></i></span>
+                                <span class="vc-payment-choice-icon"><i class="bi bi-credit-card-2-front"></i></span>
+                                <span class="vc-payment-choice-copy">
+                                    <strong>Online Payment</strong>
+                                    <small>Continue to the secure online payment step.</small>
+                                </span>
+                            </label>
+                        </div>
+                    </section>
+
+                    <a href="{% url 'cart' %}" class="vc-checkout-back">
+                        <i class="bi bi-arrow-left"></i> Back to Cart
+                    </a>
+                </main>
+
+                <aside class="vc-order-summary">
+                    <div class="vc-summary-top">
+                        <span class="vc-checkout-section-label">ORDER REVIEW</span>
+                        <h2>Your Order</h2>
+                    </div>
+
+                    <div class="vc-summary-items">
+                        {% for item in items %}
+                        <div class="vc-summary-item">
+                            <div class="vc-summary-image">
+                                {% if item.product.image %}
+                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" loading="lazy">
+                                {% else %}
+                                    <i class="bi bi-eyeglasses"></i>
+                                {% endif %}
+                            </div>
+                            <div class="vc-summary-product">
+                                <strong>{{ item.product.name }}</strong>
+                                <span>Qty {{ item.quantity }} · ₹{{ item.product.price|floatformat:0 }}</span>
+                            </div>
+                            <strong>₹{{ item.subtotal|floatformat:0 }}</strong>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="vc-summary-lines">
+                        <div><span>Subtotal</span><strong>₹{{ total|floatformat:0 }}</strong></div>
+                        <div><span>Standard Delivery</span><strong class="vc-free">Free</strong></div>
+                    </div>
+
+                    <div class="vc-summary-total">
+                        <span>Total</span>
+                        <strong>₹{{ grand_total|floatformat:0 }}</strong>
+                    </div>
+
+                    {% if addresses %}
+                    <button type="submit" class="vc-place-order-btn" data-vc-click-feedback>
+                        <span>Continue</span><i class="bi bi-arrow-right"></i>
+                    </button>
+                    {% else %}
+                    <a href="{% url 'addresses' %}" class="vc-place-order-btn">
+                        <span>Add Delivery Address</span><i class="bi bi-arrow-right"></i>
+                    </a>
+                    {% endif %}
+
+                    <div class="vc-summary-trust">
+                        <div><i class="bi bi-shield-check"></i><span>Secure checkout</span></div>
+                        <div><i class="bi bi-truck"></i><span>Free delivery</span></div>
+                        <div><i class="bi bi-headset"></i><span>Support</span></div>
+                    </div>
+                </aside>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* VisionCart Checkout — BODY ONLY
+   Header/footer intentionally not included. They remain from the existing common shell. */
+.vc-checkout-page{background:#f6f8fa;padding:42px 0 70px;font-family:Inter,"Segoe UI",Arial,sans-serif;color:#172431;min-height:calc(100vh - 1px)}
+.vc-checkout-container{width:min(1160px,calc(100% - 40px));margin:0 auto}
+.vc-checkout-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;padding:4px 0 30px;border-bottom:1px solid #e4e8ec}
+.vc-checkout-kicker,.vc-checkout-section-label{display:block;color:#68747f;font-size:10px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}
+.vc-checkout-heading h1{margin:7px 0 7px;font-size:34px;line-height:1.08;font-weight:700;letter-spacing:-.04em;color:#102a43}
+.vc-checkout-heading p{margin:0;color:#68747f;font-size:13px;line-height:1.6}
+.vc-checkout-progress{display:flex;align-items:center;gap:9px;white-space:nowrap;padding-bottom:4px}
+.vc-checkout-progress span{width:30px;height:30px;border:1px solid #d4dce3;border-radius:50%;display:grid;place-items:center;color:#68747f;font-size:10px;font-weight:700;background:#fff}
+.vc-checkout-progress span.is-active{border-color:#102a43;background:#102a43;color:#fff}
+.vc-checkout-progress i{width:24px;height:1px;background:#d9e0e6}
+.vc-checkout-form{padding-top:28px}
+.vc-checkout-grid{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:24px;align-items:start}
+.vc-checkout-main{display:flex;flex-direction:column;gap:16px;min-width:0}
+.vc-checkout-card,.vc-order-summary{border:1px solid #e4e8ec;background:#fff;border-radius:8px;box-shadow:0 3px 14px rgba(16,42,67,.045);overflow:hidden}
+.vc-checkout-card-head{display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:14px;align-items:start;padding:22px;border-bottom:1px solid #e8edf1}
+.vc-checkout-step-number{width:32px;height:32px;border-radius:50%;background:#edf4f9;color:#1769aa;display:grid;place-items:center;font-size:10px;font-weight:800}
+.vc-checkout-card-head h2{margin:5px 0 5px;font-size:19px;line-height:1.2;font-weight:700;letter-spacing:-.025em;color:#102a43}
+.vc-checkout-card-head p{margin:0;color:#68747f;font-size:11px;line-height:1.55}
+.vc-checkout-add-link{display:inline-flex;align-items:center;gap:6px;color:#1769aa;text-decoration:none;font-size:11px;font-weight:700;padding-top:3px}
+.vc-checkout-add-link:hover,.vc-checkout-back:hover{color:#102a43}
+.vc-address-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:18px}
+.vc-address-option{position:relative;display:grid;grid-template-columns:18px minmax(0,1fr);gap:11px;align-items:start;border:1px solid #dfe5ea;border-radius:7px;padding:16px;cursor:pointer;transition:.2s ease;background:#fff}
+.vc-address-option:hover{border-color:#9db4c6;background:#fbfdfe}
+.vc-address-option:has(input:checked),.vc-address-option.is-selected{border-color:#1769aa;box-shadow:inset 0 0 0 1px #1769aa;background:#f8fbfd}
+.vc-address-option input{position:absolute;opacity:0;pointer-events:none}
+.vc-address-radio,.vc-payment-choice-radio{width:17px;height:17px;border:1px solid #b8c5cf;border-radius:50%;display:grid;place-items:center;margin-top:1px;color:transparent;font-size:9px}
+.vc-address-option input:checked~.vc-address-radio,.vc-payment-choice input:checked~.vc-payment-choice-radio{border-color:#1769aa;background:#1769aa;color:#fff}
+.vc-address-copy{min-width:0}
+.vc-address-title-row{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+.vc-address-title-row strong{font-size:12px;color:#172431}
+.vc-address-title-row em{font-style:normal;font-size:8px;font-weight:750;letter-spacing:.06em;text-transform:uppercase;background:#edf4f9;color:#1769aa;padding:4px 6px;border-radius:3px}
+.vc-address-text{display:block;color:#68747f;font-size:10px;line-height:1.65}
+.vc-address-phone{display:flex;align-items:center;gap:5px;margin-top:9px;color:#334e68;font-size:10px;font-weight:650}
+.vc-empty-address{display:flex;align-items:center;gap:13px;padding:20px}
+.vc-empty-icon{width:42px;height:42px;display:grid;place-items:center;background:#edf4f9;color:#1769aa;border-radius:6px;font-size:18px}
+.vc-empty-address>div:nth-child(2){flex:1}.vc-empty-address strong{font-size:12px}.vc-empty-address p{margin:4px 0 0;color:#68747f;font-size:10px}
+.vc-checkout-secondary-btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 15px;border:1px solid #1769aa;border-radius:5px;color:#1769aa;text-decoration:none;font-size:10px;font-weight:750}
+.vc-shipping-card{margin:18px;display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;border:1px solid #dfe5ea;border-radius:7px;padding:15px;background:#f8fafb}
+.vc-shipping-icon{width:38px;height:38px;display:grid;place-items:center;background:#edf4f9;color:#1769aa;border-radius:5px;font-size:16px}
+.vc-shipping-copy{display:flex;flex-direction:column;gap:4px}.vc-shipping-copy strong{font-size:11px}.vc-shipping-copy span{color:#68747f;font-size:10px}.vc-free{color:#2f7651!important}
+.vc-payment-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:18px}
+.vc-payment-choice{position:relative;display:grid;grid-template-columns:18px 38px minmax(0,1fr);gap:11px;align-items:center;border:1px solid #dfe5ea;border-radius:7px;padding:16px;cursor:pointer;transition:.2s ease}
+.vc-payment-choice:hover{border-color:#9db4c6;background:#fbfdfe}.vc-payment-choice:has(input:checked){border-color:#1769aa;box-shadow:inset 0 0 0 1px #1769aa;background:#f8fbfd}
+.vc-payment-choice input{position:absolute;opacity:0;pointer-events:none}.vc-payment-choice-icon{width:38px;height:38px;display:grid;place-items:center;background:#edf4f9;color:#1769aa;border-radius:5px;font-size:15px}
+.vc-payment-choice-copy{display:flex;flex-direction:column;gap:4px}.vc-payment-choice-copy strong{font-size:11px}.vc-payment-choice-copy small{color:#68747f;font-size:9px;line-height:1.5}
+.vc-checkout-back{display:inline-flex;align-items:center;gap:7px;width:max-content;color:#68747f;text-decoration:none;font-size:10px;font-weight:700;padding:2px 0}
+.vc-order-summary{position:sticky;top:22px}.vc-summary-top{padding:21px 20px 18px;background:#f8fafb;border-bottom:1px solid #e4e8ec}.vc-summary-top h2{margin:6px 0 0;font-size:20px;letter-spacing:-.03em;color:#102a43}
+.vc-summary-items{display:flex;flex-direction:column;gap:13px;padding:18px 20px}.vc-summary-item{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:9px;align-items:center}.vc-summary-image{width:48px;height:48px;border:1px solid #dfe5ea;background:#f6f8fa;border-radius:5px;display:grid;place-items:center;overflow:hidden;color:#9aa8b4}.vc-summary-image img{width:100%;height:100%;object-fit:cover}.vc-summary-product{min-width:0;display:flex;flex-direction:column;gap:3px}.vc-summary-product strong{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.vc-summary-product span,.vc-summary-item>strong{font-size:9px;color:#68747f}.vc-summary-item>strong{color:#172431;white-space:nowrap}
+.vc-summary-lines{margin:0 20px;padding:15px 0;border-top:1px solid #e4e8ec;border-bottom:1px solid #e4e8ec;display:flex;flex-direction:column;gap:9px}.vc-summary-lines div{display:flex;justify-content:space-between;gap:15px}.vc-summary-lines span,.vc-summary-lines strong{font-size:10px}.vc-summary-lines span{color:#68747f}
+.vc-summary-total{display:flex;justify-content:space-between;align-items:center;padding:17px 20px 16px}.vc-summary-total span{font-size:11px;font-weight:750}.vc-summary-total strong{font-size:22px;letter-spacing:-.04em;color:#102a43}
+.vc-place-order-btn{width:calc(100% - 40px);margin:0 20px;min-height:48px;border:1px solid #102a43;border-radius:5px;background:#102a43;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 15px;text-decoration:none;font-size:11px;font-weight:750;cursor:pointer;transition:.2s ease}.vc-place-order-btn:hover{background:#1769aa;border-color:#1769aa;color:#fff}.vc-place-order-btn i{font-size:14px}
+.vc-summary-trust{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:18px 20px 20px}.vc-summary-trust div{display:flex;flex-direction:column;align-items:center;gap:5px;color:#68747f;text-align:center;font-size:8px}.vc-summary-trust i{font-size:13px;color:#1769aa}
+@media(max-width:900px){.vc-checkout-grid{grid-template-columns:minmax(0,1fr) 310px}.vc-address-grid,.vc-payment-choice-grid{grid-template-columns:1fr}}
+@media(max-width:767px){.vc-checkout-page{padding:32px 0 52px}.vc-checkout-container{width:min(100% - 28px,1160px)}.vc-checkout-heading{align-items:flex-start;flex-direction:column;padding-bottom:23px;gap:18px}.vc-checkout-heading h1{font-size:29px}.vc-checkout-progress{padding-bottom:0}.vc-checkout-form{padding-top:22px}.vc-checkout-grid{display:flex;flex-direction:column}.vc-order-summary{position:static;width:100%;order:-1}.vc-checkout-card-head{grid-template-columns:34px minmax(0,1fr);padding:18px}.vc-checkout-add-link{grid-column:2;padding-top:0}.vc-address-grid,.vc-payment-choice-grid{padding:14px}.vc-shipping-card{margin:14px}.vc-summary-items{padding:16px}.vc-summary-lines{margin:0 16px}.vc-summary-total{padding-left:16px;padding-right:16px}.vc-place-order-btn{width:calc(100% - 32px);margin-left:16px;margin-right:16px}.vc-summary-trust{padding-left:16px;padding-right:16px}}
+@media(max-width:480px){.vc-checkout-progress i{width:15px}.vc-empty-address{align-items:flex-start;flex-wrap:wrap}.vc-empty-address .vc-checkout-secondary-btn{margin-left:55px}.vc-shipping-card{grid-template-columns:38px minmax(0,1fr)}.vc-shipping-card>.vc-free{grid-column:2}.vc-summary-item{grid-template-columns:44px minmax(0,1fr) auto}.vc-summary-image{width:44px;height:44px}}
+</style>
+{% endblock %}
+    

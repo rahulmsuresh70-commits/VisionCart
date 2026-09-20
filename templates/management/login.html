@@ -1,0 +1,554 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Management Login | VisionCart</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/typography.css' %}">
+
+    <style>
+        :root{
+            --vc-navy:#102a43;
+            --vc-navy-2:#0b2238;
+            --vc-blue:#1769aa;
+            --vc-blue-soft:#edf4f9;
+            --vc-bg:#f5f7f9;
+            --vc-card:#ffffff;
+            --vc-border:#e3e8ed;
+            --vc-text:#172431;
+            --vc-muted:#68747f;
+            --vc-danger:#b33a3a;
+        }
+
+        *{box-sizing:border-box}
+        html,body{min-height:100%;margin:0}
+        body{
+            min-height:100vh;
+            background:var(--vc-bg);
+            color:var(--vc-text);
+            font-family:Inter,"Segoe UI",Arial,sans-serif;
+            -webkit-font-smoothing:antialiased;
+            text-rendering:optimizeLegibility;
+        }
+        a{text-decoration:none}
+
+        .vc-management-page{
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+        }
+
+        .vc-management-topbar{
+            min-height:76px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:20px;
+            padding:14px 5vw;
+            background:#fff;
+            border-bottom:1px solid var(--vc-border);
+        }
+
+        .vc-management-brand{
+            display:flex;
+            align-items:center;
+            gap:11px;
+            color:var(--vc-text);
+        }
+        .vc-management-brand:hover{color:var(--vc-text)}
+        .vc-management-brand-mark{
+            width:42px;
+            height:42px;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            border-radius:11px;
+            background:var(--vc-navy);
+            color:#fff;
+            font-size:20px;
+        }
+        .vc-management-brand-copy strong{
+            display:block;
+            font-size:19px;
+            font-weight:800;
+            letter-spacing:-.35px;
+        }
+        .vc-management-brand-copy span{
+            display:block;
+            margin-top:3px;
+            color:#7b8791;
+            font-size:9px;
+            font-weight:800;
+            letter-spacing:1px;
+            text-transform:uppercase;
+        }
+        .vc-management-topbar-note{
+            display:flex;
+            align-items:center;
+            gap:8px;
+            color:#7a8791;
+            font-size:11px;
+            font-weight:650;
+        }
+        .vc-management-topbar-note i{color:var(--vc-blue);font-size:14px}
+
+        .vc-management-main{
+            flex:1;
+            display:flex;
+            align-items:center;
+            padding:54px 24px 70px;
+        }
+
+        .vc-management-grid{
+            width:min(1050px,100%);
+            margin:0 auto;
+            display:grid;
+            grid-template-columns:minmax(0,1fr) 440px;
+            overflow:hidden;
+            border:1px solid var(--vc-border);
+            border-radius:18px;
+            background:#fff;
+            box-shadow:0 18px 50px rgba(16,42,67,.07);
+        }
+
+        .vc-management-intro{
+            position:relative;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            padding:56px;
+            overflow:hidden;
+            background:linear-gradient(145deg,var(--vc-navy) 0%,var(--vc-navy-2) 100%);
+            color:#fff;
+        }
+        .vc-management-intro::before,
+        .vc-management-intro::after{
+            content:"";
+            position:absolute;
+            border:1px solid rgba(255,255,255,.09);
+            border-radius:50%;
+            pointer-events:none;
+        }
+        .vc-management-intro::before{width:330px;height:330px;right:-150px;top:-145px}
+        .vc-management-intro::after{width:190px;height:190px;right:-65px;top:-65px}
+
+        .vc-management-icon{
+            position:relative;
+            z-index:1;
+            width:52px;
+            height:52px;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            margin-bottom:34px;
+            border:1px solid rgba(255,255,255,.16);
+            border-radius:13px;
+            background:rgba(255,255,255,.09);
+            color:#fff;
+            font-size:23px;
+        }
+        .vc-management-eyebrow{
+            position:relative;
+            z-index:1;
+            margin-bottom:10px;
+            color:#8fc3e8;
+            font-size:10px;
+            font-weight:800;
+            letter-spacing:1.3px;
+            text-transform:uppercase;
+        }
+        .vc-management-intro h1{
+            position:relative;
+            z-index:1;
+            max-width:500px;
+            margin:0;
+            color:#fff;
+            font-size:38px;
+            line-height:1.12;
+            font-weight:780;
+            letter-spacing:-1.1px;
+        }
+        .vc-management-intro h1 span{color:#8fc3e8}
+        .vc-management-intro p{
+            position:relative;
+            z-index:1;
+            max-width:510px;
+            margin:18px 0 0;
+            color:rgba(255,255,255,.68);
+            font-size:14px;
+            line-height:1.75;
+        }
+        .vc-management-features{
+            position:relative;
+            z-index:1;
+            display:grid;
+            gap:13px;
+            margin-top:32px;
+        }
+        .vc-management-feature{
+            display:flex;
+            align-items:center;
+            gap:11px;
+            color:rgba(255,255,255,.8);
+            font-size:12px;
+            font-weight:650;
+        }
+        .vc-management-feature i{
+            width:29px;
+            height:29px;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            border-radius:8px;
+            background:rgba(255,255,255,.08);
+            color:#9ac8e8;
+            font-size:14px;
+        }
+        .vc-management-role{
+            position:relative;
+            z-index:1;
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            width:max-content;
+            max-width:100%;
+            margin-top:34px;
+            padding:9px 12px;
+            border:1px solid rgba(255,255,255,.11);
+            border-radius:9px;
+            background:rgba(255,255,255,.055);
+            color:rgba(255,255,255,.72);
+            font-size:10px;
+            font-weight:700;
+        }
+        .vc-management-role i{color:#8fc3e8}
+
+        .vc-management-card{
+            padding:48px 44px 42px;
+            background:#fff;
+        }
+        .vc-management-card-header{margin-bottom:28px}
+        .vc-management-card-header .eyebrow{
+            display:block;
+            margin-bottom:8px;
+            color:var(--vc-blue);
+            font-size:10px;
+            font-weight:800;
+            letter-spacing:1.2px;
+            text-transform:uppercase;
+        }
+        .vc-management-card-header h2{
+            margin:0;
+            color:var(--vc-text);
+            font-size:29px;
+            line-height:1.2;
+            font-weight:780;
+            letter-spacing:-.65px;
+        }
+        .vc-management-card-header p{
+            margin:8px 0 0;
+            color:var(--vc-muted);
+            font-size:13px;
+            line-height:1.55;
+        }
+
+        .vc-management-alerts{display:grid;gap:9px;margin-bottom:18px}
+        .vc-management-alert{
+            display:flex;
+            align-items:flex-start;
+            gap:9px;
+            padding:11px 12px;
+            border:1px solid #ead0d0;
+            border-radius:9px;
+            background:#fff7f7;
+            color:var(--vc-danger);
+            font-size:12px;
+            line-height:1.45;
+        }
+        .vc-management-alert i{font-size:14px;margin-top:1px}
+
+        .vc-management-form{display:grid;gap:19px}
+        .vc-management-field label{
+            display:block;
+            margin-bottom:7px;
+            color:#4f5d68;
+            font-size:11px;
+            font-weight:800;
+            letter-spacing:.2px;
+        }
+        .vc-management-input{
+            position:relative;
+        }
+        .vc-management-input > i{
+            position:absolute;
+            left:14px;
+            top:50%;
+            transform:translateY(-50%);
+            color:#8996a1;
+            font-size:15px;
+            pointer-events:none;
+        }
+        .vc-management-input input{
+            width:100%;
+            min-height:48px;
+            padding:12px 44px 12px 42px;
+            border:1px solid #dfe5ea;
+            border-radius:9px;
+            outline:none;
+            background:#fff;
+            color:var(--vc-text);
+            font-family:inherit;
+            font-size:13px;
+            transition:border-color .18s ease,box-shadow .18s ease;
+        }
+        .vc-management-input input::placeholder{color:#a0aab3}
+        .vc-management-input input:focus{
+            border-color:#78a9cc;
+            box-shadow:0 0 0 3px rgba(23,105,170,.08);
+        }
+        .vc-password-toggle{
+            position:absolute;
+            right:9px;
+            top:50%;
+            transform:translateY(-50%);
+            width:34px;
+            height:34px;
+            border:0;
+            border-radius:7px;
+            background:transparent;
+            color:#7d8993;
+        }
+        .vc-password-toggle:hover{background:var(--vc-blue-soft);color:var(--vc-blue)}
+
+        .vc-management-submit{
+            width:100%;
+            min-height:49px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:9px;
+            margin-top:4px;
+            border:1px solid var(--vc-navy);
+            border-radius:9px;
+            background:var(--vc-navy);
+            color:#fff;
+            font-family:inherit;
+            font-size:13px;
+            font-weight:800;
+            cursor:pointer;
+            transition:background .18s ease,transform .18s ease,box-shadow .18s ease;
+        }
+        .vc-management-submit:hover{
+            background:var(--vc-navy-2);
+            box-shadow:0 8px 20px rgba(16,42,67,.14);
+            transform:translateY(-1px);
+        }
+        .vc-management-security{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:7px;
+            margin-top:23px;
+            color:#8b969f;
+            font-size:10px;
+            font-weight:650;
+        }
+        .vc-management-security i{color:var(--vc-blue);font-size:13px}
+
+        .vc-management-footer{
+            padding:18px 5vw;
+            border-top:1px solid var(--vc-border);
+            background:#fff;
+        }
+        .vc-management-footer-inner{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:16px;
+            max-width:1050px;
+            margin:0 auto;
+        }
+        .vc-management-footer strong{color:var(--vc-navy);font-size:11px;font-weight:800}
+        .vc-management-footer span{color:#8a959e;font-size:10px}
+
+        @media(max-width:900px){
+            .vc-management-grid{grid-template-columns:1fr}
+            .vc-management-intro{padding:42px}
+            .vc-management-card{padding:40px 36px}
+        }
+        @media(max-width:575.98px){
+            .vc-management-topbar{padding:12px 16px}
+            .vc-management-topbar-note{display:none}
+            .vc-management-main{padding:28px 14px 42px}
+            .vc-management-grid{border-radius:14px}
+            .vc-management-intro{padding:34px 28px}
+            .vc-management-intro h1{font-size:31px}
+            .vc-management-card{padding:34px 24px 30px}
+            .vc-management-card-header h2{font-size:26px}
+            .vc-management-footer{padding:16px}
+            .vc-management-footer-inner{align-items:flex-start;flex-direction:column}
+        }
+    </style>
+</head>
+<body>
+<div class="vc-management-page">
+
+    <header class="vc-management-topbar">
+        <div class="vc-management-brand">
+            <div class="vc-management-brand-mark"><i class="bi bi-eyeglasses"></i></div>
+            <div class="vc-management-brand-copy">
+                <strong>VisionCart</strong>
+                <span>Management Portal</span>
+            </div>
+        </div>
+
+        <div class="vc-management-topbar-note">
+            <i class="bi bi-shield-check"></i>
+            <span>Secure administration access</span>
+        </div>
+    </header>
+
+    <main class="vc-management-main">
+        <div class="vc-management-grid">
+
+            <section class="vc-management-intro">
+                <div class="vc-management-icon"><i class="bi bi-shield-lock"></i></div>
+
+                <span class="vc-management-eyebrow">VisionCart Administration</span>
+
+                <h1>Welcome to the <span>management workspace.</span></h1>
+
+                <p>
+                    Sign in to securely access VisionCart administration and continue managing the store through your assigned management role.
+                </p>
+
+                <div class="vc-management-features">
+                    <div class="vc-management-feature">
+                        <i class="bi bi-person-check"></i>
+                        <span>Role-based management access</span>
+                    </div>
+                    <div class="vc-management-feature">
+                        <i class="bi bi-box-seam"></i>
+                        <span>Store operations and administration</span>
+                    </div>
+                    <div class="vc-management-feature">
+                        <i class="bi bi-shield-check"></i>
+                        <span>Protected Django session authentication</span>
+                    </div>
+                </div>
+
+                <div class="vc-management-role">
+                    <i class="bi bi-people"></i>
+                    <span>Available for Super Admin &amp; Web Admin</span>
+                </div>
+            </section>
+
+            <section class="vc-management-card">
+                <div class="vc-management-card-header">
+                    <span class="eyebrow">Management Login</span>
+                    <h2>Sign in</h2>
+                    <p>Enter your management account credentials to continue.</p>
+                </div>
+
+                {% if messages %}
+                    <div class="vc-management-alerts">
+                        {% for message in messages %}
+                            <div class="vc-management-alert">
+                                <i class="bi bi-exclamation-circle"></i>
+                                <span>{{ message }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <form method="post" class="vc-management-form" data-protect-submit>
+                    {% csrf_token %}
+
+                    <div class="vc-management-field">
+                        <label for="id_username">Username</label>
+                        <div class="vc-management-input">
+                            <i class="bi bi-person"></i>
+                            <input
+                                type="text"
+                                name="username"
+                                id="id_username"
+                                placeholder="Enter your username"
+                                autocomplete="username"
+                                required
+                                autofocus
+                            >
+                        </div>
+                    </div>
+
+                    <div class="vc-management-field">
+                        <label for="id_password">Password</label>
+                        <div class="vc-management-input">
+                            <i class="bi bi-lock"></i>
+                            <input
+                                type="password"
+                                name="password"
+                                id="id_password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+                            <button
+                                type="button"
+                                class="vc-password-toggle"
+                                data-password-toggle="id_password"
+                                aria-label="Show password"
+                            >
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="vc-management-submit" data-vc-click-feedback>
+                        <span>Sign In</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+                </form>
+
+                <div class="vc-management-security">
+                    <i class="bi bi-shield-lock"></i>
+                    <span>Protected management area</span>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="vc-management-footer">
+        <div class="vc-management-footer-inner">
+            <strong>VisionCart</strong>
+            <span>Secure Management Portal · Super Admin &amp; Web Admin</span>
+        </div>
+    </footer>
+</div>
+
+<script>
+    document.addEventListener("click", function(event) {
+        const toggle = event.target.closest("[data-password-toggle]");
+        if (!toggle) return;
+
+        const targetId = toggle.getAttribute("data-password-toggle");
+        const input = document.getElementById(targetId);
+        if (!input) return;
+
+        const icon = toggle.querySelector("i");
+        if (input.type === "password") {
+            input.type = "text";
+            toggle.setAttribute("aria-label", "Hide password");
+            if (icon) icon.className = "bi bi-eye-slash";
+        } else {
+            input.type = "password";
+            toggle.setAttribute("aria-label", "Show password");
+            if (icon) icon.className = "bi bi-eye";
+        }
+    });
+</script>
+</body>
+</html>

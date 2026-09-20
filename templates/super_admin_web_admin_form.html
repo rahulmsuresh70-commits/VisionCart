@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+    {% if web_admin %}
+        VisionCart - Edit Web Admin
+    {% else %}
+        VisionCart - Add Web Admin
+    {% endif %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- ## Page heading -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            {% if web_admin %}
+
+                <h1>
+                    Edit Web Admin
+                </h1>
+
+                <p class="text-muted">
+                    Update Web Admin account information.
+                </p>
+
+            {% else %}
+
+                <h1>
+                    Add Web Admin
+                </h1>
+
+                <p class="text-muted">
+                    Create a new VisionCart Web Admin account.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <a
+            href="{% url 'super-admin-web-admins' %}"
+            class="btn btn-outline-secondary"
+        >
+            Back
+        </a>
+
+    </div>
+
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+
+                    <h4 class="mb-0">
+
+                        {% if web_admin %}
+                            Web Admin Information
+                        {% else %}
+                            New Web Admin
+                        {% endif %}
+
+                    </h4>
+
+                </div>
+
+
+                <div class="card-body">
+
+
+                    <!-- ## Error messages -->
+                    {% if messages %}
+
+                        {% for message in messages %}
+
+                            <div
+                                class="alert alert-danger"
+                                role="alert"
+                            >
+                                {{ message }}
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+
+                    <form method="post">
+
+                        {% csrf_token %}
+
+
+                        <!-- ## Username -->
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Username
+                            </label>
+
+                            <input
+                                type="text"
+                                name="username"
+                                class="form-control"
+                                value="{{ web_admin.username|default:'' }}"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- ## Email -->
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Email
+                            </label>
+
+                            <input
+                                type="email"
+                                name="email"
+                                class="form-control"
+                                value="{{ web_admin.email|default:'' }}"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- ## Phone -->
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Phone
+                            </label>
+
+                            <input
+                                type="text"
+                                name="phone"
+                                class="form-control"
+                                value="{{ web_admin.phone|default:'' }}"
+                                maxlength="15"
+                            >
+
+                        </div>
+
+
+                        <!-- ## First name -->
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                First Name
+                            </label>
+
+                            <input
+                                type="text"
+                                name="first_name"
+                                class="form-control"
+                                value="{{ web_admin.first_name|default:'' }}"
+                            >
+
+                        </div>
+
+
+                        <!-- ## Last name -->
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Last Name
+                            </label>
+
+                            <input
+                                type="text"
+                                name="last_name"
+                                class="form-control"
+                                value="{{ web_admin.last_name|default:'' }}"
+                            >
+
+                        </div>
+
+
+                        <!-- ## Password -->
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                {% if web_admin %}
+                                    New Password
+                                {% else %}
+                                    Password
+                                {% endif %}
+
+                            </label>
+
+                            <input
+                                type="password"
+                                name="password"
+                                class="form-control"
+                                minlength="8"
+                                {% if not web_admin %}
+                                    required
+                                {% endif %}
+                            >
+
+
+                            {% if web_admin %}
+
+                                <div class="form-text">
+                                    Leave blank to keep the current password.
+                                </div>
+
+                            {% else %}
+
+                                <div class="form-text">
+                                    Minimum 8 characters.
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- ## Confirm password -->
+                        <div class="mb-4">
+
+                            <label class="form-label">
+                                Confirm Password
+                            </label>
+
+                            <input
+                                type="password"
+                                name="confirm_password"
+                                class="form-control"
+                                minlength="8"
+                                {% if not web_admin %}
+                                    required
+                                {% endif %}
+                            >
+
+                        </div>
+
+
+                        <!-- ## Submit -->
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+
+                            {% if web_admin %}
+                                Update Web Admin
+                            {% else %}
+                                Create Web Admin
+                            {% endif %}
+
+                        </button>
+
+
+                        <a
+                            href="{% url 'super-admin-web-admins' %}"
+                            class="btn btn-outline-secondary ms-2"
+                        >
+                            Cancel
+                        </a>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,4115 @@
+/* ============================================================
+   VISIONCART - MAIN STYLESHEET
+   Classic Premium Eyewear E-Commerce Design
+   ============================================================ */
+
+
+/* ============================================================
+   01. ROOT VARIABLES
+   ============================================================ */
+
+:root {
+
+    --vc-black: #111111;
+    --vc-dark: #171717;
+    --vc-navy: #172033;
+
+    --vc-white: #ffffff;
+    --vc-off-white: #fafafa;
+    --vc-light: #f5f5f2;
+    --vc-border: #e6e6e2;
+
+    --vc-text: #1c1c1c;
+    --vc-muted: #6f6f6b;
+
+    --vc-accent: #b08b57;
+    --vc-accent-dark: #8f6c3e;
+
+    --vc-success: #28745a;
+    --vc-danger: #b33a3a;
+    --vc-warning: #9a6a20;
+
+    --vc-radius-sm: 4px;
+    --vc-radius-md: 8px;
+    --vc-radius-lg: 14px;
+
+    --vc-shadow-sm:
+        0 4px 16px rgba(0, 0, 0, 0.05);
+
+    --vc-shadow-md:
+        0 12px 35px rgba(0, 0, 0, 0.08);
+
+    --vc-shadow-lg:
+        0 20px 60px rgba(0, 0, 0, 0.12);
+
+    --vc-transition:
+        all 0.3s ease;
+
+    --vc-container:
+        1240px;
+}
+
+
+/* ============================================================
+   02. GLOBAL RESET
+============================================================= */
+
+html {
+
+    scroll-behavior: smooth;
+}
+
+body {
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    color: var(--vc-text);
+
+    background: var(--vc-white);
+
+    line-height: 1.65;
+
+    -webkit-font-smoothing: antialiased;
+
+    text-rendering: optimizeLegibility;
+}
+
+img {
+
+    max-width: 100%;
+
+    display: block;
+}
+
+a {
+
+    color: inherit;
+
+    text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+
+    font-family:
+        "Poppins",
+        sans-serif;
+}
+
+::selection {
+
+    background: var(--vc-black);
+
+    color: var(--vc-white);
+}
+
+.container {
+
+    max-width: var(--vc-container);
+}
+
+
+/* ============================================================
+   03. TOP INFORMATION BAR
+============================================================= */
+
+.vc-topbar {
+
+    min-height: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    background: var(--vc-black);
+
+    color: rgba(255, 255, 255, 0.78);
+
+    font-size: 0.65rem;
+
+    letter-spacing: 0.03em;
+}
+
+.vc-topbar-inner {
+
+    min-height: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.vc-topbar-inner span {
+
+    display: inline-flex;
+
+    align-items: center;
+}
+
+.vc-topbar i {
+
+    color: var(--vc-accent);
+}
+
+
+/* ============================================================
+   04. MAIN HEADER
+============================================================= */
+
+.vc-header {
+
+    position: relative;
+
+    z-index: 1030;
+}
+
+.vc-navbar {
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 1030;
+
+    min-height: 78px;
+
+    padding:
+        0;
+
+    background: rgba(255, 255, 255, 0.98);
+
+    border-bottom:
+        1px solid var(--vc-border);
+
+    transition:
+        box-shadow 0.3s ease,
+        background 0.3s ease;
+}
+
+.vc-header-scrolled {
+
+    box-shadow:
+        0 7px 28px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ============================================================
+   05. BRAND
+============================================================= */
+
+.vc-brand {
+
+    display: inline-flex !important;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    gap: 0;
+
+    min-width: 150px;
+
+    padding:
+        10px 0 !important;
+
+    color: var(--vc-black) !important;
+
+    line-height: 1;
+}
+
+.vc-brand:hover {
+
+    color: var(--vc-black) !important;
+}
+
+.vc-brand-name {
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    font-size: 1.55rem;
+
+    font-weight: 700;
+
+    letter-spacing: -0.055em;
+}
+
+.vc-brand-tagline {
+
+    margin-top: 5px;
+
+    color: var(--vc-accent-dark);
+
+    font-size: 0.5rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.25em;
+}
+
+
+/* ============================================================
+   06. NAVIGATION
+============================================================= */
+
+.vc-main-nav {
+
+    gap: 5px;
+}
+
+.vc-main-nav .vc-nav-link {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    min-height: 78px;
+
+    padding:
+        0 12px !important;
+
+    color: #343434 !important;
+
+    font-size: 0.76rem;
+
+    font-weight: 650;
+
+    letter-spacing: 0.035em;
+
+    transition: var(--vc-transition);
+}
+
+.vc-main-nav .vc-nav-link::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 12px;
+
+    right: 12px;
+
+    bottom: 18px;
+
+    height: 1px;
+
+    background: var(--vc-black);
+
+    transform:
+        scaleX(0);
+
+    transform-origin:
+        center;
+
+    transition:
+        transform 0.25s ease;
+}
+
+.vc-main-nav .vc-nav-link:hover {
+
+    color: var(--vc-black) !important;
+}
+
+.vc-main-nav .vc-nav-link:hover::after {
+
+    transform:
+        scaleX(1);
+}
+
+
+/* ============================================================
+   07. RIGHT NAVIGATION
+============================================================= */
+
+.vc-nav-right {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 14px;
+
+    margin-left: auto;
+}
+
+.vc-nav-welcome {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: var(--vc-muted);
+
+    font-size: 0.68rem;
+
+    font-weight: 600;
+}
+
+.vc-nav-welcome i {
+
+    color: var(--vc-accent-dark);
+
+    font-size: 0.95rem;
+}
+
+.vc-nav-role {
+
+    padding-left: 13px;
+
+    border-left:
+        1px solid var(--vc-border);
+
+    color: var(--vc-muted);
+
+    font-size: 0.65rem;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.vc-nav-icon-button {
+
+    width: 38px;
+
+    height: 38px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0;
+
+    border:
+        1px solid var(--vc-border);
+
+    border-radius: 50%;
+
+    background: var(--vc-white);
+
+    color: var(--vc-black);
+
+    font-size: 0.88rem;
+
+    transition: var(--vc-transition);
+}
+
+.vc-nav-icon-button:hover {
+
+    border-color: var(--vc-black);
+
+    background: var(--vc-black);
+
+    color: var(--vc-white);
+
+    transform:
+        translateY(-1px);
+}
+
+.vc-nav-logout-form {
+
+    margin: 0;
+}
+
+.vc-dashboard-link {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding:
+        8px 13px;
+
+    border:
+        1px solid var(--vc-border);
+
+    color: var(--vc-black);
+
+    font-size: 0.68rem;
+
+    font-weight: 700;
+
+    transition: var(--vc-transition);
+}
+
+.vc-dashboard-link:hover {
+
+    border-color:
+        var(--vc-black);
+
+    background:
+        var(--vc-black);
+
+    color:
+        var(--vc-white);
+}
+
+.vc-login-link {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding:
+        8px 8px;
+
+    color: var(--vc-black);
+
+    font-size: 0.75rem;
+
+    font-weight: 700;
+
+    transition: color 0.25s ease;
+}
+
+.vc-login-link:hover {
+
+    color:
+        var(--vc-accent-dark);
+}
+
+.vc-register-button {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 40px;
+
+    padding:
+        8px 17px;
+
+    border:
+        1px solid var(--vc-black);
+
+    background:
+        var(--vc-black);
+
+    color:
+        var(--vc-white);
+
+    font-size: 0.68rem;
+
+    font-weight: 700;
+
+    transition: var(--vc-transition);
+}
+
+.vc-register-button:hover {
+
+    border-color:
+        var(--vc-accent-dark);
+
+    background:
+        var(--vc-accent-dark);
+
+    color:
+        var(--vc-white);
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* ============================================================
+   08. MOBILE NAVIGATION
+============================================================= */
+
+.vc-navbar-toggler {
+
+    border: 0 !important;
+
+    padding: 8px !important;
+
+    box-shadow: none !important;
+}
+
+.vc-menu-icon {
+
+    width: 27px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.vc-menu-icon span {
+
+    display: block;
+
+    width: 100%;
+
+    height: 1.5px;
+
+    background:
+        var(--vc-black);
+
+    transition:
+        var(--vc-transition);
+}
+
+
+/* ============================================================
+   09. MESSAGE AREA
+============================================================= */
+
+.vc-message-area {
+
+    position: relative;
+
+    z-index: 100;
+
+    padding-top: 14px;
+
+    background:
+        var(--vc-white);
+}
+
+.vc-message-area .vc-alert {
+
+    margin-bottom: 10px;
+}
+
+.vc-alert {
+
+    position: relative;
+
+    border: 0;
+
+    border-radius:
+        var(--vc-radius-md);
+
+    box-shadow:
+        var(--vc-shadow-sm);
+
+    font-size: 0.78rem;
+}
+
+.vc-alert.alert-success {
+
+    background: #edf7f1;
+
+    color: #226346;
+}
+
+.vc-alert.alert-danger {
+
+    background: #f9eeee;
+
+    color: #963434;
+}
+
+.vc-alert.alert-warning {
+
+    background: #fbf4e7;
+
+    color: #805d20;
+}
+
+.vc-alert.alert-info {
+
+    background: #eef4f8;
+
+    color: #31586f;
+}
+
+
+/* ============================================================
+   10. MAIN CONTENT
+============================================================= */
+
+.vc-main-content {
+
+    min-height:
+        calc(100vh - 300px);
+}
+
+
+/* ============================================================
+   11. COMMON TYPOGRAPHY
+============================================================= */
+
+.vc-eyebrow {
+
+    display: inline-block;
+
+    margin-bottom: 14px;
+
+    color: var(--vc-accent);
+
+    font-size: 0.72rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.18em;
+
+    text-transform: uppercase;
+}
+
+.vc-section {
+
+    padding: 100px 0;
+}
+
+.vc-section-heading {
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 30px;
+
+    margin-bottom: 45px;
+}
+
+.vc-section-heading h2 {
+
+    margin: 0;
+
+    color: var(--vc-black);
+
+    font-size:
+        clamp(2rem, 4vw, 3rem);
+
+    font-weight: 600;
+
+    line-height: 1.15;
+
+    letter-spacing: -0.04em;
+}
+
+.vc-section-heading p {
+
+    margin:
+        12px 0 0;
+
+    color:
+        var(--vc-muted);
+
+    font-size: 0.98rem;
+}
+
+.vc-heading-light h2 {
+
+    color:
+        var(--vc-white);
+}
+
+.vc-heading-light p {
+
+    color:
+        rgba(255, 255, 255, 0.68);
+}
+
+.vc-view-all {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    flex-shrink: 0;
+
+    padding-bottom: 7px;
+
+    border-bottom:
+        1px solid var(--vc-black);
+
+    font-size: 0.82rem;
+
+    font-weight: 700;
+
+    transition: var(--vc-transition);
+}
+
+.vc-view-all:hover {
+
+    gap: 14px;
+
+    color:
+        var(--vc-accent-dark);
+}
+
+
+/* ============================================================
+   12. BUTTONS
+============================================================= */
+
+.vc-btn-primary,
+.vc-btn-dark {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 50px;
+
+    padding:
+        13px 25px;
+
+    border:
+        1px solid var(--vc-black);
+
+    border-radius:
+        var(--vc-radius-sm);
+
+    background:
+        var(--vc-black);
+
+    color:
+        var(--vc-white);
+
+    font-size: 0.84rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.03em;
+
+    transition:
+        var(--vc-transition);
+}
+
+.vc-btn-primary:hover {
+
+    border-color:
+        var(--vc-accent-dark);
+
+    background:
+        var(--vc-accent-dark);
+
+    color:
+        var(--vc-white);
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        var(--vc-shadow-sm);
+}
+
+.vc-btn-dark:hover {
+
+    background:
+        var(--vc-white);
+
+    color:
+        var(--vc-black);
+
+    transform:
+        translateY(-2px);
+}
+
+.vc-btn-outline {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 50px;
+
+    padding:
+        13px 25px;
+
+    border:
+        1px solid #cfcfc9;
+
+    border-radius:
+        var(--vc-radius-sm);
+
+    background:
+        transparent;
+
+    color:
+        var(--vc-black);
+
+    font-size: 0.84rem;
+
+    font-weight: 700;
+
+    transition:
+        var(--vc-transition);
+}
+
+.vc-btn-outline:hover {
+
+    border-color:
+        var(--vc-black);
+
+    background:
+        var(--vc-black);
+
+    color:
+        var(--vc-white);
+
+    transform:
+        translateY(-2px);
+}
+
+.vc-btn-light {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 52px;
+
+    padding:
+        13px 28px;
+
+    border:
+        1px solid var(--vc-white);
+
+    border-radius:
+        var(--vc-radius-sm);
+
+    background:
+        var(--vc-white);
+
+    color:
+        var(--vc-black);
+
+    font-size: 0.84rem;
+
+    font-weight: 700;
+
+    transition:
+        var(--vc-transition);
+}
+
+.vc-btn-light:hover {
+
+    background:
+        transparent;
+
+    color:
+        var(--vc-white);
+
+    transform:
+        translateY(-2px);
+}
+
+.vc-btn-transparent {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 52px;
+
+    padding:
+        13px 28px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.45);
+
+    border-radius:
+        var(--vc-radius-sm);
+
+    background:
+        transparent;
+
+    color:
+        var(--vc-white);
+
+    font-size: 0.84rem;
+
+    font-weight: 700;
+
+    transition:
+        var(--vc-transition);
+}
+
+.vc-btn-transparent:hover {
+
+    border-color:
+        var(--vc-white);
+
+    background:
+        var(--vc-white);
+
+    color:
+        var(--vc-black);
+}
+
+
+/* ============================================================
+   13. HERO
+============================================================= */
+
+.vc-home-hero {
+
+    position: relative;
+
+    overflow: hidden;
+
+    min-height: 680px;
+
+    display: flex;
+
+    align-items: center;
+
+    background:
+        var(--vc-light);
+}
+
+.vc-home-hero::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: -180px;
+
+    right: -160px;
+
+    width: 500px;
+
+    height: 500px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(176, 139, 87, 0.06);
+
+    pointer-events: none;
+}
+
+.vc-hero-content {
+
+    position: relative;
+
+    z-index: 2;
+
+    padding:
+        85px 20px 85px 0;
+
+    animation:
+        vcHeroText 0.8s ease both;
+}
+
+.vc-hero-title {
+
+    margin: 0;
+
+    max-width: 580px;
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    font-size:
+        clamp(3.2rem, 6vw, 5.6rem);
+
+    font-weight: 400;
+
+    line-height: 0.98;
+
+    letter-spacing: -0.055em;
+
+    color:
+        var(--vc-black);
+}
+
+.vc-hero-text {
+
+    max-width: 520px;
+
+    margin:
+        27px 0 24px;
+
+    color:
+        #60605c;
+
+    font-size: 1.02rem;
+
+    line-height: 1.8;
+}
+
+.vc-hero-points {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 18px;
+
+    margin-bottom: 32px;
+}
+
+.vc-hero-points span {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color:
+        #494944;
+
+    font-size: 0.76rem;
+
+    font-weight: 600;
+}
+
+.vc-hero-points i {
+
+    color:
+        var(--vc-accent-dark);
+}
+
+.vc-hero-actions {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+}
+
+.vc-hero-image-wrapper {
+
+    position: relative;
+
+    min-height: 680px;
+
+    overflow: hidden;
+
+    animation:
+        vcHeroImage 1s ease both;
+}
+
+.vc-hero-image {
+
+    width: 100%;
+
+    height: 680px;
+
+    object-fit: cover;
+
+    object-position: center;
+
+    transition:
+        transform 1.2s ease;
+}
+
+.vc-hero-image-wrapper:hover
+.vc-hero-image {
+
+    transform:
+        scale(1.025);
+}
+
+.vc-hero-floating-card {
+
+    position: absolute;
+
+    right: 32px;
+
+    bottom: 32px;
+
+    width: 185px;
+
+    padding: 21px;
+
+    background:
+        rgba(255, 255, 255, 0.94);
+
+    backdrop-filter:
+        blur(10px);
+
+    box-shadow:
+        var(--vc-shadow-md);
+
+    animation:
+        vcFloatingCard 0.9s ease 0.4s both;
+}
+
+.vc-floating-label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    color:
+        var(--vc-accent-dark);
+
+    font-size: 0.65rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.15em;
+}
+
+.vc-hero-floating-card strong {
+
+    display: block;
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    font-size: 1.15rem;
+
+    font-weight: 400;
+
+    line-height: 1.25;
+
+    color:
+        var(--vc-black);
+}
+
+@keyframes vcHeroText {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateX(-30px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateX(0);
+    }
+}
+
+@keyframes vcHeroImage {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateX(30px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateX(0);
+    }
+}
+
+@keyframes vcFloatingCard {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(20px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* ============================================================
+   14. TRUST STRIP
+============================================================= */
+
+.vc-trust-strip {
+
+    border-bottom:
+        1px solid var(--vc-border);
+
+    background:
+        var(--vc-white);
+}
+
+.vc-trust-item {
+
+    min-height: 105px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding:
+        18px 24px;
+
+    border-right:
+        1px solid var(--vc-border);
+}
+
+.vc-trust-item:last-child {
+
+    border-right: 0;
+}
+
+.vc-trust-icon {
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border:
+        1px solid var(--vc-border);
+
+    border-radius: 50%;
+
+    color:
+        var(--vc-accent-dark);
+}
+
+.vc-trust-item strong {
+
+    display: block;
+
+    margin-bottom: 2px;
+
+    color:
+        var(--vc-black);
+
+    font-size: 0.78rem;
+
+    font-weight: 700;
+}
+
+.vc-trust-item span {
+
+    display: block;
+
+    color:
+        var(--vc-muted);
+
+    font-size: 0.68rem;
+}
+
+
+/* ============================================================
+   15. CATEGORY CARDS
+============================================================= */
+
+.vc-category-section {
+
+    background:
+        var(--vc-white);
+}
+
+.vc-category-card {
+
+    display: block;
+
+    overflow: hidden;
+
+    background:
+        var(--vc-light);
+
+    border:
+        1px solid var(--vc-border);
+
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+.vc-category-card:hover {
+
+    transform:
+        translateY(-7px);
+
+    box-shadow:
+        var(--vc-shadow-md);
+}
+
+.vc-category-image {
+
+    position: relative;
+
+    overflow: hidden;
+
+    aspect-ratio:
+        1 / 1.12;
+
+    background:
+        #efefeb;
+}
+
+.vc-category-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.65s ease;
+}
+
+.vc-category-card:hover
+.vc-category-image img {
+
+    transform:
+        scale(1.06);
+}
+
+.vc-category-content {
+
+    padding:
+        21px 20px 23px;
+
+    background:
+        var(--vc-white);
+}
+
+.vc-category-content > span:first-child {
+
+    display: block;
+
+    margin-bottom: 5px;
+
+    color:
+        var(--vc-muted);
+
+    font-size: 0.67rem;
+
+    letter-spacing: 0.04em;
+}
+
+.vc-category-content h3 {
+
+    margin:
+        0 0 13px;
+
+    color:
+        var(--vc-black);
+
+    font-size: 1.12rem;
+
+    font-weight: 600;
+}
+
+.vc-card-link {
+
+    display: inline-flex !important;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color:
+        var(--vc-black) !important;
+
+    font-size:
+        0.74rem !important;
+
+    font-weight: 700;
+
+    transition:
+        var(--vc-transition);
+}
+
+.vc-category-card:hover
+.vc-card-link {
+
+    gap: 12px;
+}
+
+
+/* ============================================================
+   16. EDITORIAL BANNER
+============================================================= */
+
+.vc-editorial-banner {
+
+    padding:
+        25px 0 105px;
+
+    background:
+        var(--vc-white);
+}
+
+.vc-editorial-card {
+
+    overflow: hidden;
+
+    background:
+        #eeeae2;
+}
+
+.vc-editorial-image {
+
+    height: 520px;
+
+    overflow: hidden;
+}
+
+.vc-editorial-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.8s ease;
+}
+
+.vc-editorial-card:hover
+.vc-editorial-image img {
+
+    transform:
+        scale(1.035);
+}
+
+.vc-editorial-content {
+
+    padding:
+        70px 75px;
+}
+
+.vc-editorial-content h2 {
+
+    margin: 0;
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    font-size:
+        clamp(2.2rem, 4vw, 3.6rem);
+
+    font-weight: 400;
+
+    line-height: 1.08;
+
+    letter-spacing: -0.04em;
+
+    color:
+        var(--vc-black);
+}
+
+.vc-editorial-content p {
+
+    max-width: 450px;
+
+    margin:
+        22px 0 30px;
+
+    color:
+        #62615c;
+
+    font-size: 0.95rem;
+
+    line-height: 1.8;
+}
+
+
+/* ============================================================
+   17. PRODUCT CARDS
+============================================================= */
+
+.vc-products-section {
+
+    background:
+        var(--vc-off-white);
+}
+
+.vc-product-card {
+
+    height: 100%;
+
+    overflow: hidden;
+
+    background:
+        var(--vc-white);
+
+    border:
+        1px solid var(--vc-border);
+
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+.vc-product-card:hover {
+
+    transform:
+        translateY(-6px);
+
+    box-shadow:
+        var(--vc-shadow-md);
+}
+
+.vc-product-image-wrapper {
+
+    position: relative;
+
+    overflow: hidden;
+
+    aspect-ratio:
+        1 / 1.05;
+
+    background:
+        #f1f1ee;
+}
+
+.vc-product-image {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.6s ease;
+}
+
+.vc-product-card:hover
+.vc-product-image {
+
+    transform:
+        scale(1.045);
+}
+
+.vc-product-badge {
+
+    position: absolute;
+
+    top: 14px;
+
+    left: 14px;
+
+    padding:
+        5px 9px;
+
+    background:
+        var(--vc-black);
+
+    color:
+        var(--vc-white);
+
+    font-size: 0.58rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.1em;
+}
+
+.vc-product-wishlist {
+
+    position: absolute;
+
+    top: 13px;
+
+    right: 13px;
+
+    width: 37px;
+
+    height: 37px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.94);
+
+    color:
+        var(--vc-black);
+
+    box-shadow:
+        var(--vc-shadow-sm);
+
+    transition:
+        var(--vc-transition);
+}
+
+.vc-product-wishlist:hover {
+
+    background:
+        var(--vc-black);
+
+    color:
+        var(--vc-white);
+
+    transform:
+        scale(1.05);
+}
+
+.vc-product-content {
+
+    padding: 20px;
+}
+
+.vc-product-brand {
+
+    display: block;
+
+    margin-bottom: 4px;
+
+    color:
+        var(--vc-muted);
+
+    font-size: 0.65rem;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.1em;
+}
+
+.vc-product-name {
+
+    min-height: 46px;
+
+    margin:
+        0 0 12px;
+
+    color:
+        var(--vc-black);
+
+    font-size: 0.96rem;
+
+    font-weight: 600;
+
+    line-height: 1.4;
+}
+
+.vc-product-name a:hover {
+
+    color:
+        var(--vc-accent-dark);
+}
+
+.vc-product-price-row {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin-bottom: 17px;
+}
+
+.vc-product-price {
+
+    color:
+        var(--vc-black);
+
+    font-size: 0.94rem;
+
+    font-weight: 700;
+}
+
+.vc-product-original-price {
+
+    color:
+        #999;
+
+    font-size: 0.72rem;
+}
+
+.vc-product-action {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding-bottom: 4px;
+
+    border-bottom:
+        1px solid #cfcfc9;
+
+    color:
+        var(--vc-black);
+
+    font-size: 0.72rem;
+
+    font-weight: 700;
+
+    transition:
+        var(--vc-transition);
+}
+
+.vc-product-action:hover {
+
+    gap: 11px;
+
+    border-color:
+        var(--vc-black);
+}
+
+.vc-product-out {
+
+    color:
+        var(--vc-danger);
+
+    font-size: 0.72rem;
+
+    font-weight: 700;
+}
+
+.vc-empty-products {
+
+    padding:
+        75px 20px;
+
+    text-align: center;
+
+    border:
+        1px solid var(--vc-border);
+
+    background:
+        var(--vc-white);
+}
+
+.vc-empty-products i {
+
+    display: block;
+
+    margin-bottom: 15px;
+
+    color:
+        var(--vc-accent);
+
+    font-size: 2.5rem;
+}
+
+
+/* ============================================================
+   18. STYLE SECTION
+============================================================= */
+
+.vc-style-section {
+
+    padding:
+        100px 0;
+
+    background:
+        var(--vc-dark);
+}
+
+.vc-style-card {
+
+    position: relative;
+
+    display: block;
+
+    overflow: hidden;
+
+    aspect-ratio:
+        0.82 / 1;
+
+    background:
+        #252525;
+}
+
+.vc-style-card img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.7s ease;
+}
+
+.vc-style-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.72),
+            rgba(0, 0, 0, 0.03) 62%
+        );
+}
+
+.vc-style-card:hover img {
+
+    transform:
+        scale(1.055);
+}
+
+.vc-style-overlay {
+
+    position: absolute;
+
+    z-index: 2;
+
+    left: 27px;
+
+    right: 27px;
+
+    bottom: 27px;
+
+    color:
+        var(--vc-white);
+}
+
+.vc-style-overlay span {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 0.62rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.17em;
+
+    opacity: 0.72;
+}
+
+.vc-style-overlay h3 {
+
+    margin:
+        0 0 13px;
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    font-size: 1.7rem;
+
+    font-weight: 400;
+}
+
+.vc-style-overlay strong {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    font-size: 0.72rem;
+
+    transition:
+        var(--vc-transition);
+}
+
+.vc-style-card:hover
+.vc-style-overlay strong {
+
+    gap: 12px;
+}
+
+
+/* ============================================================
+   19. EXPERIENCE SECTION
+============================================================= */
+
+.vc-experience-section {
+
+    background:
+        var(--vc-white);
+}
+
+.vc-large-heading {
+
+    margin: 0;
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    font-size:
+        clamp(2.4rem, 4vw, 3.8rem);
+
+    font-weight: 400;
+
+    line-height: 1.08;
+
+    letter-spacing: -0.045em;
+
+    color:
+        var(--vc-black);
+}
+
+.vc-experience-text {
+
+    max-width: 500px;
+
+    margin:
+        22px 0 35px;
+
+    color:
+        var(--vc-muted);
+
+    font-size: 0.95rem;
+}
+
+.vc-experience-list {
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.vc-experience-item {
+
+    display: flex;
+
+    gap: 20px;
+
+    padding:
+        19px 0;
+
+    border-top:
+        1px solid var(--vc-border);
+}
+
+.vc-experience-item:last-child {
+
+    border-bottom:
+        1px solid var(--vc-border);
+}
+
+.vc-experience-item > span {
+
+    min-width: 30px;
+
+    padding-top: 3px;
+
+    color:
+        var(--vc-accent-dark);
+
+    font-size: 0.68rem;
+
+    font-weight: 700;
+}
+
+.vc-experience-item h3 {
+
+    margin:
+        0 0 4px;
+
+    font-size: 0.95rem;
+
+    font-weight: 700;
+}
+
+.vc-experience-item p {
+
+    margin: 0;
+
+    color:
+        var(--vc-muted);
+
+    font-size: 0.78rem;
+}
+
+.vc-experience-image {
+
+    position: relative;
+
+    overflow: hidden;
+
+    min-height: 560px;
+
+    background:
+        var(--vc-light);
+}
+
+.vc-experience-image > img {
+
+    width: 100%;
+
+    height: 560px;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.8s ease;
+}
+
+.vc-experience-image:hover > img {
+
+    transform:
+        scale(1.035);
+}
+
+.vc-experience-caption {
+
+    position: absolute;
+
+    left: 28px;
+
+    bottom: 28px;
+
+    max-width: 220px;
+
+    padding: 20px;
+
+    background:
+        rgba(17, 17, 17, 0.9);
+
+    color:
+        var(--vc-white);
+}
+
+.vc-experience-caption span {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    color:
+        var(--vc-accent);
+
+    font-size: 0.58rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.16em;
+}
+
+.vc-experience-caption strong {
+
+    display: block;
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    font-size: 1.25rem;
+
+    font-weight: 400;
+
+    line-height: 1.25;
+}
+
+
+/* ============================================================
+   20. DISCOVER SECTION
+============================================================= */
+
+.vc-discover-section {
+
+    padding:
+        20px 0 100px;
+
+    background:
+        var(--vc-white);
+}
+
+.vc-discover-card {
+
+    overflow: hidden;
+
+    background:
+        #eeeae2;
+}
+
+.vc-discover-content {
+
+    padding:
+        65px 70px;
+}
+
+.vc-discover-content h2 {
+
+    max-width: 550px;
+
+    margin: 0;
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    font-size:
+        clamp(2.2rem, 4vw, 3.5rem);
+
+    font-weight: 400;
+
+    line-height: 1.08;
+
+    letter-spacing: -0.04em;
+}
+
+.vc-discover-content p {
+
+    max-width: 480px;
+
+    margin:
+        20px 0 28px;
+
+    color:
+        var(--vc-muted);
+
+    font-size: 0.94rem;
+}
+
+.vc-discover-image {
+
+    height: 390px;
+
+    overflow: hidden;
+}
+
+.vc-discover-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.8s ease;
+}
+
+.vc-discover-card:hover
+.vc-discover-image img {
+
+    transform:
+        scale(1.04);
+}
+
+
+/* ============================================================
+   21. FINAL CTA
+============================================================= */
+
+.vc-final-cta {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding:
+        105px 0;
+
+    background:
+        var(--vc-black);
+
+    color:
+        var(--vc-white);
+
+    text-align: center;
+}
+
+.vc-final-cta::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 500px;
+
+    height: 500px;
+
+    top: -250px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 50%;
+}
+
+.vc-final-cta-content {
+
+    position: relative;
+
+    z-index: 2;
+}
+
+.vc-final-cta .vc-eyebrow {
+
+    color:
+        var(--vc-accent);
+}
+
+.vc-final-cta h2 {
+
+    margin: 0;
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    font-size:
+        clamp(3rem, 6vw, 5rem);
+
+    font-weight: 400;
+
+    line-height: 1;
+
+    letter-spacing: -0.05em;
+}
+
+.vc-final-cta p {
+
+    margin:
+        18px 0 30px;
+
+    color:
+        rgba(255, 255, 255, 0.62);
+}
+
+.vc-final-actions {
+
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+}
+
+
+/* ============================================================
+   22. FOOTER
+============================================================= */
+
+.vc-footer {
+
+    padding:
+        72px 0 25px;
+
+    background:
+        #101010;
+
+    color:
+        rgba(255, 255, 255, 0.68);
+}
+
+.vc-footer-brand {
+
+    margin-bottom: 16px;
+
+    color:
+        var(--vc-white);
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    font-size: 1.45rem;
+
+    font-weight: 700;
+
+    letter-spacing: -0.04em;
+}
+
+.vc-footer-description {
+
+    max-width: 360px;
+
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.56);
+
+    font-size: 0.76rem;
+
+    line-height: 1.85;
+}
+
+.vc-footer-title {
+
+    margin-bottom: 19px;
+
+    color:
+        var(--vc-white);
+
+    font-size: 0.68rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.14em;
+
+    text-transform: uppercase;
+}
+
+.vc-footer-links {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    padding: 0;
+
+    margin: 0;
+
+    list-style: none;
+}
+
+.vc-footer-links a {
+
+    color:
+        rgba(255, 255, 255, 0.58);
+
+    font-size: 0.74rem;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.vc-footer-links a:hover {
+
+    color:
+        var(--vc-white);
+
+    transform:
+        translateX(3px);
+}
+
+.vc-footer-logout-form {
+
+    margin: 0;
+}
+
+.vc-footer-logout-form button {
+
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+
+    color:
+        rgba(255, 255, 255, 0.58);
+
+    font-size: 0.74rem;
+
+    cursor: pointer;
+
+    transition:
+        color 0.25s ease;
+}
+
+.vc-footer-logout-form button:hover {
+
+    color:
+        var(--vc-white);
+}
+
+.vc-footer-note {
+
+    max-width: 390px;
+
+    margin:
+        0 0 20px;
+
+    color:
+        rgba(255, 255, 255, 0.56);
+
+    font-size: 0.75rem;
+
+    line-height: 1.8;
+}
+
+.vc-footer-feature {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin-bottom: 9px;
+
+    color:
+        rgba(255, 255, 255, 0.62);
+
+    font-size: 0.7rem;
+}
+
+.vc-footer-feature i {
+
+    color:
+        var(--vc-accent);
+
+    font-size: 0.75rem;
+}
+
+.vc-footer-socials {
+
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 23px;
+}
+
+.vc-footer-socials span {
+
+    width: 35px;
+
+    height: 35px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.14);
+
+    border-radius: 50%;
+
+    color:
+        rgba(255, 255, 255, 0.65);
+
+    font-size: 0.8rem;
+
+    transition:
+        var(--vc-transition);
+}
+
+.vc-footer-socials span:hover {
+
+    border-color:
+        var(--vc-accent);
+
+    color:
+        var(--vc-accent);
+
+    transform:
+        translateY(-2px);
+}
+
+.vc-footer-bottom {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-top: 55px;
+
+    padding-top: 21px;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.1);
+
+    color:
+        rgba(255, 255, 255, 0.4);
+
+    font-size: 0.65rem;
+}
+
+
+/* ============================================================
+   23. SCROLL REVEAL
+============================================================= */
+
+.vc-reveal {
+
+    opacity: 0;
+
+    transform:
+        translateY(24px);
+
+    transition:
+        opacity 0.65s ease,
+        transform 0.65s ease;
+}
+
+.vc-reveal.is-visible {
+
+    opacity: 1;
+
+    transform:
+        translateY(0);
+}
+
+
+/* ============================================================
+   24. IMAGE STATES
+============================================================= */
+
+img[data-vc-image] {
+
+    background:
+        #eeeeea;
+}
+
+img[data-vc-image].vc-image-error {
+
+    opacity: 0.15;
+}
+
+
+/* ============================================================
+   25. FORMS
+============================================================= */
+
+.form-control,
+.form-select {
+
+    min-height: 47px;
+
+    border:
+        1px solid #d8d8d3;
+
+    border-radius:
+        var(--vc-radius-sm);
+
+    color:
+        var(--vc-text);
+
+    font-size: 0.86rem;
+
+    box-shadow: none !important;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+
+    border-color:
+        var(--vc-black);
+
+    box-shadow:
+        0 0 0 2px rgba(17, 17, 17, 0.06) !important;
+}
+
+.form-label {
+
+    margin-bottom: 7px;
+
+    color:
+        var(--vc-black);
+
+    font-size: 0.76rem;
+
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   26. TABLES
+============================================================= */
+
+.table {
+
+    --bs-table-bg: transparent;
+
+    vertical-align: middle;
+
+    font-size: 0.82rem;
+}
+
+.table thead th {
+
+    padding: 14px;
+
+    border-bottom:
+        1px solid var(--vc-black);
+
+    color:
+        var(--vc-black);
+
+    font-size: 0.7rem;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.05em;
+}
+
+.table tbody td {
+
+    padding:
+        16px 14px;
+
+    border-bottom:
+        1px solid var(--vc-border);
+}
+
+
+/* ============================================================
+   27. CARDS
+============================================================= */
+
+.card {
+
+    border:
+        1px solid var(--vc-border);
+
+    border-radius:
+        var(--vc-radius-md);
+
+    box-shadow: none;
+}
+
+.card-header {
+
+    background:
+        var(--vc-white);
+
+    border-bottom:
+        1px solid var(--vc-border);
+}
+
+
+/* ============================================================
+   28. PAGE HEADERS
+============================================================= */
+
+.vc-page-header {
+
+    padding:
+        70px 0;
+
+    background:
+        var(--vc-light);
+
+    border-bottom:
+        1px solid var(--vc-border);
+
+    text-align: center;
+}
+
+.vc-page-header h1 {
+
+    margin: 0;
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    font-size:
+        clamp(2.4rem, 5vw, 4rem);
+
+    font-weight: 400;
+
+    letter-spacing: -0.04em;
+}
+
+.vc-page-header p {
+
+    max-width: 600px;
+
+    margin:
+        14px auto 0;
+
+    color:
+        var(--vc-muted);
+
+    font-size: 0.92rem;
+}
+
+
+/* ============================================================
+   29. DETAIL PAGE SUPPORT
+============================================================= */
+
+.vc-detail-image {
+
+    overflow: hidden;
+
+    background:
+        var(--vc-light);
+}
+
+.vc-detail-image img {
+
+    width: 100%;
+
+    aspect-ratio:
+        1 / 1;
+
+    object-fit: cover;
+}
+
+.vc-detail-info h1 {
+
+    margin-bottom: 14px;
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    font-size:
+        clamp(2rem, 4vw, 3.2rem);
+
+    font-weight: 400;
+
+    line-height: 1.1;
+}
+
+.vc-detail-price {
+
+    margin-bottom: 20px;
+
+    font-size: 1.4rem;
+
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   30. CART / CHECKOUT
+============================================================= */
+
+.vc-cart-card,
+.vc-checkout-card {
+
+    padding: 25px;
+
+    background:
+        var(--vc-white);
+
+    border:
+        1px solid var(--vc-border);
+}
+
+.vc-summary-card {
+
+    padding: 25px;
+
+    background:
+        var(--vc-light);
+
+    border:
+        1px solid var(--vc-border);
+}
+
+.vc-summary-row {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding:
+        10px 0;
+
+    border-bottom:
+        1px solid var(--vc-border);
+
+    font-size: 0.82rem;
+}
+
+.vc-summary-row:last-child {
+
+    border-bottom: 0;
+}
+
+.vc-summary-total {
+
+    padding-top: 17px;
+
+    font-size: 1rem;
+
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   31. STATUS BADGES
+============================================================= */
+
+.vc-status {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    padding:
+        5px 9px;
+
+    border-radius: 20px;
+
+    font-size: 0.63rem;
+
+    font-weight: 700;
+}
+
+.vc-status-success {
+
+    background:
+        #e8f3ee;
+
+    color:
+        var(--vc-success);
+}
+
+.vc-status-danger {
+
+    background:
+        #f8eaea;
+
+    color:
+        var(--vc-danger);
+}
+
+.vc-status-neutral {
+
+    background:
+        #eeeeeb;
+
+    color:
+        #555550;
+}
+
+
+/* ============================================================
+   32. BUTTON FEEDBACK / LOADING
+============================================================= */
+
+.vc-button-clicked {
+
+    transform:
+        scale(0.98) !important;
+}
+
+.vc-loading {
+
+    cursor:
+        wait !important;
+
+    opacity:
+        0.7;
+}
+
+button:disabled,
+.btn:disabled {
+
+    cursor:
+        not-allowed;
+}
+
+
+/* ============================================================
+   33. ACCESSIBILITY
+============================================================= */
+
+:focus-visible {
+
+    outline:
+        2px solid var(--vc-accent-dark);
+
+    outline-offset:
+        3px;
+}
+
+
+/* ============================================================
+   34. REDUCED MOTION
+============================================================= */
+
+.vc-reduced-motion *,
+.vc-reduced-motion *::before,
+.vc-reduced-motion *::after {
+
+    animation-duration:
+        0.01ms !important;
+
+    animation-iteration-count:
+        1 !important;
+
+    transition-duration:
+        0.01ms !important;
+
+    scroll-behavior:
+        auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+
+        scroll-behavior:
+            auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            0.01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            0.01ms !important;
+    }
+}
+
+
+/* ============================================================
+   35. LARGE TABLETS
+============================================================= */
+
+@media (max-width: 1199.98px) {
+
+    :root {
+
+        --vc-container:
+            1140px;
+    }
+
+    .vc-home-hero {
+
+        min-height:
+            600px;
+    }
+
+    .vc-hero-image-wrapper {
+
+        min-height:
+            600px;
+    }
+
+    .vc-hero-image {
+
+        height:
+            600px;
+    }
+
+    .vc-editorial-content {
+
+        padding:
+            55px;
+    }
+
+    .vc-experience-image,
+    .vc-experience-image > img {
+
+        min-height:
+            500px;
+
+        height:
+            500px;
+    }
+}
+
+
+/* ============================================================
+   36. TABLETS
+============================================================= */
+
+@media (max-width: 991.98px) {
+
+    .vc-navbar {
+
+        min-height:
+            68px;
+    }
+
+    .vc-navbar .container {
+
+        min-height:
+            68px;
+    }
+
+    .vc-brand {
+
+        min-width:
+            auto;
+    }
+
+    .vc-main-nav {
+
+        padding:
+            12px 0 10px;
+
+        margin:
+            0 !important;
+    }
+
+    .vc-main-nav .vc-nav-link {
+
+        min-height:
+            42px;
+
+        padding:
+            10px 0 !important;
+    }
+
+    .vc-main-nav .vc-nav-link::after {
+
+        display:
+            none;
+    }
+
+    .vc-nav-right {
+
+        justify-content:
+            flex-start;
+
+        padding:
+            8px 0 20px;
+
+        margin:
+            0;
+    }
+
+    .vc-nav-welcome {
+
+        display:
+            inline-flex !important;
+    }
+
+    .vc-home-hero {
+
+        min-height:
+            auto;
+    }
+
+    .vc-hero-content {
+
+        padding:
+            70px 10px 55px;
+    }
+
+    .vc-hero-title {
+
+        font-size:
+            clamp(3rem, 9vw, 4.7rem);
+    }
+
+    .vc-hero-image-wrapper {
+
+        min-height:
+            540px;
+    }
+
+    .vc-hero-image {
+
+        height:
+            540px;
+    }
+
+    .vc-trust-item {
+
+        min-height:
+            95px;
+
+        padding:
+            17px;
+    }
+
+    .vc-trust-item:nth-child(2) {
+
+        border-right:
+            0;
+    }
+
+    .vc-trust-item:nth-child(-n+2) {
+
+        border-bottom:
+            1px solid var(--vc-border);
+    }
+
+    .vc-editorial-banner {
+
+        padding-bottom:
+            75px;
+    }
+
+    .vc-editorial-image {
+
+        height:
+            430px;
+    }
+
+    .vc-editorial-content {
+
+        padding:
+            55px;
+    }
+
+    .vc-experience-image {
+
+        margin-top:
+            20px;
+    }
+
+    .vc-discover-content {
+
+        padding:
+            50px;
+    }
+
+    .vc-discover-image {
+
+        height:
+            360px;
+    }
+
+    .vc-final-cta {
+
+        padding:
+            85px 0;
+    }
+}
+
+
+/* ============================================================
+   37. MOBILE
+============================================================= */
+
+@media (max-width: 767.98px) {
+
+    .vc-topbar-inner {
+
+        justify-content:
+            center;
+
+        text-align:
+            center;
+    }
+
+    .vc-brand-name {
+
+        font-size:
+            1.35rem;
+    }
+
+    .vc-section {
+
+        padding:
+            60px 0;
+    }
+
+    .vc-section-heading {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+        gap:
+            15px;
+
+        margin-bottom:
+            30px;
+    }
+
+    .vc-section-heading h2 {
+
+        font-size:
+            2rem;
+    }
+
+    .vc-home-hero {
+
+        display:
+            block;
+    }
+
+    .vc-hero-content {
+
+        padding:
+            55px 0 45px;
+    }
+
+    .vc-hero-title {
+
+        font-size:
+            clamp(2.9rem, 15vw, 4rem);
+
+        line-height:
+            1;
+    }
+
+    .vc-hero-text {
+
+        margin:
+            22px 0 20px;
+
+        font-size:
+            0.9rem;
+    }
+
+    .vc-hero-points {
+
+        gap:
+            9px 15px;
+
+        margin-bottom:
+            25px;
+    }
+
+    .vc-hero-points span {
+
+        font-size:
+            0.68rem;
+    }
+
+    .vc-hero-actions {
+
+        flex-direction:
+            column;
+
+        align-items:
+            stretch;
+    }
+
+    .vc-hero-actions .btn {
+
+        width:
+            100%;
+    }
+
+    .vc-hero-image-wrapper {
+
+        min-height:
+            440px;
+    }
+
+    .vc-hero-image {
+
+        height:
+            440px;
+    }
+
+    .vc-hero-floating-card {
+
+        right:
+            18px;
+
+        bottom:
+            18px;
+
+        width:
+            155px;
+
+        padding:
+            17px;
+    }
+
+    .vc-trust-item {
+
+        min-height:
+            105px;
+
+        padding:
+            15px 10px;
+
+        gap:
+            10px;
+    }
+
+    .vc-trust-icon {
+
+        width:
+            36px;
+
+        height:
+            36px;
+
+        font-size:
+            0.85rem;
+    }
+
+    .vc-trust-item strong {
+
+        font-size:
+            0.68rem;
+    }
+
+    .vc-trust-item span {
+
+        font-size:
+            0.6rem;
+    }
+
+    .vc-category-image {
+
+        aspect-ratio:
+            1 / 1;
+    }
+
+    .vc-editorial-banner {
+
+        padding:
+            0 0 60px;
+    }
+
+    .vc-editorial-image {
+
+        height:
+            350px;
+    }
+
+    .vc-editorial-content {
+
+        padding:
+            42px 28px;
+    }
+
+    .vc-editorial-content h2 {
+
+        font-size:
+            2.35rem;
+    }
+
+    .vc-style-section {
+
+        padding:
+            65px 0;
+    }
+
+    .vc-style-card {
+
+        aspect-ratio:
+            1 / 1.08;
+    }
+
+    .vc-style-overlay {
+
+        left:
+            21px;
+
+        right:
+            21px;
+
+        bottom:
+            21px;
+    }
+
+    .vc-experience-image,
+    .vc-experience-image > img {
+
+        min-height:
+            430px;
+
+        height:
+            430px;
+    }
+
+    .vc-experience-caption {
+
+        left:
+            18px;
+
+        bottom:
+            18px;
+    }
+
+    .vc-discover-section {
+
+        padding-bottom:
+            60px;
+    }
+
+    .vc-discover-content {
+
+        padding:
+            42px 28px;
+    }
+
+    .vc-discover-content h2 {
+
+        font-size:
+            2.35rem;
+    }
+
+    .vc-discover-image {
+
+        height:
+            300px;
+    }
+
+    .vc-final-cta {
+
+        padding:
+            70px 20px;
+    }
+
+    .vc-final-cta h2 {
+
+        font-size:
+            clamp(2.8rem, 13vw, 4rem);
+    }
+
+    .vc-footer {
+
+        padding:
+            55px 0 20px;
+    }
+
+    .vc-footer-bottom {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+        gap:
+            8px;
+
+        margin-top:
+            35px;
+    }
+}
+
+
+/* ============================================================
+   38. SMALL MOBILE
+============================================================= */
+
+@media (max-width: 575.98px) {
+
+    .container {
+
+        padding-left:
+            18px;
+
+        padding-right:
+            18px;
+    }
+
+    .vc-topbar {
+
+        font-size:
+            0.58rem;
+    }
+
+    .vc-section-heading h2 {
+
+        font-size:
+            1.85rem;
+    }
+
+    .vc-eyebrow {
+
+        font-size:
+            0.64rem;
+
+        letter-spacing:
+            0.15em;
+    }
+
+    .vc-hero-title {
+
+        font-size:
+            3rem;
+    }
+
+    .vc-hero-image-wrapper {
+
+        min-height:
+            380px;
+    }
+
+    .vc-hero-image {
+
+        height:
+            380px;
+    }
+
+    .vc-hero-floating-card {
+
+        width:
+            140px;
+
+        padding:
+            14px;
+    }
+
+    .vc-hero-floating-card strong {
+
+        font-size:
+            0.95rem;
+    }
+
+    .vc-trust-item {
+
+        min-height:
+            95px;
+    }
+
+    .vc-product-content {
+
+        padding:
+            16px;
+    }
+
+    .vc-product-name {
+
+        min-height:
+            auto;
+    }
+
+    .vc-style-overlay h3 {
+
+        font-size:
+            1.45rem;
+    }
+
+    .vc-experience-image,
+    .vc-experience-image > img {
+
+        min-height:
+            370px;
+
+        height:
+            370px;
+    }
+
+    .vc-nav-right {
+
+        flex-wrap:
+            wrap;
+    }
+
+    .vc-nav-role {
+
+        padding-left:
+            0;
+
+        border-left:
+            0;
+    }
+
+    .vc-login-link {
+
+        padding-left:
+            0;
+    }
+}
+
+
+/* ============================================================
+   39. END
+============================================================= */
+
+
+/* ============================================================
+   VISIONCART USER SHELL — ISOLATED HEADER + FOOTER
+   No legacy .vc-* selectors are used here.
+============================================================ */
+.vcu-site-body{
+    margin:0;
+    background:#fff;
+    color:#12213d;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+.vcu-site-header{
+    position:relative;
+    z-index:2000;
+    width:100%;
+}
+.vcu-main-nav{
+    width:100%;
+    min-height:76px;
+    background:#fff;
+    border-bottom:1px solid #e3e9f2;
+    box-shadow:0 5px 24px rgba(7,26,61,.06);
+}
+.vcu-nav-container{
+    width:min(1240px,100%);
+    min-height:76px;
+    margin:0 auto;
+    padding:0 20px;
+    display:flex;
+    align-items:center;
+    gap:22px;
+}
+.vcu-brand{
+    flex:0 0 auto;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    color:#071a3d!important;
+    text-decoration:none!important;
+}
+.vcu-brand-mark{
+    width:42px;
+    height:42px;
+    flex:0 0 42px;
+    display:grid;
+    place-items:center;
+    border-radius:12px;
+    background:#071a3d;
+    color:#fff;
+    font-size:20px;
+}
+.vcu-brand-copy{
+    display:block;
+    line-height:1;
+}
+.vcu-brand-copy strong,
+.vcu-brand-copy small{
+    display:block;
+}
+.vcu-brand-copy strong{
+    font-size:18px;
+    font-weight:850;
+    letter-spacing:-.025em;
+}
+.vcu-brand-copy small{
+    margin-top:5px;
+    color:#71809a;
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    white-space:nowrap;
+}
+.vcu-nav-toggle{
+    display:none;
+    margin-left:auto;
+    width:42px;
+    height:42px;
+    border:1px solid #dbe3ee;
+    border-radius:11px;
+    background:#fff;
+    color:#071a3d;
+    font-size:21px;
+}
+.vcu-nav-menu{
+    flex:1 1 auto;
+    min-width:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+}
+.vcu-nav-links{
+    display:flex;
+    align-items:center;
+    gap:3px;
+    min-width:0;
+}
+.vcu-nav-link{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:10px 10px;
+    border-radius:10px;
+    color:#53627a!important;
+    font-size:12px;
+    font-weight:800;
+    text-decoration:none!important;
+    white-space:nowrap;
+    transition:all .2s ease;
+}
+.vcu-nav-link:hover,
+.vcu-nav-link.is-active{
+    background:#edf4ff;
+    color:#1769ff!important;
+}
+.vcu-nav-link i{font-size:14px}
+.vcu-nav-actions{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:8px;
+    min-width:0;
+}
+.vcu-nav-search{
+    width:190px;
+    height:42px;
+    margin:0;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:0 11px;
+    border:1px solid #dbe3ee;
+    border-radius:11px;
+    background:#f8fafd;
+}
+.vcu-nav-search i{color:#1769ff}
+.vcu-nav-search input{
+    width:100%;
+    height:100%;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:#12213d;
+    font-size:12px;
+}
+.vcu-icon-action{
+    width:42px;
+    height:42px;
+    flex:0 0 42px;
+    display:grid;
+    place-items:center;
+    border:1px solid #dbe3ee;
+    border-radius:11px;
+    color:#071a3d!important;
+    background:#fff;
+    text-decoration:none!important;
+}
+.vcu-icon-action:hover{
+    border-color:#a9c5f3;
+    color:#1769ff!important;
+}
+.vcu-account-action{
+    max-width:125px;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    color:#12213d!important;
+    text-decoration:none!important;
+    font-size:12px;
+    font-weight:800;
+}
+.vcu-account-action>span:last-child{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.vcu-account-avatar{
+    width:34px;
+    height:34px;
+    flex:0 0 34px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:#edf4ff;
+    color:#1769ff;
+}
+.vcu-logout-form{margin:0}
+.vcu-logout-button{
+    min-height:42px;
+    border:0;
+    border-radius:10px;
+    padding:0 12px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    background:#fff0f0;
+    color:#b42318;
+    font-size:12px;
+    font-weight:850;
+    cursor:pointer;
+}
+.vcu-logout-button:hover{background:#ffe2e2}
+.vcu-auth-button{
+    min-height:42px;
+    border-radius:10px;
+    padding:0 13px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:850;
+    text-decoration:none!important;
+}
+.vcu-auth-outline{
+    border:1px solid #dbe3ee;
+    background:#fff;
+    color:#071a3d!important;
+}
+.vcu-auth-primary{
+    border:1px solid #1769ff;
+    background:#1769ff;
+    color:#fff!important;
+}
+.vcu-message-area{
+    padding-top:14px;
+}
+.vcu-page-shell{
+    min-height:50vh;
+}
+.vcu-footer{
+    display:block!important;
+    width:100%;
+    margin:0;
+    background:#071a3d!important;
+    color:#d9e4f4;
+}
+.vcu-footer-main{
+    display:grid!important;
+    grid-template-columns:1.5fr .8fr .9fr 1fr;
+    gap:42px;
+    padding:54px 0 40px;
+}
+.vcu-footer-brand-link{color:#fff!important}
+.vcu-footer-brand-link .vcu-brand-mark{
+    background:#fff;
+    color:#071a3d;
+}
+.vcu-footer-brand p{
+    max-width:400px;
+    margin:18px 0 0;
+    color:#aebed5;
+    font-size:12px;
+    line-height:1.8;
+}
+.vcu-footer-column{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+.vcu-footer-column h3{
+    margin:0 0 8px;
+    color:#fff;
+    font-size:11px;
+    font-weight:850;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+}
+.vcu-footer-column a,
+.vcu-footer-column span{
+    color:#aebed5!important;
+    font-size:12px;
+    text-decoration:none!important;
+}
+.vcu-footer-column a:hover{color:#fff!important}
+.vcu-footer-column span{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+.vcu-footer-column span i{color:#82b3ff}
+.vcu-footer-bottom{
+    min-height:58px;
+    display:flex!important;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    border-top:1px solid rgba(255,255,255,.12);
+    color:#91a5c1;
+    font-size:10px;
+}
+.vcu-footer-bottom span:last-child{color:#b9c9dd}
+
+@media(min-width:851px){
+    .vcu-nav-menu{
+        display:flex!important;
+        visibility:visible!important;
+        opacity:1!important;
+    }
+}
+@media(max-width:1050px) and (min-width:851px){
+    .vcu-nav-container{gap:12px}
+    .vcu-nav-search{width:145px}
+    .vcu-nav-link{padding:9px 7px}
+    .vcu-nav-link span{font-size:11px}
+    .vcu-account-action>span:last-child{display:none}
+}
+@media(max-width:850px){
+    .vcu-nav-container{
+        min-height:70px;
+        flex-wrap:wrap;
+        padding:0 16px;
+    }
+    .vcu-nav-toggle{
+        display:grid;
+        place-items:center;
+    }
+    .vcu-nav-menu.collapse:not(.show){
+        display:none!important;
+    }
+    .vcu-nav-menu.collapse.show{
+        display:flex!important;
+        flex-direction:column;
+        align-items:stretch;
+        width:100%;
+        padding:13px 0 18px;
+    }
+    .vcu-nav-links{
+        width:100%;
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+    }
+    .vcu-nav-link{justify-content:flex-start}
+    .vcu-nav-actions{
+        width:100%;
+        display:grid;
+        grid-template-columns:1fr 42px 42px;
+        margin-top:8px;
+    }
+    .vcu-nav-search{
+        width:100%;
+        grid-column:1/-1;
+    }
+    .vcu-account-action{
+        max-width:none;
+        min-height:42px;
+        justify-content:center;
+        border:1px solid #dbe3ee;
+        border-radius:10px;
+    }
+    .vcu-logout-button{
+        width:42px;
+        padding:0;
+    }
+    .vcu-logout-button span{display:none}
+    .vcu-footer-main{
+        grid-template-columns:1fr 1fr;
+        gap:30px;
+    }
+    .vcu-footer-bottom{
+        padding:14px 0;
+        min-height:auto;
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+@media(max-width:520px){
+    .vcu-brand-copy small{display:none}
+    .vcu-brand-copy strong{font-size:16px}
+    .vcu-footer-main{grid-template-columns:1fr}
+}
+
+
+/* FINAL POLISH — shared font, visible icons, larger footer */
+.vcu-site-body,
+.vcu-site-body *{
+    font-family:
+        "Poppins",
+        sans-serif;
+}
+.vcu-brand-copy small{
+    font-size:7px !important;
+    line-height:1.15;
+    letter-spacing:.075em;
+    font-weight:750;
+}
+.vcu-icon-action{
+    position:relative;
+}
+.vcu-icon-badge{
+    position:absolute;
+    top:-5px;
+    right:-5px;
+    min-width:16px;
+    height:16px;
+    padding:0 4px;
+    display:grid;
+    place-items:center;
+    border-radius:999px;
+    background:#1769ff;
+    color:#fff;
+    border:2px solid #fff;
+    font-size:8px !important;
+    line-height:1;
+    font-weight:850;
+}
+.vcu-footer{
+    margin-top:0;
+}
+.vcu-footer-main{
+    padding-top:72px !important;
+    padding-bottom:58px !important;
+    min-height:300px;
+}
+.vcu-footer-brand p{
+    max-width:440px;
+    font-size:13px;
+    line-height:1.9;
+}
+.vcu-footer-column{
+    gap:13px;
+}
+.vcu-footer-column h3{
+    font-size:12px;
+}
+.vcu-footer-column a,
+.vcu-footer-column span{
+    font-size:13px;
+    line-height:1.5;
+}
+.vcu-footer-bottom{
+    min-height:70px;
+    font-size:11px;
+}
+@media(max-width:850px){
+    .vcu-footer-main{
+        padding-top:54px !important;
+        padding-bottom:48px !important;
+        min-height:0;
+    }
+}

@@ -1,0 +1,1259 @@
+{% extends "web_admin_base.html" %}
+
+{% block title %}
+    Customer Management | VisionCart
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-4 py-lg-5">
+
+    <!-- ==================================================
+         PAGE HEADER
+    =================================================== -->
+
+    <div class="vc-customer-header mb-4">
+
+        <div>
+
+            <span class="vc-customer-eyebrow">
+                STORE MANAGEMENT
+            </span>
+
+            <h1 class="vc-customer-title">
+                Customer Management
+            </h1>
+
+            <p class="vc-customer-subtitle">
+                View, search and manage VisionCart customer accounts.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'web-admin-dashboard' %}"
+            class="vc-customer-back"
+        >
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- ==================================================
+         CUSTOMER STATISTICS
+    =================================================== -->
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-12 col-md-4">
+
+            <div class="vc-customer-stat">
+
+                <div class="vc-customer-stat-icon">
+                    ◉
+                </div>
+
+                <div>
+
+                    <span>
+                        TOTAL CUSTOMERS
+                    </span>
+
+                    <strong>
+                        {{ total_customers }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-12 col-md-4">
+
+            <div class="vc-customer-stat">
+
+                <div class="vc-customer-stat-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <span>
+                        ACTIVE ACCOUNTS
+                    </span>
+
+                    <strong>
+                        {{ active_customers }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-12 col-md-4">
+
+            <div class="vc-customer-stat">
+
+                <div class="vc-customer-stat-icon">
+                    −
+                </div>
+
+                <div>
+
+                    <span>
+                        INACTIVE ACCOUNTS
+                    </span>
+
+                    <strong>
+                        {{ inactive_customers }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         SEARCH AND FILTER
+    =================================================== -->
+
+    <section class="vc-customer-card mb-4">
+
+        <div class="vc-customer-card-header">
+
+            <div class="vc-customer-card-icon">
+                ⌕
+            </div>
+
+            <div>
+
+                <h2>
+                    Search & Filter
+                </h2>
+
+                <p>
+                    Search customers by username, email or phone number.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="vc-customer-card-body">
+
+            <form
+                method="GET"
+                action="{% url 'web-admin-customers' %}"
+            >
+
+                <div class="row g-3 align-items-end">
+
+                    <!-- SEARCH -->
+
+                    <div class="col-12 col-lg-7">
+
+                        <label
+                            for="customerSearch"
+                            class="vc-customer-label"
+                        >
+                            Search Customers
+                        </label>
+
+                        <input
+                            type="text"
+                            name="q"
+                            id="customerSearch"
+                            value="{{ search_query }}"
+                            class="form-control vc-customer-input"
+                            placeholder="Username, email or phone"
+                        >
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="col-12 col-md-6 col-lg-3">
+
+                        <label
+                            for="customerStatus"
+                            class="vc-customer-label"
+                        >
+                            Account Status
+                        </label>
+
+                        <select
+                            name="status"
+                            id="customerStatus"
+                            class="form-select vc-customer-input"
+                        >
+
+                            <option
+                                value=""
+                                {% if not selected_status %}selected{% endif %}
+                            >
+                                All Customers
+                            </option>
+
+                            <option
+                                value="active"
+                                {% if selected_status == "active" %}selected{% endif %}
+                            >
+                                Active
+                            </option>
+
+                            <option
+                                value="inactive"
+                                {% if selected_status == "inactive" %}selected{% endif %}
+                            >
+                                Inactive
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- FILTER -->
+
+                    <div class="col-12 col-md-6 col-lg-2">
+
+                        <button
+                            type="submit"
+                            class="vc-customer-filter-button"
+                        >
+                            Apply Filter
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         CUSTOMER LIST
+    =================================================== -->
+
+    <section class="vc-customer-card">
+
+        <div class="vc-customer-list-header">
+
+            <div>
+
+                <span class="vc-customer-list-eyebrow">
+                    CUSTOMER ACCOUNTS
+                </span>
+
+                <h2>
+                    Customers
+                </h2>
+
+                <p>
+                    Customer accounts registered on VisionCart.
+                </p>
+
+            </div>
+
+            <span class="vc-customer-count">
+                {{ total_customers }} Total
+            </span>
+
+        </div>
+
+
+        {% if customers %}
+
+        <!-- ==================================================
+             DESKTOP TABLE
+        =================================================== -->
+
+        <div class="table-responsive">
+
+            <table class="table vc-customer-table align-middle mb-0">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Customer
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Phone
+                        </th>
+
+                        <th>
+                            Joined
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th class="text-end">
+                            Account
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for customer in customers %}
+
+                    <tr>
+
+                        <!-- CUSTOMER -->
+
+                        <td>
+
+                            <div class="vc-customer-profile">
+
+                                <div class="vc-customer-avatar">
+                                    {{ customer.username|first|upper }}
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        {{ customer.username }}
+                                    </strong>
+
+                                    <small>
+                                        Customer #{{ customer.id }}
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- EMAIL -->
+
+                        <td>
+
+                            <span class="vc-customer-email">
+                                {{ customer.email }}
+                            </span>
+
+                        </td>
+
+
+                        <!-- PHONE -->
+
+                        <td>
+
+                            {% if customer.phone %}
+
+                                <span class="vc-customer-phone">
+                                    {{ customer.phone }}
+                                </span>
+
+                            {% else %}
+
+                                <span class="vc-customer-empty-value">
+                                    Not provided
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- JOINED -->
+
+                        <td>
+
+                            <span class="vc-customer-date">
+                                {{ customer.date_joined|date:"d M Y" }}
+                            </span>
+
+                            <small class="vc-customer-time">
+                                {{ customer.date_joined|date:"h:i A" }}
+                            </small>
+
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            {% if customer.is_active %}
+
+                                <span class="vc-customer-status active">
+                                    Active
+                                </span>
+
+                            {% else %}
+
+                                <span class="vc-customer-status inactive">
+                                    Inactive
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- ACCOUNT ACTION -->
+
+                        <td>
+
+                            <div class="vc-customer-account-action">
+
+                                {% if customer.is_active %}
+
+                                    <form
+                                        method="POST"
+                                        action="{% url 'web-admin-customers' %}"
+                                        onsubmit="return confirm('Deactivate this customer account?');"
+                                    >
+
+                                        {% csrf_token %}
+
+                                        <input
+                                            type="hidden"
+                                            name="action"
+                                            value="toggle"
+                                        >
+
+                                        <input
+                                            type="hidden"
+                                            name="customer_id"
+                                            value="{{ customer.id }}"
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="vc-customer-action deactivate"
+                                        >
+                                            Deactivate
+                                        </button>
+
+                                    </form>
+
+                                {% else %}
+
+                                    <form
+                                        method="POST"
+                                        action="{% url 'web-admin-customers' %}"
+                                    >
+
+                                        {% csrf_token %}
+
+                                        <input
+                                            type="hidden"
+                                            name="action"
+                                            value="toggle"
+                                        >
+
+                                        <input
+                                            type="hidden"
+                                            name="customer_id"
+                                            value="{{ customer.id }}"
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="vc-customer-action activate"
+                                        >
+                                            Activate
+                                        </button>
+
+                                    </form>
+
+                                {% endif %}
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+        <!-- ==================================================
+             EMPTY STATE
+        =================================================== -->
+
+        <div class="vc-customer-empty">
+
+            <div class="vc-customer-empty-icon">
+                ◉
+            </div>
+
+            <h3>
+                No customers found
+            </h3>
+
+            <p>
+                There are no customer accounts matching the current
+                search or status filter.
+            </p>
+
+            <a
+                href="{% url 'web-admin-customers' %}"
+                class="vc-customer-reset"
+            >
+                Clear Filters
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- ==================================================
+         MANAGEMENT NOTE
+    =================================================== -->
+
+    <div class="vc-customer-note mt-4">
+
+        <div class="vc-customer-note-icon">
+            ✓
+        </div>
+
+        <div>
+
+            <h3>
+                Customer Account Management
+            </h3>
+
+            <p>
+                Customer accounts are managed separately from Web Admin
+                accounts. Account status controls whether a customer can
+                continue using the VisionCart customer account.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================================
+     STEP 41 — DESIGN ONLY
+
+     Existing customer-management context preserved:
+     - customers
+     - search_query
+     - selected_status
+     - total_customers
+     - active_customers
+     - inactive_customers
+     - customer username
+     - email
+     - phone
+     - date_joined
+     - is_active
+     
+     Existing GET search/filter behaviour is preserved.
+=========================================================== -->
+
+<style>
+
+    /* =====================================================
+       PAGE HEADER
+    ===================================================== */
+
+    .vc-customer-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 25px;
+        padding: 28px 30px;
+        background: #ffffff;
+        border: 1px solid #e7eaf0;
+        border-radius: 18px;
+        box-shadow: 0 8px 28px rgba(25, 35, 55, 0.05);
+    }
+
+
+    .vc-customer-eyebrow {
+        display: block;
+        margin-bottom: 8px;
+        color: #687284;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.4px;
+    }
+
+
+    .vc-customer-title {
+        margin: 0 0 7px;
+        color: #172033;
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+
+    .vc-customer-subtitle {
+        margin: 0;
+        color: #697384;
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+
+    .vc-customer-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 10px 16px;
+        border: 1px solid #dfe3e9;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #596273;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: all .2s ease;
+    }
+
+
+    .vc-customer-back:hover {
+        background: #f7f8fa;
+        border-color: #cfd5de;
+        color: #172033;
+        transform: translateY(-1px);
+    }
+
+
+    /* =====================================================
+       STATISTICS
+    ===================================================== */
+
+    .vc-customer-stat {
+        min-height: 108px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 21px;
+        border: 1px solid #e7eaf0;
+        border-radius: 15px;
+        background: #ffffff;
+        box-shadow: 0 6px 20px rgba(25, 35, 55, 0.04);
+    }
+
+
+    .vc-customer-stat-icon {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 12px;
+        background: #f1f3f6;
+        color: #172033;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+
+    .vc-customer-stat span {
+        display: block;
+        margin-bottom: 4px;
+        color: #8b94a2;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: .8px;
+    }
+
+
+    .vc-customer-stat strong {
+        display: block;
+        color: #172033;
+        font-size: 26px;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+
+    /* =====================================================
+       COMMON CARD
+    ===================================================== */
+
+    .vc-customer-card {
+        overflow: hidden;
+        border: 1px solid #e7eaf0;
+        border-radius: 17px;
+        background: #ffffff;
+        box-shadow: 0 6px 22px rgba(25, 35, 55, 0.04);
+    }
+
+
+    .vc-customer-card-header {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 21px 22px;
+        border-bottom: 1px solid #edf0f4;
+    }
+
+
+    .vc-customer-card-icon {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 11px;
+        background: #f1f3f6;
+        color: #172033;
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+
+    .vc-customer-card-header h2 {
+        margin: 0 0 3px;
+        color: #172033;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+
+    .vc-customer-card-header p {
+        margin: 0;
+        color: #7e8796;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+
+    .vc-customer-card-body {
+        padding: 23px 22px;
+    }
+
+
+    /* =====================================================
+       SEARCH FORM
+    ===================================================== */
+
+    .vc-customer-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #3d4655;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+
+    .vc-customer-input {
+        min-height: 45px;
+        border: 1px solid #dfe3e9;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #172033;
+        font-size: 14px;
+        box-shadow: none;
+    }
+
+
+    .vc-customer-input:focus {
+        border-color: #9da5b2;
+        box-shadow: 0 0 0 3px rgba(23, 32, 51, 0.07);
+    }
+
+
+    .vc-customer-input::placeholder {
+        color: #a0a7b2;
+    }
+
+
+    .vc-customer-filter-button {
+        width: 100%;
+        min-height: 45px;
+        padding: 10px 14px;
+        border: 1px solid #172033;
+        border-radius: 10px;
+        background: #172033;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all .2s ease;
+    }
+
+
+    .vc-customer-filter-button:hover {
+        background: #273249;
+        border-color: #273249;
+        transform: translateY(-1px);
+    }
+
+
+    /* =====================================================
+       LIST HEADER
+    ===================================================== */
+
+    .vc-customer-list-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 21px 22px;
+        border-bottom: 1px solid #edf0f4;
+    }
+
+
+    .vc-customer-list-eyebrow {
+        display: block;
+        margin-bottom: 5px;
+        color: #929aa7;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+
+
+    .vc-customer-list-header h2 {
+        margin: 0 0 4px;
+        color: #172033;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+
+    .vc-customer-list-header p {
+        margin: 0;
+        color: #7e8796;
+        font-size: 12px;
+    }
+
+
+    .vc-customer-count {
+        display: inline-flex;
+        align-items: center;
+        min-height: 30px;
+        padding: 5px 10px;
+        border: 1px solid #e1e5eb;
+        border-radius: 20px;
+        background: #fafbfc;
+        color: #697383;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+
+    /* =====================================================
+       TABLE
+    ===================================================== */
+
+    .vc-customer-table {
+        min-width: 1050px;
+    }
+
+
+    .vc-customer-table thead th {
+        padding: 13px 18px;
+        border-bottom: 1px solid #e5e8ed;
+        background: #fafbfc;
+        color: #727b8b;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: .3px;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+
+    .vc-customer-table tbody td {
+        padding: 16px 18px;
+        border-bottom: 1px solid #edf0f4;
+        color: #4f5969;
+        font-size: 13px;
+        vertical-align: middle;
+    }
+
+
+    .vc-customer-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+
+    .vc-customer-table tbody tr {
+        transition: background .2s ease;
+    }
+
+
+    .vc-customer-table tbody tr:hover {
+        background: #fcfcfd;
+    }
+
+
+    /* =====================================================
+       CUSTOMER PROFILE
+    ===================================================== */
+
+    .vc-customer-profile {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        min-width: 180px;
+    }
+
+
+    .vc-customer-avatar {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: #f0f2f5;
+        color: #4f5969;
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+
+    .vc-customer-profile strong {
+        display: block;
+        margin-bottom: 3px;
+        color: #293346;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+
+    .vc-customer-profile small {
+        display: block;
+        color: #929aa7;
+        font-size: 10px;
+    }
+
+
+    /* =====================================================
+       CUSTOMER DATA
+    ===================================================== */
+
+    .vc-customer-email {
+        color: #596273;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+
+    .vc-customer-phone {
+        color: #596273;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+
+    .vc-customer-empty-value {
+        color: #9ba2ad;
+        font-size: 12px;
+        font-style: italic;
+    }
+
+
+    .vc-customer-date {
+        display: block;
+        color: #596273;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+
+    .vc-customer-time {
+        display: block;
+        margin-top: 3px;
+        color: #9aa2ae;
+        font-size: 10px;
+    }
+
+
+    /* =====================================================
+       STATUS
+    ===================================================== */
+
+    .vc-customer-status {
+        display: inline-flex;
+        align-items: center;
+        min-height: 27px;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+
+    .vc-customer-status.active {
+        border: 1px solid #dce7df;
+        background: #f4f8f5;
+        color: #526c5b;
+    }
+
+
+    .vc-customer-status.inactive {
+        border: 1px solid #e4e5e7;
+        background: #f7f7f7;
+        color: #7b8088;
+    }
+
+
+    /* =====================================================
+       ACCOUNT ACTION
+    ===================================================== */
+
+    .vc-customer-account-action {
+        display: flex;
+        justify-content: flex-end;
+        min-width: 105px;
+    }
+
+
+    .vc-customer-account-action form {
+        margin: 0;
+    }
+
+
+    .vc-customer-action {
+        min-height: 34px;
+        padding: 7px 11px;
+        border-radius: 8px;
+        background: #ffffff;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all .2s ease;
+    }
+
+
+    .vc-customer-action.activate {
+        border: 1px solid #d7e3da;
+        color: #526c5b;
+    }
+
+
+    .vc-customer-action.activate:hover {
+        background: #f4f8f5;
+        border-color: #c5d7ca;
+    }
+
+
+    .vc-customer-action.deactivate {
+        border: 1px solid #e2ddd1;
+        color: #756c58;
+    }
+
+
+    .vc-customer-action.deactivate:hover {
+        background: #faf8f2;
+        border-color: #d7cfbd;
+    }
+
+
+    /* =====================================================
+       EMPTY STATE
+    ===================================================== */
+
+    .vc-customer-empty {
+        min-height: 340px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+
+    .vc-customer-empty-icon {
+        width: 58px;
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        border-radius: 15px;
+        background: #f1f3f6;
+        color: #697383;
+        font-size: 22px;
+    }
+
+
+    .vc-customer-empty h3 {
+        margin: 0 0 7px;
+        color: #273143;
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+
+    .vc-customer-empty p {
+        max-width: 450px;
+        margin: 0 0 18px;
+        color: #858e9c;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+
+    .vc-customer-reset {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        padding: 8px 14px;
+        border: 1px solid #dfe3e9;
+        border-radius: 9px;
+        background: #ffffff;
+        color: #596273;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+
+    .vc-customer-reset:hover {
+        background: #f6f7f9;
+        color: #172033;
+    }
+
+
+    /* =====================================================
+       NOTE
+    ===================================================== */
+
+    .vc-customer-note {
+        display: flex;
+        align-items: flex-start;
+        gap: 13px;
+        padding: 19px 21px;
+        border: 1px solid #e5e8ed;
+        border-radius: 14px;
+        background: #ffffff;
+        box-shadow: 0 5px 18px rgba(25, 35, 55, 0.03);
+    }
+
+
+    .vc-customer-note-icon {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 10px;
+        background: #f1f3f6;
+        color: #596273;
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+
+    .vc-customer-note h3 {
+        margin: 0 0 4px;
+        color: #303a4b;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+
+    .vc-customer-note p {
+        margin: 0;
+        color: #858e9c;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 767.98px) {
+
+        .vc-customer-header {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 23px;
+        }
+
+
+        .vc-customer-title {
+            font-size: 30px;
+        }
+
+
+        .vc-customer-back {
+            width: 100%;
+        }
+
+
+        .vc-customer-list-header {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 18px;
+        }
+
+
+        .vc-customer-card-header {
+            padding: 18px;
+        }
+
+
+        .vc-customer-card-body {
+            padding: 18px;
+        }
+
+
+        .vc-customer-note {
+            padding: 17px;
+        }
+
+    }
+
+</style>
+
+{% endblock %}

@@ -1,0 +1,3624 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>VisionCart | See Better. Live Brighter.</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        /* =========================================================
+           VISIONCART HOME PAGE
+           
+           ONLY REQUESTED CHANGES:
+           - Removed top Free Shipping bar.
+           - Kept shipping information inside the page.
+           - Replaced header/footer with the approved VisionCart User-Side shell.
+           - Kept landing-page navbar labels/anchors exactly as supplied.
+           - Redesigned Shop by Category with lightweight animation.
+           - Added more lightweight visual sections.
+           - Added reliable local images.
+           - Featured Products tabs removed.
+           - Featured products now have proper images/fallbacks.
+           - Hero image loading optimized to reduce initial lag.
+           
+           NO BACKEND / DATABASE / ROUTE CHANGES.
+        ========================================================== */
+
+        :root {
+            --vc-navy: #102a43;
+            --vc-blue: #1769aa;
+            --vc-text: #172431;
+            --vc-muted: #66717b;
+            --vc-border: #e4e8ec;
+            --vc-light: #f6f8fa;
+            --vc-dark: #101b26;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: #ffffff;
+            color: var(--vc-text);
+            font-family:
+                Inter,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================== */
+
+        .vc-header {
+            position: relative;
+            z-index: 1000;
+            background: #ffffff;
+            border-bottom: 1px solid var(--vc-border);
+        }
+
+        .vc-header-main {
+            min-height: 82px;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .vc-logo {
+            min-width: 205px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--vc-text);
+        }
+
+        .vc-logo:hover {
+            color: var(--vc-text);
+        }
+
+        .vc-logo-icon {
+            color: var(--vc-blue);
+            font-size: 33px;
+            line-height: 1;
+        }
+
+        .vc-logo-name {
+            display: block;
+            color: #172431;
+            font-size: 24px;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.6px;
+        }
+
+        .vc-logo-tagline {
+            display: block;
+            margin-top: 4px;
+            color: #687582;
+            font-size: 9px;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+
+        /* =========================================================
+           SEARCH
+        ========================================================== */
+
+        .vc-search {
+            position: relative;
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .vc-search input {
+            width: 100%;
+            height: 44px;
+            padding: 0 53px 0 16px;
+            border: 1px solid #d6dde3;
+            border-radius: 5px;
+            outline: none;
+            background: #ffffff;
+            color: #172431;
+            font-size: 13px;
+        }
+
+        .vc-search input:focus {
+            border-color: var(--vc-blue);
+            box-shadow: 0 0 0 3px rgba(23,105,170,0.08);
+        }
+
+        .vc-search button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 48px;
+            height: 44px;
+            border: 0;
+            border-radius: 0 5px 5px 0;
+            background: var(--vc-dark);
+            color: #ffffff;
+            font-size: 17px;
+        }
+
+
+        /* =========================================================
+           HEADER ACTIONS
+        ========================================================== */
+
+        .vc-header-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 19px;
+        }
+
+        .vc-header-action {
+            position: relative;
+            min-width: 48px;
+            color: #25313c;
+            text-align: center;
+            transition: color 0.2s ease;
+        }
+
+        .vc-header-action:hover {
+            color: var(--vc-blue);
+        }
+
+        .vc-header-action i {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 21px;
+            line-height: 1;
+        }
+
+        .vc-header-action span {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .vc-cart-badge {
+            position: absolute;
+            top: -7px;
+            right: 0;
+            min-width: 16px;
+            height: 16px;
+            padding: 0 4px;
+            border-radius: 20px;
+            background: var(--vc-blue);
+            color: #ffffff;
+            font-size: 8px !important;
+            line-height: 16px;
+        }
+
+
+        /* =========================================================
+           WEBSITE-FOCUSED NAVBAR
+        ========================================================== */
+
+        .vc-navbar {
+            border-top: 1px solid #f0f2f4;
+            background: #ffffff;
+        }
+
+        .vc-nav-list {
+            min-height: 49px;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            gap: 2px;
+            list-style: none;
+        }
+
+        .vc-nav-link {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px;
+            color: #26313b;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .vc-nav-link:hover,
+        .vc-nav-link.active {
+            color: var(--vc-blue);
+        }
+
+        .vc-nav-link.active::after {
+            content: "";
+            position: absolute;
+            right: 20px;
+            bottom: 0;
+            left: 20px;
+            height: 3px;
+            background: var(--vc-blue);
+        }
+
+
+        /* =========================================================
+           HERO
+        ========================================================== */
+
+        .vc-hero {
+            position: relative;
+            overflow: hidden;
+            background: #edf3f7;
+        }
+
+        .vc-hero-slide {
+            position: relative;
+            min-height: 470px;
+            display: flex;
+            align-items: center;
+        }
+
+        .vc-hero-image-wrap {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 39%;
+            overflow: hidden;
+            background: #edf3f7;
+        }
+
+        .vc-hero-image {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .vc-hero-overlay {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(
+                    90deg,
+                    #edf3f7 0%,
+                    rgba(237,243,247,0.98) 9%,
+                    rgba(237,243,247,0.78) 30%,
+                    rgba(237,243,247,0.22) 61%,
+                    rgba(237,243,247,0) 100%
+                );
+        }
+
+        .vc-hero-content {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            max-width: 590px;
+            padding: 55px 0 90px;
+        }
+
+        .vc-hero-eyebrow {
+            margin-bottom: 13px;
+            color: #4a5c6b;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
+        }
+
+        .vc-hero-title {
+            margin: 0;
+            color: #102235;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(46px, 5vw, 64px);
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -2px;
+        }
+
+        .vc-hero-text {
+            max-width: 490px;
+            margin: 20px 0 26px;
+            color: #334455;
+            font-size: 16px;
+            line-height: 1.55;
+        }
+
+        .vc-hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 11px;
+        }
+
+        .vc-btn-primary,
+        .vc-btn-outline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            min-height: 44px;
+            padding: 0 23px;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 700;
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .vc-btn-primary {
+            border: 1px solid var(--vc-navy);
+            background: var(--vc-navy);
+            color: #ffffff;
+        }
+
+        .vc-btn-primary:hover {
+            background: #173d5e;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .vc-btn-outline {
+            border: 1px solid #a1adb7;
+            background: rgba(255,255,255,0.92);
+            color: var(--vc-navy);
+        }
+
+        .vc-btn-outline:hover {
+            background: #ffffff;
+            color: var(--vc-navy);
+            transform: translateY(-2px);
+        }
+
+
+        /* =========================================================
+           HERO SIDE TEXT
+        ========================================================== */
+
+        .vc-hero-caption {
+            position: absolute;
+            z-index: 4;
+            top: 20%;
+            right: 7%;
+            color: #19334b;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 30px;
+            font-style: italic;
+            line-height: 1.05;
+            text-align: center;
+            transform: rotate(-6deg);
+        }
+
+
+        /* =========================================================
+           HERO BENEFITS
+           FREE SHIPPING MOVED HERE.
+        ========================================================== */
+
+        .vc-hero-benefits {
+            position: absolute;
+            right: 0;
+            bottom: 17px;
+            left: 0;
+            z-index: 7;
+        }
+
+        .vc-benefit-row {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .vc-benefit {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #273b4c;
+            font-size: 10px;
+            font-weight: 600;
+            line-height: 1.35;
+        }
+
+        .vc-benefit i {
+            color: #294961;
+            font-size: 20px;
+        }
+
+
+        /* =========================================================
+           HERO CONTROLS
+        ========================================================== */
+
+        .vc-hero-arrow {
+            position: absolute;
+            z-index: 10;
+            top: 50%;
+            width: 39px;
+            height: 39px;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.95);
+            color: #263746;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.10);
+            transform: translateY(-50%);
+        }
+
+        .vc-hero-prev {
+            left: 17px;
+        }
+
+        .vc-hero-next {
+            right: 17px;
+        }
+
+        .vc-slider-dots {
+            position: absolute;
+            z-index: 11;
+            right: 7%;
+            bottom: 14px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .vc-slider-dot {
+            width: 8px;
+            height: 8px;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: #ffffff;
+            opacity: 0.7;
+        }
+
+        .vc-slider-dot.active {
+            width: 23px;
+            border-radius: 8px;
+            background: var(--vc-blue);
+            opacity: 1;
+        }
+
+
+        /* =========================================================
+           COMMON SECTIONS
+        ========================================================== */
+
+        .vc-section {
+            padding: 52px 0;
+        }
+
+        .vc-section-header {
+            min-height: 38px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .vc-section-title {
+            margin: 0;
+            color: #172431;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.6px;
+        }
+
+        .vc-section-subtitle {
+            margin: 6px 0 0;
+            color: #6b7480;
+            font-size: 13px;
+        }
+
+        .vc-view-all {
+            color: #1262aa;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .vc-view-all:hover {
+            color: #0b477d;
+        }
+
+
+        /* =========================================================
+           SHOP BY CATEGORY
+           3 x 2 = SIX LARGE CARDS
+        ========================================================== */
+
+        .vc-category-card {
+            height: 100%;
+            overflow: hidden;
+            border: 1px solid #e4e8ec;
+            border-radius: 8px;
+            background: #ffffff;
+            transition:
+                transform 0.22s ease,
+                box-shadow 0.22s ease;
+        }
+
+        .vc-category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(15,23,32,0.10);
+        }
+
+        .vc-category-image-wrap {
+            width: 100%;
+            height: 185px;
+            overflow: hidden;
+            background: #f4f6f8;
+        }
+
+        .vc-category-image {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            loading: lazy;
+        }
+
+        .vc-category-product-image {
+            object-fit: contain;
+            padding: 10px;
+        }
+
+        .vc-category-body {
+            min-height: 86px;
+            padding: 15px 12px 17px;
+            text-align: center;
+        }
+
+        .vc-category-name {
+            margin: 0 0 4px;
+            color: #172431;
+            font-size: 15px;
+            font-weight: 800;
+            line-height: 1.3;
+        }
+
+        .vc-category-description {
+            margin: 0;
+            color: #6b7280;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+
+        /* =========================================================
+           FEATURE STRIP
+        ========================================================== */
+
+        .vc-feature-strip {
+            border-top: 1px solid var(--vc-border);
+            border-bottom: 1px solid var(--vc-border);
+            background: #fbfcfd;
+        }
+
+        .vc-feature {
+            min-height: 110px;
+            padding: 17px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-right: 1px solid var(--vc-border);
+        }
+
+        .vc-feature-icon {
+            width: 45px;
+            height: 45px;
+            flex: 0 0 45px;
+            border: 1px solid #d0d9e1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--vc-navy);
+            font-size: 19px;
+        }
+
+        .vc-feature-title {
+            margin: 0 0 2px;
+            color: #1e2a35;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .vc-feature-text {
+            margin: 0;
+            color: #6c757d;
+            font-size: 10px;
+            line-height: 1.4;
+        }
+
+
+        /* =========================================================
+           FEATURED PRODUCTS
+        ========================================================== */
+
+        .vc-featured-card {
+            position: relative;
+            height: 100%;
+            overflow: hidden;
+            border: 1px solid #e3e7eb;
+            border-radius: 8px;
+            background: #ffffff;
+            transition:
+                transform 0.22s ease,
+                box-shadow 0.22s ease;
+        }
+
+        .vc-featured-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(15,23,32,0.10);
+        }
+
+        .vc-featured-image-wrap {
+            position: relative;
+            width: 100%;
+            height: 235px;
+            overflow: hidden;
+            background: #f7f8f9;
+        }
+
+        .vc-featured-image {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain;
+            padding: 13px;
+            transition: transform 0.3s ease;
+        }
+
+        .vc-featured-card:hover .vc-featured-image {
+            transform: scale(1.04);
+        }
+
+        .vc-wishlist-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 4;
+            width: 34px;
+            height: 34px;
+            border: 1px solid #dce2e7;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.96);
+            color: #354454;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .vc-wishlist-button:hover {
+            color: var(--vc-blue);
+            background: #ffffff;
+        }
+
+        .vc-featured-body {
+            padding: 15px 13px 14px;
+        }
+
+        .vc-product-brand {
+            margin-bottom: 3px;
+            color: #5c6874;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .vc-product-name {
+            display: block;
+            min-height: 37px;
+            margin-bottom: 6px;
+            color: #172431;
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.35;
+        }
+
+        .vc-product-name:hover {
+            color: var(--vc-blue);
+        }
+
+        .vc-rating {
+            margin-bottom: 7px;
+            color: #36566f;
+            font-size: 10px;
+        }
+
+        .vc-price-row {
+            min-height: 25px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .vc-price {
+            color: #172431;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .vc-old-price {
+            color: #969da5;
+            font-size: 10px;
+            text-decoration: line-through;
+        }
+
+        .vc-discount {
+            padding: 3px 6px;
+            border-radius: 3px;
+            background: #d8f5e9;
+            color: #17724f;
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+        .vc-add-cart {
+            width: 100%;
+            min-height: 37px;
+            border: 0;
+            border-radius: 4px;
+            background: #101b26;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .vc-add-cart:hover {
+            background: #1d405e;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================================
+           COLLECTION / IMAGE FEATURE
+        ========================================================== */
+
+        .vc-collection-section {
+            padding: 52px 0;
+            background: #f7f9fa;
+        }
+
+        .vc-collection-image {
+            width: 100%;
+            height: 355px;
+            display: block;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .vc-collection-content {
+            height: 100%;
+            padding: 28px 15px 28px 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .vc-small-label {
+            margin-bottom: 10px;
+            color: var(--vc-blue);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.3px;
+            text-transform: uppercase;
+        }
+
+        .vc-collection-title {
+            margin: 0 0 14px;
+            color: #172431;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1.08;
+        }
+
+        .vc-collection-text {
+            max-width: 510px;
+            margin: 0 0 20px;
+            color: #68747f;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+           PROMOTIONAL BANNERS
+        ========================================================== */
+
+        .vc-promo-section {
+            padding: 52px 0;
+        }
+
+        .vc-promo {
+            position: relative;
+            min-height: 230px;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #edf4f9;
+        }
+
+        .vc-promo-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .vc-promo-overlay {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(237,244,249,0.97) 0%,
+                    rgba(237,244,249,0.76) 45%,
+                    rgba(237,244,249,0.08) 100%
+                );
+        }
+
+        .vc-promo-content {
+            position: relative;
+            z-index: 2;
+            max-width: 65%;
+            padding: 39px 32px;
+        }
+
+        .vc-promo-title {
+            margin: 0 0 5px;
+            color: #102235;
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        .vc-promo-text {
+            margin: 0 0 17px;
+            color: #46545f;
+            font-size: 13px;
+        }
+
+        .vc-promo-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 38px;
+            padding: 0 18px;
+            border-radius: 20px;
+            background: #101b26;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .vc-promo-button:hover {
+            background: #1d405e;
+            color: #ffffff;
+        }
+
+
+        /* =========================================================
+           WHY VISIONCART
+        ========================================================== */
+
+        .vc-why-section {
+            padding: 58px 0;
+            background: #ffffff;
+        }
+
+        .vc-why-intro {
+            max-width: 650px;
+            margin: 0 auto 32px;
+            text-align: center;
+        }
+
+        .vc-why-title {
+            margin: 0 0 9px;
+            color: #172431;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 34px;
+            font-weight: 700;
+        }
+
+        .vc-why-text {
+            margin: 0;
+            color: #6c7680;
+            font-size: 13px;
+        }
+
+        .vc-why-card {
+            height: 100%;
+            padding: 25px 20px;
+            border: 1px solid #e6eaed;
+            border-radius: 7px;
+            background: #ffffff;
+            text-align: center;
+        }
+
+        .vc-why-icon {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 13px;
+            border-radius: 50%;
+            background: #eef5fa;
+            color: var(--vc-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+        }
+
+        .vc-why-card h3 {
+            margin: 0 0 7px;
+            color: #1e2a35;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .vc-why-card p {
+            margin: 0;
+            color: #737d86;
+            font-size: 11px;
+            line-height: 1.55;
+        }
+
+
+        /* =========================================================
+           BRANDS
+        ========================================================== */
+
+        .vc-brands-section {
+            padding: 48px 0;
+            background: #f7f9fa;
+        }
+
+        .vc-brand-card {
+            min-height: 72px;
+            padding: 12px;
+            border: 1px solid #e2e7eb;
+            border-radius: 6px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #26323d;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+        }
+
+
+        /* =========================================================
+           FOOTER
+           LARGER + MORE PROFESSIONAL
+        ========================================================== */
+
+        .vc-footer {
+            margin-top: 0;
+            border-top: 1px solid #dfe4e8;
+            background: #eef2f5;
+        }
+
+        .vc-footer-main {
+            padding: 58px 0 48px;
+        }
+
+        .vc-footer-brand {
+            padding-right: 25px;
+        }
+
+        .vc-footer-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: #182431;
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        .vc-footer-logo:hover {
+            color: #182431;
+        }
+
+        .vc-footer-logo i {
+            color: var(--vc-blue);
+            font-size: 29px;
+        }
+
+        .vc-footer-tagline {
+            margin-top: 4px;
+            color: #65717d;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .vc-footer-description {
+            max-width: 310px;
+            margin: 16px 0 20px;
+            color: #66717b;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .vc-socials {
+            display: flex;
+            gap: 9px;
+        }
+
+        .vc-social {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #102a43;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: transform 0.2s ease;
+        }
+
+        .vc-social:hover {
+            color: #ffffff;
+            transform: translateY(-3px);
+        }
+
+        .vc-footer-title {
+            margin: 0 0 17px;
+            color: #1e2933;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .vc-footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .vc-footer-links a {
+            color: #66717b;
+            font-size: 12px;
+        }
+
+        .vc-footer-links a:hover {
+            color: var(--vc-blue);
+        }
+
+        .vc-newsletter {
+            display: flex;
+            height: 42px;
+            margin-bottom: 10px;
+        }
+
+        .vc-newsletter input {
+            min-width: 0;
+            flex: 1;
+            border: 1px solid #d4dbe1;
+            border-radius: 4px 0 0 4px;
+            padding: 0 12px;
+            outline: none;
+            background: #ffffff;
+            font-size: 11px;
+        }
+
+        .vc-newsletter button {
+            border: 0;
+            border-radius: 0 4px 4px 0;
+            padding: 0 15px;
+            background: #1769aa;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .vc-newsletter-text {
+            color: #69747e;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .vc-footer-contact {
+            margin-top: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .vc-footer-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #66717b;
+            font-size: 11px;
+        }
+
+        .vc-footer-contact-item i {
+            color: var(--vc-blue);
+            font-size: 14px;
+        }
+
+        .vc-footer-bottom {
+            padding: 17px 0;
+            border-top: 1px solid #d9dfe4;
+            color: #6d7780;
+            font-size: 11px;
+        }
+
+        .vc-footer-bottom-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================== */
+
+        @media (max-width: 1199px) {
+
+            .vc-header-main {
+                gap: 18px;
+            }
+
+            .vc-logo {
+                min-width: 185px;
+            }
+
+            .vc-header-actions {
+                gap: 10px;
+            }
+
+            .vc-nav-link {
+                padding: 0 18px;
+            }
+
+            .vc-hero-image-wrap {
+                left: 42%;
+            }
+
+        }
+
+
+        @media (max-width: 991px) {
+
+            .vc-header-main {
+                flex-wrap: wrap;
+                gap: 14px;
+                padding: 13px 0;
+            }
+
+            .vc-logo {
+                min-width: auto;
+            }
+
+            .vc-search {
+                order: 3;
+                flex-basis: 100%;
+                max-width: none;
+            }
+
+            .vc-header-actions {
+                margin-left: auto;
+            }
+
+            .vc-nav-list {
+                justify-content: flex-start;
+                overflow-x: auto;
+            }
+
+            .vc-hero-slide {
+                min-height: 520px;
+            }
+
+            .vc-hero-image-wrap {
+                left: 0;
+                opacity: 0.42;
+            }
+
+            .vc-hero-overlay {
+                background:
+                    linear-gradient(
+                        90deg,
+                        #edf3f7 0%,
+                        rgba(237,243,247,0.95) 55%,
+                        rgba(237,243,247,0.30) 100%
+                    );
+            }
+
+            .vc-hero-content {
+                max-width: 680px;
+            }
+
+            .vc-feature {
+                border-bottom: 1px solid var(--vc-border);
+            }
+
+            .vc-collection-content {
+                padding-left: 0;
+            }
+
+        }
+
+
+        @media (max-width: 767px) {
+
+            .vc-header-actions {
+                gap: 5px;
+            }
+
+            .vc-header-action {
+                min-width: 42px;
+            }
+
+            .vc-header-action span {
+                font-size: 9px;
+            }
+
+            .vc-hero-slide {
+                min-height: 540px;
+            }
+
+            .vc-hero-content {
+                padding-top: 40px;
+                padding-bottom: 90px;
+            }
+
+            .vc-hero-title {
+                font-size: 44px;
+            }
+
+            .vc-benefit-row {
+                flex-wrap: wrap;
+                gap: 10px 18px;
+            }
+
+            .vc-section {
+                padding: 40px 0;
+            }
+
+            .vc-section-title {
+                font-size: 24px;
+            }
+
+            .vc-category-image-wrap {
+                height: 165px;
+            }
+
+            .vc-collection-image {
+                height: 290px;
+            }
+
+            .vc-collection-content {
+                padding: 25px 0 0;
+            }
+
+            .vc-footer-main {
+                padding: 45px 0 35px;
+            }
+
+        }
+
+
+        @media (max-width: 575px) {
+
+            .vc-header-main {
+                padding: 11px 0;
+            }
+
+            .vc-header-actions {
+                gap: 2px;
+            }
+
+            .vc-header-action i {
+                font-size: 18px;
+            }
+
+            .vc-header-action span {
+                display: none;
+            }
+
+            .vc-hero-slide {
+                min-height: 555px;
+            }
+
+            .vc-hero-content {
+                padding-top: 35px;
+                padding-bottom: 85px;
+            }
+
+            .vc-hero-title {
+                font-size: 38px;
+            }
+
+            .vc-hero-caption {
+                display: none;
+            }
+
+            .vc-hero-prev {
+                left: 8px;
+            }
+
+            .vc-hero-next {
+                right: 8px;
+            }
+
+            .vc-category-image-wrap {
+                height: 145px;
+            }
+
+            .vc-featured-image-wrap {
+                height: 190px;
+            }
+
+            .vc-promo-content {
+                max-width: 88%;
+                padding: 28px 22px;
+            }
+
+            .vc-promo-title {
+                font-size: 22px;
+            }
+
+            .vc-footer-bottom-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+
+    
+
+        /* =========================================================
+           APPROVED VISIONCART USER-SIDE HEADER + FOOTER
+           Exact shared shell styling; navigation labels remain
+           landing-page-specific as requested.
+        ========================================================== */
+        .vcu-site-body{
+            margin:0;
+            background:#fff;
+            color:#12213d;
+            min-height:100vh;
+            overflow-x:hidden;
+        }
+        .vcu-site-header{
+            position:relative;
+            z-index:2000;
+            width:100%;
+        }
+        .vcu-main-nav{
+            width:100%;
+            min-height:76px;
+            background:#fff;
+            border-bottom:1px solid #e3e9f2;
+            box-shadow:0 5px 24px rgba(7,26,61,.06);
+        }
+        .vcu-nav-container{
+            width:min(1240px,100%);
+            min-height:76px;
+            margin:0 auto;
+            padding:0 20px;
+            display:flex;
+            align-items:center;
+            gap:22px;
+        }
+        .vcu-brand{
+            flex:0 0 auto;
+            display:inline-flex;
+            align-items:center;
+            gap:10px;
+            color:#071a3d!important;
+            text-decoration:none!important;
+        }
+        .vcu-brand-mark{
+            width:42px;
+            height:42px;
+            flex:0 0 42px;
+            display:grid;
+            place-items:center;
+            border-radius:12px;
+            background:#071a3d;
+            color:#fff;
+            font-size:20px;
+        }
+        .vcu-brand-copy{display:block;line-height:1}
+        .vcu-brand-copy strong,.vcu-brand-copy small{display:block}
+        .vcu-brand-copy strong{font-size:18px;font-weight:850;letter-spacing:-.025em}
+        .vcu-brand-copy small{
+            margin-top:5px;
+            color:#71809a;
+            font-size:7px;
+            line-height:1.15;
+            font-weight:750;
+            letter-spacing:.075em;
+            text-transform:uppercase;
+            white-space:nowrap;
+        }
+        .vcu-nav-toggle{
+            display:none;
+            margin-left:auto;
+            width:42px;
+            height:42px;
+            border:1px solid #dbe3ee;
+            border-radius:11px;
+            background:#fff;
+            color:#071a3d;
+            font-size:21px;
+        }
+        .vcu-nav-menu{
+            flex:1 1 auto;
+            min-width:0;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:24px;
+        }
+        .vcu-nav-links{
+            display:flex;
+            align-items:center;
+            gap:4px;
+            min-width:0;
+            flex:1 1 auto;
+        }
+        .vcu-nav-link{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            padding:10px 13px;
+            border-radius:10px;
+            color:#53627a!important;
+            font-size:12px;
+            font-weight:800;
+            text-decoration:none!important;
+            white-space:nowrap;
+            transition:all .2s ease;
+        }
+        .vcu-nav-link:hover,.vcu-nav-link.is-active{
+            background:#edf4ff;
+            color:#1769ff!important;
+        }
+        .vcu-nav-actions{
+            margin-left:auto;
+            display:flex;
+            align-items:center;
+            justify-content:flex-end;
+            gap:8px;
+            flex:0 0 auto;
+        }
+        .vcu-auth-buttons{
+            display:inline-flex;
+            align-items:center;
+            gap:7px;
+            padding:4px;
+            border:1px solid #dbe3ee;
+            border-radius:13px;
+            background:#f8fafd;
+            box-shadow:0 3px 12px rgba(7,26,61,.05);
+        }
+        .vcu-auth-button{
+            min-width:78px;
+            height:36px;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            padding:0 15px;
+            border:1px solid transparent;
+            border-radius:9px;
+            color:#071a3d!important;
+            background:transparent;
+            font-size:12px;
+            font-weight:850;
+            text-decoration:none!important;
+            white-space:nowrap;
+            transition:all .2s ease;
+        }
+        .vcu-auth-button:hover{
+            color:#1769ff!important;
+            background:#edf4ff;
+        }
+        .vcu-auth-button.vcu-auth-primary{
+            border-color:#071a3d;
+            background:#071a3d;
+            color:#fff!important;
+        }
+        .vcu-auth-button.vcu-auth-primary:hover{
+            border-color:#1769ff;
+            background:#1769ff;
+            color:#fff!important;
+        }
+        .vcu-account-action{
+            min-width:86px;
+            height:42px;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            padding:0 16px;
+            border:1px solid #dbe3ee;
+            border-radius:11px;
+            color:#071a3d!important;
+            background:#fff;
+            text-decoration:none!important;
+            font-size:12px;
+            font-weight:850;
+            white-space:nowrap;
+            transition:all .2s ease;
+        }
+        .vcu-account-action:hover{
+            border-color:#a9c5f3;
+            background:#edf4ff;
+            color:#1769ff!important;
+        }
+        .vcu-page-shell{min-height:50vh}
+        .vcu-footer{
+            display:block!important;
+            width:100%;
+            margin:0;
+            background:#071a3d!important;
+            color:#d9e4f4;
+        }
+        .vcu-footer-main{
+            display:grid!important;
+            grid-template-columns:1.45fr .8fr .9fr .95fr 1.15fr;
+            gap:34px;
+            padding:68px 0 54px;
+            min-height:300px;
+        }
+        .vcu-footer-brand-link{color:#fff!important}
+        .vcu-footer-brand-link .vcu-brand-mark{background:#fff;color:#071a3d}
+        .vcu-footer-brand p{
+            max-width:440px;
+            margin:18px 0 0;
+            color:#aebed5;
+            font-size:13px;
+            line-height:1.9;
+        }
+        .vcu-footer-column{display:flex;flex-direction:column;gap:13px}
+        .vcu-footer-column h3{
+            margin:0 0 8px;
+            color:#fff;
+            font-size:12px;
+            font-weight:850;
+            letter-spacing:.14em;
+            text-transform:uppercase;
+        }
+        .vcu-footer-column a,.vcu-footer-column span{
+            color:#aebed5!important;
+            font-size:13px;
+            line-height:1.5;
+            text-decoration:none!important;
+        }
+        .vcu-footer-column a:hover{color:#fff!important}
+        .vcu-footer-column span{display:flex;align-items:center;gap:8px}
+        .vcu-footer-column span i{color:#82b3ff}
+        .vcu-footer-contact-item{
+            display:flex;
+            align-items:flex-start;
+            gap:10px;
+            color:#aebed5!important;
+            font-size:13px;
+            line-height:1.55;
+        }
+        .vcu-footer-contact-item i{
+            flex:0 0 18px;
+            margin-top:2px;
+            color:#82b3ff;
+            font-size:15px;
+        }
+        .vcu-footer-contact-item a{
+            color:#aebed5!important;
+            text-decoration:none!important;
+        }
+        .vcu-footer-contact-item a:hover{color:#fff!important}
+        .vcu-footer-note{
+            margin-top:14px;
+            color:#7f96b5;
+            font-size:11px;
+            line-height:1.55;
+        }
+        .vcu-footer-bottom{
+            min-height:70px;
+            display:flex!important;
+            align-items:center;
+            justify-content:space-between;
+            gap:20px;
+            border-top:1px solid rgba(255,255,255,.12);
+            color:#91a5c1;
+            font-size:11px;
+        }
+        .vcu-footer-bottom span:last-child{color:#b9c9dd}
+        .vcu-site-body,.vcu-site-body *{
+            font-family:Inter,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+        }
+
+        /* =========================================================
+           SHOP BY CATEGORY — NEW VISUAL DESIGN + LIGHT ANIMATION
+           No route/data/functionality changes.
+        ========================================================== */
+        .vc-category-section{
+            padding-top:64px;
+            padding-bottom:66px;
+            background:#fff;
+        }
+        .vc-category-grid{
+            display:grid;
+            grid-template-columns:repeat(3,minmax(0,1fr));
+            gap:20px;
+        }
+        .vc-category-card{
+            position:relative;
+            min-width:0;
+            overflow:hidden;
+            border:1px solid #e0e7ef;
+            border-radius:18px;
+            background:#fff;
+            box-shadow:0 10px 28px rgba(7,26,61,.06);
+            text-decoration:none!important;
+            transform:translateY(0);
+            opacity:0;
+            animation:vcCategoryReveal .65s ease forwards;
+            transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease;
+        }
+        .vc-category-card:nth-child(1){animation-delay:.04s}
+        .vc-category-card:nth-child(2){animation-delay:.10s}
+        .vc-category-card:nth-child(3){animation-delay:.16s}
+        .vc-category-card:nth-child(4){animation-delay:.22s}
+        .vc-category-card:nth-child(5){animation-delay:.28s}
+        .vc-category-card:nth-child(6){animation-delay:.34s}
+        .vc-category-card::after{
+            content:"";
+            position:absolute;
+            top:0;
+            left:-120%;
+            width:65%;
+            height:100%;
+            z-index:3;
+            pointer-events:none;
+            background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.24) 48%,transparent 72%);
+            transform:skewX(-18deg);
+            transition:left .65s ease;
+        }
+        .vc-category-card:hover{
+            transform:translateY(-8px);
+            border-color:#cbd9e8;
+            box-shadow:0 20px 42px rgba(7,26,61,.13);
+        }
+        .vc-category-card:hover::after{left:135%}
+        .vc-category-image-wrap{
+            position:relative;
+            height:245px;
+            overflow:hidden;
+            background:linear-gradient(145deg,#f5f8fb,#eaf0f6);
+        }
+        .vc-category-image{
+            width:100%;
+            height:100%;
+            display:block;
+            object-fit:cover;
+            object-position:center;
+            transition:transform .55s cubic-bezier(.2,.7,.2,1),filter .35s ease;
+        }
+        .vc-category-product-image{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            object-position:center center;
+            padding:0;
+            mix-blend-mode:normal;
+        }
+        .vc-category-card:hover .vc-category-image{
+            transform:scale(1.075);
+            filter:saturate(1.05);
+        }
+        .vc-category-number{
+            position:absolute;
+            top:14px;
+            left:14px;
+            z-index:2;
+            min-width:38px;
+            height:28px;
+            padding:0 9px;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            border:1px solid rgba(255,255,255,.78);
+            border-radius:999px;
+            background:rgba(7,26,61,.78);
+            color:#fff;
+            font-size:10px;
+            font-weight:850;
+            letter-spacing:.08em;
+            backdrop-filter:blur(6px);
+        }
+        .vc-category-body{
+            min-height:104px;
+            padding:19px 18px 18px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:14px;
+            background:#071a3d;
+        }
+        .vc-category-name{
+            margin:0 0 5px;
+            color:#fff;
+            font-size:17px;
+            font-weight:850;
+            line-height:1.25;
+            letter-spacing:-.015em;
+        }
+        .vc-category-description{
+            margin:0;
+            color:#aebed5;
+            font-size:11px;
+            line-height:1.45;
+        }
+        .vc-category-arrow{
+            width:40px;
+            height:40px;
+            flex:0 0 40px;
+            display:grid;
+            place-items:center;
+            border:1px solid rgba(255,255,255,.18);
+            border-radius:50%;
+            background:rgba(255,255,255,.06);
+            color:#fff;
+            font-size:15px;
+            transition:transform .3s ease,background .3s ease,border-color .3s ease;
+        }
+        .vc-category-card:hover .vc-category-arrow{
+            transform:rotate(45deg);
+            background:#1769ff;
+            border-color:#1769ff;
+        }
+        @keyframes vcCategoryReveal{
+            from{opacity:0;transform:translateY(18px)}
+            to{opacity:1;transform:translateY(0)}
+        }
+        @media(prefers-reduced-motion:reduce){
+            .vc-category-card{
+                animation:none;
+                opacity:1;
+                transition:none;
+            }
+            .vc-category-card::after,.vc-category-image,.vc-category-arrow{transition:none}
+        }
+
+        @media(min-width:851px){
+            .vcu-nav-menu{display:flex!important;visibility:visible!important;opacity:1!important}
+        }
+        @media(max-width:1050px) and (min-width:851px){
+            .vcu-nav-container{gap:12px}
+            .vcu-nav-link{padding:9px 8px}
+            .vcu-nav-actions{gap:6px}
+            .vcu-auth-button{min-width:70px;padding:0 12px}
+        }
+        @media(max-width:850px){
+            .vcu-nav-container{min-height:70px;flex-wrap:wrap;padding:0 16px}
+            .vcu-nav-toggle{display:grid;place-items:center}
+            .vcu-nav-menu.collapse:not(.show){display:none!important}
+            .vcu-nav-menu.collapse.show{
+                display:flex!important;
+                flex-direction:column;
+                align-items:stretch;
+                width:100%;
+                padding:13px 0 18px;
+            }
+            .vcu-nav-links{width:100%;display:grid;grid-template-columns:repeat(2,1fr)}
+            .vcu-nav-link{justify-content:flex-start}
+            .vcu-nav-actions{
+                width:100%;
+                display:flex;
+                justify-content:flex-start;
+                margin-top:8px;
+            }
+            .vcu-auth-buttons{width:100%;justify-content:stretch}
+            .vcu-auth-button{flex:1 1 0}
+            .vcu-account-action{
+                width:100%;
+                min-height:42px;
+                justify-content:center;
+            }
+            .vcu-footer-main{
+                grid-template-columns:repeat(2,minmax(0,1fr));
+                gap:30px;
+                padding-top:54px;
+                padding-bottom:48px;
+                min-height:0;
+            }
+            .vcu-footer-bottom{
+                padding:14px 0;
+                min-height:auto;
+                flex-direction:column;
+                align-items:flex-start;
+            }
+            .vc-category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+        }
+        @media(max-width:575px){
+            .vc-category-grid{grid-template-columns:1fr;gap:16px}
+            .vc-category-image-wrap{height:230px}
+        }
+        @media(max-width:520px){
+            .vcu-brand-copy small{display:none}
+            .vcu-brand-copy strong{font-size:16px}
+            .vcu-footer-main{grid-template-columns:1fr}
+        }
+
+
+        /* =========================================================
+           VISIONCART NAVBAR — CENTER NAVIGATION ONLY
+           Keeps logo, actions, content and functionality unchanged.
+           Desktop navigation is centered against the full navbar
+           container, matching the approved User Dashboard position.
+        ========================================================== */
+
+        @media (min-width: 1051px) {
+
+            .vcu-nav-container {
+                position: relative;
+            }
+
+            .vcu-nav-menu {
+                position: static !important;
+                flex: 1 1 auto !important;
+                min-width: 0 !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: flex-end !important;
+                gap: 24px !important;
+            }
+
+            .vcu-nav-links {
+                position: absolute !important;
+                left: 50% !important;
+                top: 50% !important;
+                transform: translate(-50%, -50%) !important;
+
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+
+                width: max-content !important;
+                min-width: max-content !important;
+                flex: 0 0 auto !important;
+
+                margin: 0 !important;
+                padding: 0 !important;
+                gap: 4px !important;
+            }
+        }
+
+        @media (max-width: 1050px) and (min-width: 851px) {
+
+            .vcu-nav-container {
+                position: relative;
+            }
+
+            .vcu-nav-menu {
+                position: static !important;
+                justify-content: flex-end !important;
+            }
+
+            .vcu-nav-links {
+                position: absolute !important;
+                left: 50% !important;
+                top: 50% !important;
+                transform: translate(-50%, -50%) !important;
+
+                width: max-content !important;
+                min-width: max-content !important;
+                flex: 0 0 auto !important;
+
+                margin: 0 !important;
+                padding: 0 !important;
+                gap: 2px !important;
+            }
+        }
+
+        @media (max-width: 850px) {
+
+            .vcu-nav-container {
+                position: static;
+            }
+
+            .vcu-nav-menu {
+                position: static !important;
+                display: flex !important;
+            }
+
+            .vcu-nav-links {
+                position: static !important;
+                left: auto !important;
+                top: auto !important;
+                transform: none !important;
+
+                width: 100% !important;
+                min-width: 0 !important;
+                flex: 1 1 auto !important;
+
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body class="vcu-site-body">
+
+
+<!-- =========================================================
+     HEADER
+========================================================== -->
+
+<!-- =========================================================
+     VISIONCART APPROVED USER-SIDE HEADER
+     Design from approved Dashboard shell.
+     Landing-page navigation labels/anchors preserved from this page.
+========================================================== -->
+
+<header class="vcu-site-header">
+    <nav class="vcu-main-nav" aria-label="VisionCart main navigation">
+        <div class="vcu-nav-container">
+
+            <a class="vcu-brand"
+               href="{% if user.is_authenticated and user.role == 'CUSTOMER' %}{% url 'profile' %}{% else %}{% url 'home' %}{% endif %}">
+                <span class="vcu-brand-mark"><i class="bi bi-eyeglasses"></i></span>
+                <span class="vcu-brand-copy">
+                    <strong>VisionCart</strong>
+                    <small>Clear Vision · Better Tomorrow</small>
+                </span>
+            </a>
+
+            <button class="vcu-nav-toggle"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#vcMainNavigation"
+                    aria-controls="vcMainNavigation"
+                    aria-expanded="false"
+                    aria-label="Open navigation">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <div class="collapse vcu-nav-menu" id="vcMainNavigation">
+
+                <!-- Landing-page navigation: text labels only -->
+                <div class="vcu-nav-links">
+                    <a class="vcu-nav-link is-active" href="{% url 'home' %}">Home</a>
+                    <a class="vcu-nav-link" href="#collections">Collections</a>
+                    <a class="vcu-nav-link" href="#featured">Featured</a>
+                    <a class="vcu-nav-link" href="#why-visioncart">Why VisionCart</a>
+                    <a class="vcu-nav-link" href="#brands">Brands</a>
+                    <a class="vcu-nav-link" href="#contact">Contact</a>
+                </div>
+
+                <!-- Navbar actions: search/wishlist/cart removed; auth links preserved -->
+                <div class="vcu-nav-actions">
+                    {% if user.is_authenticated %}
+                        <a class="vcu-account-action"
+                           href="{% url 'profile' %}"
+                           aria-label="Account">
+                            Account
+                        </a>
+                    {% else %}
+                        <div class="vcu-auth-buttons" aria-label="Account actions">
+                            <a class="vcu-auth-button"
+                               href="{% url 'login' %}"
+                               aria-label="Login">
+                                Login
+                            </a>
+                            <a class="vcu-auth-button vcu-auth-primary"
+                               href="{% url 'register' %}"
+                               aria-label="Register">
+                                Register
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main
+    class="vcu-page-shell"
+    onclick="event.preventDefault(); event.stopPropagation(); window.location.href='{% url 'login' %}'; return false;"
+>
+
+
+
+<!-- =========================================================
+     HERO
+========================================================== -->
+
+<section class="vc-hero">
+
+    <div
+        id="visionCartHero"
+        class="carousel slide carousel-fade"
+        data-bs-ride="carousel"
+        data-bs-interval="5500"
+    >
+
+        <div class="carousel-inner">
+
+
+            <!-- HERO 1 -->
+
+            <div class="carousel-item active">
+
+                <div class="vc-hero-slide">
+
+                    <div class="vc-hero-image-wrap">
+
+                        <img
+                            src="{% static 'images/l12.jpg' %}"
+                            alt="VisionCart premium eyewear"
+                            class="vc-hero-image"
+                            width="2000"
+                            height="2500"
+                            decoding="async"
+                            fetchpriority="high"
+                        >
+
+                        <div class="vc-hero-overlay"></div>
+
+                    </div>
+
+
+                    <div class="container">
+
+                        <div class="vc-hero-content">
+
+                            <div class="vc-hero-eyebrow">
+                                Premium Eyewear for a Brighter You
+                            </div>
+
+                            <h1 class="vc-hero-title">
+                                Clear Vision
+                                <br>
+                                Greater Possibilities
+                            </h1>
+
+                            <p class="vc-hero-text">
+                                Stylish. Comfortable. Made for your
+                                everyday life.
+                            </p>
+
+                            <div class="vc-hero-buttons">
+
+                                <a
+                                    href="{% url 'products' %}"
+                                    class="vc-btn-primary"
+                                >
+                                    Explore Eyewear
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+
+                                <a
+                                    href="#collections"
+                                    class="vc-btn-outline"
+                                >
+                                    Discover VisionCart
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="vc-hero-caption">
+                        Good
+                        <br>
+                        Vision
+                        <br>
+                        Brighter
+                        <br>
+                        You
+                    </div>
+
+
+                    <div class="vc-hero-benefits">
+
+                        <div class="container">
+
+                            <div class="vc-benefit-row">
+
+                                <div class="vc-benefit">
+
+                                    <i class="bi bi-eyeglasses"></i>
+
+                                    <span>
+                                        Wide Range
+                                        <br>
+                                        of Frames
+                                    </span>
+
+                                </div>
+
+                                <div class="vc-benefit">
+
+                                    <i class="bi bi-shield-check"></i>
+
+                                    <span>
+                                        100% Authentic
+                                        <br>
+                                        Products
+                                    </span>
+
+                                </div>
+
+                                <div class="vc-benefit">
+
+                                    <i class="bi bi-truck"></i>
+
+                                    <span>
+                                        Free Shipping
+                                        <br>
+                                        Above ₹999
+                                    </span>
+
+                                </div>
+
+                                <div class="vc-benefit">
+
+                                    <i class="bi bi-headset"></i>
+
+                                    <span>
+                                        Expert Support
+                                        <br>
+                                        Always Here
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HERO 2 -->
+
+            <div class="carousel-item">
+
+                <div class="vc-hero-slide">
+
+                    <div class="vc-hero-image-wrap">
+
+                        <img
+                            data-src="{% static 'images/l13.jpg' %}"
+                            alt="VisionCart eyewear collection"
+                            class="vc-hero-image vc-deferred-image"
+                            width="4000"
+                            height="6000"
+                            decoding="async"
+                        >
+
+                        <div class="vc-hero-overlay"></div>
+
+                    </div>
+
+
+                    <div class="container">
+
+                        <div class="vc-hero-content">
+
+                            <div class="vc-hero-eyebrow">
+                                Everyday Style
+                            </div>
+
+                            <h2 class="vc-hero-title">
+                                Frames That
+                                <br>
+                                Feel Like You
+                            </h2>
+
+                            <p class="vc-hero-text">
+                                Discover comfortable eyewear designed
+                                to complement your personality and style.
+                            </p>
+
+                            <div class="vc-hero-buttons">
+
+                                <a
+                                    href="{% url 'products' %}"
+                                    class="vc-btn-primary"
+                                >
+                                    Explore Collection
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HERO 3 -->
+
+            <div class="carousel-item">
+
+                <div class="vc-hero-slide">
+
+                    <div class="vc-hero-image-wrap">
+
+                        <img
+                            data-src="{% static 'images/l2.jpg' %}"
+                            alt="Stylish VisionCart eyewear"
+                            class="vc-hero-image vc-deferred-image"
+                            width="4000"
+                            height="6000"
+                            decoding="async"
+                        >
+
+                        <div class="vc-hero-overlay"></div>
+
+                    </div>
+
+
+                    <div class="container">
+
+                        <div class="vc-hero-content">
+
+                            <div class="vc-hero-eyebrow">
+                                New Styles. Fresh Perspective.
+                            </div>
+
+                            <h2 class="vc-hero-title">
+                                See Your
+                                <br>
+                                Style Differently
+                            </h2>
+
+                            <p class="vc-hero-text">
+                                Timeless classics and modern silhouettes
+                                for every moment.
+                            </p>
+
+                            <div class="vc-hero-buttons">
+
+                                <a
+                                    href="{% url 'products' %}"
+                                    class="vc-btn-primary"
+                                >
+                                    Explore Products
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ARROWS -->
+
+        <button
+            class="vc-hero-arrow vc-hero-prev"
+            type="button"
+            data-bs-target="#visionCartHero"
+            data-bs-slide="prev"
+            aria-label="Previous slide"
+        >
+            <i class="bi bi-chevron-left"></i>
+        </button>
+
+        <button
+            class="vc-hero-arrow vc-hero-next"
+            type="button"
+            data-bs-target="#visionCartHero"
+            data-bs-slide="next"
+            aria-label="Next slide"
+        >
+            <i class="bi bi-chevron-right"></i>
+        </button>
+
+
+        <!-- DOTS -->
+
+        <div class="vc-slider-dots">
+
+            <button
+                type="button"
+                data-bs-target="#visionCartHero"
+                data-bs-slide-to="0"
+                class="vc-slider-dot active"
+                aria-label="Slide 1"
+            ></button>
+
+            <button
+                type="button"
+                data-bs-target="#visionCartHero"
+                data-bs-slide-to="1"
+                class="vc-slider-dot"
+                aria-label="Slide 2"
+            ></button>
+
+            <button
+                type="button"
+                data-bs-target="#visionCartHero"
+                data-bs-slide-to="2"
+                class="vc-slider-dot"
+                aria-label="Slide 3"
+            ></button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Fixes applied: category images fill their boxes; category cards link to Login. -->
+
+<!-- =========================================================
+     SHOP BY CATEGORY
+     Redesigned visual section — existing links/images/text preserved.
+========================================================== -->
+
+<section class="vc-section vc-category-section" id="collections">
+    <div class="container">
+
+        <div class="vc-section-header">
+            <div>
+                <h2 class="vc-section-title">Shop by Category</h2>
+                <p class="vc-section-subtitle">
+                    Find the right eyewear for every part of your day.
+                </p>
+            </div>
+
+            <a href="{% url 'products' %}" class="vc-view-all">
+                View All
+                <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="vc-category-grid">
+
+            <a href="{% url 'login' %}" class="vc-category-card">
+                <div class="vc-category-image-wrap">
+                    <img src="{% static 'images/eye10.jpg' %}"
+                         alt="Eyeglasses"
+                         class="vc-category-image vc-category-product-image"
+                         width="2537" height="3800"
+                         loading="lazy" decoding="async">
+                    <span class="vc-category-number">01</span>
+                </div>
+                <div class="vc-category-body">
+                    <div>
+                        <h3 class="vc-category-name">Eyeglasses</h3>
+                        <p class="vc-category-description">Classic &amp; Modern Frames</p>
+                    </div>
+                    <span class="vc-category-arrow" aria-hidden="true">
+                        <i class="bi bi-arrow-up-right"></i>
+                    </span>
+                </div>
+            </a>
+
+            <a href="{% url 'login' %}" class="vc-category-card">
+                <div class="vc-category-image-wrap">
+                    <img src="{% static 'images/eye12.jpg' %}"
+                         alt="Sunglasses"
+                         class="vc-category-image vc-category-product-image"
+                         width="736" height="920"
+                         loading="lazy" decoding="async">
+                    <span class="vc-category-number">02</span>
+                </div>
+                <div class="vc-category-body">
+                    <div>
+                        <h3 class="vc-category-name">Sunglasses</h3>
+                        <p class="vc-category-description">Style &amp; UV Protection</p>
+                    </div>
+                    <span class="vc-category-arrow" aria-hidden="true">
+                        <i class="bi bi-arrow-up-right"></i>
+                    </span>
+                </div>
+            </a>
+
+            <a href="{% url 'login' %}" class="vc-category-card">
+                <div class="vc-category-image-wrap">
+                    <img src="{% static 'images/l36.jpg' %}"
+                         alt="Kids Eyewear"
+                         class="vc-category-image vc-category-product-image"
+                         width="2002" height="3000"
+                         loading="lazy" decoding="async">
+                    <span class="vc-category-number">03</span>
+                </div>
+                <div class="vc-category-body">
+                    <div>
+                        <h3 class="vc-category-name">Kids Eyewear</h3>
+                        <p class="vc-category-description">Safe, Comfortable &amp; Stylish</p>
+                    </div>
+                    <span class="vc-category-arrow" aria-hidden="true">
+                        <i class="bi bi-arrow-up-right"></i>
+                    </span>
+                </div>
+            </a>
+
+            <a href="{% url 'login' %}" class="vc-category-card">
+                <div class="vc-category-image-wrap">
+                    <img src="{% static 'images/eye6.jpg' %}"
+                         alt="Contact Lenses"
+                         class="vc-category-image vc-category-product-image"
+                         width="2537" height="3800"
+                         loading="lazy" decoding="async">
+                    <span class="vc-category-number">04</span>
+                </div>
+                <div class="vc-category-body">
+                    <div>
+                        <h3 class="vc-category-name">Contact Lenses</h3>
+                        <p class="vc-category-description">Clear &amp; Comfortable</p>
+                    </div>
+                    <span class="vc-category-arrow" aria-hidden="true">
+                        <i class="bi bi-arrow-up-right"></i>
+                    </span>
+                </div>
+            </a>
+
+            <a href="{% url 'login' %}" class="vc-category-card">
+                <div class="vc-category-image-wrap">
+                    <img src="{% static 'images/eye9.jpg' %}"
+                         alt="Computer Glasses"
+                         class="vc-category-image vc-category-product-image"
+                         width="4672" height="7008"
+                         loading="lazy" decoding="async">
+                    <span class="vc-category-number">05</span>
+                </div>
+                <div class="vc-category-body">
+                    <div>
+                        <h3 class="vc-category-name">Computer Glasses</h3>
+                        <p class="vc-category-description">Designed for Digital Comfort</p>
+                    </div>
+                    <span class="vc-category-arrow" aria-hidden="true">
+                        <i class="bi bi-arrow-up-right"></i>
+                    </span>
+                </div>
+            </a>
+
+            <a href="{% url 'login' %}" class="vc-category-card">
+                <div class="vc-category-image-wrap">
+                    <img src="{% static 'images/eye15.jpg' %}"
+                         alt="Sports Eyewear"
+                         class="vc-category-image vc-category-product-image"
+                         width="3000" height="4000"
+                         loading="lazy" decoding="async">
+                    <span class="vc-category-number">06</span>
+                </div>
+                <div class="vc-category-body">
+                    <div>
+                        <h3 class="vc-category-name">Sports Eyewear</h3>
+                        <p class="vc-category-description">Built for Active Lifestyles</p>
+                    </div>
+                    <span class="vc-category-arrow" aria-hidden="true">
+                        <i class="bi bi-arrow-up-right"></i>
+                    </span>
+                </div>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     FEATURES
+========================================================== -->
+
+<section class="vc-feature-strip">
+
+    <div class="container">
+
+        <div class="row g-0">
+
+
+            <div class="col-12 col-md-6 col-lg-3">
+
+                <div class="vc-feature">
+
+                    <div class="vc-feature-icon">
+                        <i class="bi bi-truck"></i>
+                    </div>
+
+                    <div>
+
+                        <h3 class="vc-feature-title">
+                            Free Shipping
+                        </h3>
+
+                        <p class="vc-feature-text">
+                            On orders above ₹999
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-12 col-md-6 col-lg-3">
+
+                <div class="vc-feature">
+
+                    <div class="vc-feature-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+
+                    <div>
+
+                        <h3 class="vc-feature-title">
+                            100% Authentic
+                        </h3>
+
+                        <p class="vc-feature-text">
+                            Quality eyewear products
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-12 col-md-6 col-lg-3">
+
+                <div class="vc-feature">
+
+                    <div class="vc-feature-icon">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </div>
+
+                    <div>
+
+                        <h3 class="vc-feature-title">
+                            Easy Returns
+                        </h3>
+
+                        <p class="vc-feature-text">
+                            Simple return experience
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-12 col-md-6 col-lg-3">
+
+                <div class="vc-feature">
+
+                    <div class="vc-feature-icon">
+                        <i class="bi bi-headset"></i>
+                    </div>
+
+                    <div>
+
+                        <h3 class="vc-feature-title">
+                            Expert Support
+                        </h3>
+
+                        <p class="vc-feature-text">
+                            We're here when you need us
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FEATURED PRODUCTS
+     NO FILTER TABS
+========================================================== -->
+
+<section
+    class="vc-section"
+    id="featured"
+>
+
+    <div class="container">
+
+        <div class="vc-section-header">
+
+            <div>
+
+                <h2 class="vc-section-title">
+                    Featured Products
+                </h2>
+
+                <p class="vc-section-subtitle">
+                    A carefully selected collection from VisionCart.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'products' %}"
+                class="vc-view-all"
+            >
+                View All
+                <i class="bi bi-arrow-right"></i>
+            </a>
+
+        </div>
+
+
+        <div class="row g-3">
+
+
+            {% for product in products|slice:":6" %}
+
+                <div class="col-6 col-md-4 col-lg-2">
+
+                    <div class="vc-featured-card">
+
+
+                        <div class="vc-featured-image-wrap">
+
+
+                            {% if product.image %}
+
+                                <img
+                                    src="{{ product.image.url }}"
+                                    alt="{{ product.name }}"
+                                    class="vc-featured-image"
+                                    width="1000"
+                                    height="1000"
+                                    loading="lazy"
+                                    decoding="async"
+                                >
+
+                            {% else %}
+
+                                {% if forloop.counter == 1 %}
+
+                                    <img
+                                        src="{% static 'images/l21.jpg' %}"
+                                        alt="{{ product.name }}"
+                                        class="vc-featured-image"
+                                        loading="lazy"
+                                        decoding="async"
+                                    >
+
+                                {% elif forloop.counter == 2 %}
+
+                                    <img
+                                        src="{% static 'images/l7.jpeg' %}"
+                                        alt="{{ product.name }}"
+                                        class="vc-featured-image"
+                                        loading="lazy"
+                                        decoding="async"
+                                    >
+
+                                {% elif forloop.counter == 3 %}
+
+                                    <img
+                                        src="{% static 'images/l14.jpg' %}"
+                                        alt="{{ product.name }}"
+                                        class="vc-featured-image"
+                                        loading="lazy"
+                                        decoding="async"
+                                    >
+
+                                {% elif forloop.counter == 4 %}
+
+                                    <img
+                                        src="{% static 'images/l15.jpg' %}"
+                                        alt="{{ product.name }}"
+                                        class="vc-featured-image"
+                                        loading="lazy"
+                                        decoding="async"
+                                    >
+
+                                {% elif forloop.counter == 5 %}
+
+                                    <img
+                                        src="{% static 'images/l16.jpg' %}"
+                                        alt="{{ product.name }}"
+                                        class="vc-featured-image"
+                                        loading="lazy"
+                                        decoding="async"
+                                    >
+
+                                {% else %}
+
+                                    <img
+                                        src="{% static 'images/l39.jpg' %}"
+                                        alt="{{ product.name }}"
+                                        class="vc-featured-image"
+                                        loading="lazy"
+                                        decoding="async"
+                                    >
+
+                                {% endif %}
+
+                            {% endif %}
+
+
+                            {% if user.is_authenticated %}
+
+                                <a
+                                    href="{% url 'wishlist' %}"
+                                    class="vc-wishlist-button"
+                                    aria-label="Wishlist"
+                                >
+                                    <i class="bi bi-heart"></i>
+                                </a>
+
+                            {% else %}
+
+                                <a
+                                    href="{% url 'login' %}"
+                                    class="vc-wishlist-button"
+                                    aria-label="Login to wishlist"
+                                >
+                                    <i class="bi bi-heart"></i>
+                                </a>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="vc-featured-body">
+
+
+                            {% if product.brand %}
+
+                                <div class="vc-product-brand">
+                                    {{ product.brand }}
+                                </div>
+
+                            {% else %}
+
+                                <div class="vc-product-brand">
+                                    VisionCart
+                                </div>
+
+                            {% endif %}
+
+
+                            <a
+                                href="{% url 'product-detail' product.id %}"
+                                class="vc-product-name"
+                            >
+                                {{ product.name }}
+                            </a>
+
+
+                            <div class="vc-rating">
+
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+
+                            </div>
+
+
+                            <div class="vc-price-row">
+
+                                <span class="vc-price">
+                                    ₹{{ product.price }}
+                                </span>
+
+                                {% if product.original_price %}
+
+                                    <span class="vc-old-price">
+                                        ₹{{ product.original_price }}
+                                    </span>
+
+                                    <span class="vc-discount">
+                                        OFFER
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            {% if user.is_authenticated %}
+
+                                <form
+                                    method="post"
+                                    action="{% url 'add-to-cart' product.id %}"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="vc-add-cart"
+                                    >
+
+                                        <i class="bi bi-cart3 me-1"></i>
+
+                                        Add to Cart
+
+                                    </button>
+
+                                </form>
+
+                            {% else %}
+
+                                <a
+                                    href="{% url 'login' %}"
+                                    class="vc-add-cart d-flex align-items-center justify-content-center"
+                                >
+
+                                    <i class="bi bi-cart3 me-1"></i>
+
+                                    Login to Shop
+
+                                </a>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            {% empty %}
+
+                <div class="col-12">
+
+                    <div class="text-center py-5">
+
+                        <div
+                            class="mb-3"
+                            style="font-size:48px;color:#1769aa;"
+                        >
+                            <i class="bi bi-eyeglasses"></i>
+                        </div>
+
+                        <h3
+                            class="fw-bold"
+                            style="font-size:23px;"
+                        >
+                            Discover Your Next Favourite Frame
+                        </h3>
+
+                        <p
+                            class="text-muted"
+                            style="font-size:14px;"
+                        >
+                            Explore the VisionCart eyewear collection.
+                        </p>
+
+                        <a
+                            href="{% url 'products' %}"
+                            class="vc-btn-primary"
+                        >
+                            Explore Products
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     COLLECTION SPOTLIGHT
+========================================================== -->
+
+<section class="vc-collection-section">
+
+    <div class="container">
+
+        <div class="row align-items-center g-4">
+
+
+            <div class="col-lg-6">
+
+                <img
+                    src="{% static 'images/l23.jpg' %}"
+                    alt="VisionCart eyewear collection"
+                    class="vc-collection-image"
+                    width="4000"
+                    height="6000"
+                    loading="lazy"
+                    decoding="async"
+                >
+
+            </div>
+
+
+            <div class="col-lg-6">
+
+                <div class="vc-collection-content">
+
+                    <div class="vc-small-label">
+                        The VisionCart Edit
+                    </div>
+
+                    <h2 class="vc-collection-title">
+                        Style,
+                        <br>
+                        Comfort &
+                        <br>
+                        Clear Vision.
+                    </h2>
+
+                    <p class="vc-collection-text">
+                        Explore eyewear selected for modern everyday
+                        life. From refined classics to contemporary
+                        frames, VisionCart brings style and comfort
+                        together in one place.
+                    </p>
+
+                    <div>
+
+                        <a
+                            href="{% url 'products' %}"
+                            class="vc-btn-primary"
+                        >
+                            Explore Collection
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     PROMOTIONAL IMAGE SECTIONS
+========================================================== -->
+
+<section class="vc-promo-section">
+
+    <div class="container">
+
+        <div class="row g-4">
+
+
+            <!-- PROMO 1 -->
+
+            <div class="col-lg-6">
+
+                <div class="vc-promo">
+
+                    <img
+                        src="{% static 'images/l31.jpg' %}"
+                        alt="Sunglasses collection"
+                        class="vc-promo-image"
+                        width="2937"
+                        height="4762"
+                        loading="lazy"
+                        decoding="async"
+                    >
+
+                    <div class="vc-promo-overlay"></div>
+
+                    <div class="vc-promo-content">
+
+                        <h2 class="vc-promo-title">
+                            Sunglasses
+                        </h2>
+
+                        <p class="vc-promo-text">
+                            Modern frames made for bright days.
+                        </p>
+
+                        <a
+                            href="{% url 'products' %}"
+                            class="vc-promo-button"
+                        >
+                            Explore Now
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROMO 2 -->
+
+            <div class="col-lg-6">
+
+                <div class="vc-promo">
+
+                    <img
+                        src="{% static 'images/l11.jpg' %}"
+                        alt="New eyewear arrivals"
+                        class="vc-promo-image"
+                        width="1000"
+                        height="1000"
+                        loading="lazy"
+                        decoding="async"
+                    >
+
+                    <div class="vc-promo-overlay"></div>
+
+                    <div class="vc-promo-content">
+
+                        <h2 class="vc-promo-title">
+                            New Arrivals
+                        </h2>
+
+                        <p class="vc-promo-text">
+                            Fresh frames for a fresh perspective.
+                        </p>
+
+                        <a
+                            href="{% url 'products' %}"
+                            class="vc-promo-button"
+                        >
+                            Shop Now
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     WHY VISIONCART
+========================================================== -->
+
+<section
+    class="vc-why-section"
+    id="why-visioncart"
+>
+
+    <div class="container">
+
+
+        <div class="vc-why-intro">
+
+            <h2 class="vc-why-title">
+                Why Choose VisionCart?
+            </h2>
+
+            <p class="vc-why-text">
+                Everything you need for a simple and confident
+                eyewear shopping experience.
+            </p>
+
+        </div>
+
+
+        <div class="row g-3">
+
+
+            <div class="col-12 col-md-6 col-lg-3">
+
+                <div class="vc-why-card">
+
+                    <div class="vc-why-icon">
+                        <i class="bi bi-eyeglasses"></i>
+                    </div>
+
+                    <h3>
+                        Wide Selection
+                    </h3>
+
+                    <p>
+                        Explore different styles and eyewear
+                        options for everyday needs.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-12 col-md-6 col-lg-3">
+
+                <div class="vc-why-card">
+
+                    <div class="vc-why-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+
+                    <h3>
+                        Trusted Quality
+                    </h3>
+
+                    <p>
+                        Shop with confidence through a clear
+                        and reliable shopping experience.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-12 col-md-6 col-lg-3">
+
+                <div class="vc-why-card">
+
+                    <div class="vc-why-icon">
+                        <i class="bi bi-truck"></i>
+                    </div>
+
+                    <h3>
+                        Convenient Delivery
+                    </h3>
+
+                    <p>
+                        Get your selected eyewear delivered
+                        directly to your preferred address.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-12 col-md-6 col-lg-3">
+
+                <div class="vc-why-card">
+
+                    <div class="vc-why-icon">
+                        <i class="bi bi-headset"></i>
+                    </div>
+
+                    <h3>
+                        Helpful Support
+                    </h3>
+
+                    <p>
+                        A straightforward shopping experience
+                        backed by customer support.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     BRANDS
+========================================================== -->
+
+<section
+    class="vc-brands-section"
+    id="brands"
+>
+
+    <div class="container">
+
+        <div class="vc-section-header">
+
+            <div>
+
+                <h2 class="vc-section-title">
+                    Featured Brands
+                </h2>
+
+                <p class="vc-section-subtitle">
+                    Discover styles from familiar eyewear names.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'products' %}"
+                class="vc-view-all"
+            >
+                View Products
+                <i class="bi bi-arrow-right"></i>
+            </a>
+
+        </div>
+
+
+        <div class="row g-3">
+
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="vc-brand-card">
+                    Ray-Ban
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="vc-brand-card">
+                    OAKLEY
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="vc-brand-card">
+                    VOGUE
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="vc-brand-card">
+                    TITAN
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="vc-brand-card">
+                    TOMMY
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="vc-brand-card">
+                    ZEISS
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================== -->
+
+
+</main>
+
+<!-- =========================================================
+     APPROVED VISIONCART USER-SIDE FOOTER
+========================================================== -->
+
+<footer class="vcu-footer">
+    <div class="container">
+        <div class="vcu-footer-main">
+
+            <div class="vcu-footer-brand">
+                <a class="vcu-brand vcu-footer-brand-link"
+                   href="{% if user.is_authenticated and user.role == 'CUSTOMER' %}{% url 'profile' %}{% else %}{% url 'home' %}{% endif %}">
+                    <span class="vcu-brand-mark"><i class="bi bi-eyeglasses"></i></span>
+                    <span class="vcu-brand-copy">
+                        <strong>VisionCart</strong>
+                        <small>Clear Vision · Better Tomorrow</small>
+                    </span>
+                </a>
+                <p>
+                    Discover stylish eyewear, save your favourites and enjoy a simple
+                    shopping experience built around better vision.
+                </p>
+                <div class="vcu-footer-note">
+                    Quality eyewear · Simple shopping · Better vision
+                </div>
+            </div>
+
+            <div class="vcu-footer-column">
+                <h3>Shop</h3>
+                <a href="{% url 'products' %}">All Eyewear</a>
+                {% if user.is_authenticated and user.role == "CUSTOMER" %}
+                    <a href="{% url 'wishlist' %}">Wishlist</a>
+                    <a href="{% url 'cart' %}">Cart</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </div>
+
+            <div class="vcu-footer-column">
+                <h3>Customer Care</h3>
+                {% if user.is_authenticated and user.role == "CUSTOMER" %}
+                    <a href="{% url 'orders' %}">My Orders</a>
+                    <a href="{% url 'addresses' %}">My Addresses</a>
+                    <a href="{% url 'profile' %}">My Profile</a>
+                {% else %}
+                    <a href="{% url 'register' %}">Create Account</a>
+                    <a href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </div>
+
+            <div class="vcu-footer-column">
+                <h3>Why VisionCart</h3>
+                <span><i class="bi bi-shield-check"></i> Trusted shopping</span>
+                <span><i class="bi bi-truck"></i> Easy delivery</span>
+                <span><i class="bi bi-arrow-repeat"></i> Easy returns</span>
+                <span><i class="bi bi-eyeglasses"></i> Quality eyewear</span>
+            </div>
+
+            <div class="vcu-footer-column">
+                <h3>Contact</h3>
+                <div class="vcu-footer-contact-item">
+                    <i class="bi bi-envelope"></i>
+                    <a href="mailto:support@visioncart.com">support@visioncart.com</a>
+                </div>
+                <div class="vcu-footer-contact-item">
+                    <i class="bi bi-telephone"></i>
+                    <a href="tel:+919876543210">+91 98765 43210</a>
+                </div>
+                <div class="vcu-footer-contact-item">
+                    <i class="bi bi-geo-alt"></i>
+                    <span>Kerala, India</span>
+                </div>
+                <div class="vcu-footer-contact-item">
+                    <i class="bi bi-clock"></i>
+                    <span>Mon – Sat · 9:00 AM – 6:00 PM</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="vcu-footer-bottom">
+            <span>© {% now "Y" %} VisionCart. All rights reserved.</span>
+            <span>Clear Vision · Better Tomorrow</span>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+
+
+
+
+<!-- =========================================================
+     BOOTSTRAP
+========================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    defer
+></script>
+
+
+<script>
+
+    /* =========================================================
+       HERO PERFORMANCE FIX
+
+       Only the first hero image loads immediately.
+
+       Slide 2 and Slide 3 images are loaded only when their
+       carousel slide is needed.
+
+       This prevents three large images from downloading
+       together during the initial page opening.
+    ========================================================== */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const hero =
+                document.getElementById("visionCartHero");
+
+            if (!hero) {
+                return;
+            }
+
+
+            const dots =
+                document.querySelectorAll(
+                    ".vc-slider-dot"
+                );
+
+
+            function loadHeroImage(slide) {
+
+                if (!slide) {
+                    return;
+                }
+
+
+                const image =
+                    slide.querySelector(
+                        "img[data-src]"
+                    );
+
+
+                if (!image) {
+                    return;
+                }
+
+
+                if (
+                    image.getAttribute("src")
+                ) {
+                    return;
+                }
+
+
+                const source =
+                    image.getAttribute("data-src");
+
+
+                if (!source) {
+                    return;
+                }
+
+
+                image.src = source;
+
+
+                image.addEventListener(
+                    "load",
+                    function () {
+
+                        image.classList.add(
+                            "vc-image-loaded"
+                        );
+
+                    },
+                    {
+                        once: true
+                    }
+                );
+
+            }
+
+
+            loadHeroImage(
+                hero.querySelector(
+                    ".carousel-item.active"
+                )
+            );
+
+
+            hero.addEventListener(
+                "slide.bs.carousel",
+                function (event) {
+
+                    loadHeroImage(
+                        event.relatedTarget
+                    );
+
+                }
+            );
+
+
+            hero.addEventListener(
+                "slid.bs.carousel",
+                function (event) {
+
+                    dots.forEach(
+                        function (dot) {
+
+                            dot.classList.remove(
+                                "active"
+                            );
+
+                        }
+                    );
+
+
+                    if (dots[event.to]) {
+
+                        dots[event.to].classList.add(
+                            "active"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>
